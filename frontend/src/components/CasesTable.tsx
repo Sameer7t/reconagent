@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, RotateCcw, ChevronRight, CheckCircle2, AlertTriangle, XCircle, Calendar, Clock } from 'lucide-react';
+import { Search, Filter, RotateCcw, ChevronRight, ChevronDown, CheckCircle2, AlertTriangle, XCircle, Calendar, Clock, FileText, ExternalLink } from 'lucide-react';
 import { CaseSummary } from '../types';
 
 interface CasesTableProps {
@@ -8,6 +8,15 @@ interface CasesTableProps {
   onSelectCase: (caseId: string) => void;
   activeQuickFilter?: string;
   onClearQuickFilter?: () => void;
+  onViewDoc?: (fileName: string, docType: string, filePath?: string) => void;
+  selectedCaseDetails?: {
+    po_file?: string;
+    invoice_file?: string;
+    receipt_files?: string[];
+    po_file_path?: string;
+    invoice_file_path?: string;
+    receipt_file_path?: string;
+  } | null;
 }
 
 export const CasesTable: React.FC<CasesTableProps> = ({
@@ -16,6 +25,8 @@ export const CasesTable: React.FC<CasesTableProps> = ({
   onSelectCase,
   activeQuickFilter,
   onClearQuickFilter,
+  onViewDoc,
+  selectedCaseDetails,
 }) => {
   // 4 Independent Column Filters
   const [caseSearch, setCaseSearch] = useState('');
@@ -503,59 +514,161 @@ export const CasesTable: React.FC<CasesTableProps> = ({
             ) : (
               filteredCases.map((c) => {
                 const isSelected = c.case_id === selectedCaseId;
+                const poFile = (isSelected && selectedCaseDetails?.po_file) || c.po_file || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.po : undefined);
+                const invFile = (isSelected && selectedCaseDetails?.invoice_file) || c.invoice_file || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.invoice : undefined);
+                const rcptFile = (isSelected && selectedCaseDetails?.receipt_files?.[0]) || c.receipt_files?.[0] || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.receipt : undefined);
+
                 return (
-                  <tr
-                    key={c.case_id}
-                    onClick={() => onSelectCase(c.case_id)}
-                    className={`cursor-pointer transition group ${
-                      isSelected
-                        ? 'bg-sky-500/15 border-l-4 border-sky-400 text-white font-medium'
-                        : 'hover:bg-slate-800/50 text-slate-300'
-                    }`}
-                  >
-                    {/* Case ID and Processed Date+Time */}
-                    <td className="py-2 px-1.5 sm:px-2 min-w-0">
-                      <div className="flex items-center space-x-0.5 min-w-0">
-                        <span className="font-mono font-bold text-sky-400 group-hover:text-sky-300 text-xs truncate" title={c.case_id}>
-                          {c.case_id}
-                        </span>
-                        {isSelected && <ChevronRight className="w-3.5 h-3.5 text-sky-400 flex-shrink-0" />}
-                      </div>
-                      {c.created_at ? (
-                        <div className="flex items-center gap-1.5 text-[11px] text-slate-300 font-mono font-medium mt-0.5" title={`Processed: ${c.created_at}`}>
-                          <Clock className="w-3 h-3 text-sky-400/80 flex-shrink-0" />
-                          <span className="truncate">{formatProcessedDateTime(c.created_at)}</span>
+                  <React.Fragment key={c.case_id}>
+                    <tr
+                      onClick={() => onSelectCase(c.case_id)}
+                      className={`cursor-pointer transition group ${
+                        isSelected
+                          ? 'bg-sky-500/15 border-l-4 border-sky-400 text-white font-medium'
+                          : 'hover:bg-slate-800/50 text-slate-300'
+                      }`}
+                    >
+                      {/* Case ID and Processed Date+Time */}
+                      <td className="py-2 px-1.5 sm:px-2 min-w-0">
+                        <div className="flex items-center space-x-1 min-w-0">
+                          {isSelected ? (
+                            <ChevronDown className="w-3.5 h-3.5 text-sky-400 flex-shrink-0" />
+                          ) : (
+                            <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-sky-400 flex-shrink-0" />
+                          )}
+                          <span className="font-mono font-bold text-sky-400 group-hover:text-sky-300 text-xs truncate" title={c.case_id}>
+                            {c.case_id}
+                          </span>
                         </div>
-                      ) : c.po_number ? (
-                        <div className="text-[11px] text-slate-400 font-mono mt-0.5 truncate" title={c.po_number || ''}>
-                          {c.po_number}
+                        {c.created_at ? (
+                          <div className="flex items-center gap-1.5 text-[11px] text-slate-300 font-mono font-medium mt-0.5 pl-4.5" title={`Processed: ${c.created_at}`}>
+                            <Clock className="w-3 h-3 text-sky-400/80 flex-shrink-0" />
+                            <span className="truncate">{formatProcessedDateTime(c.created_at)}</span>
+                          </div>
+                        ) : c.po_number ? (
+                          <div className="text-[11px] text-slate-400 font-mono mt-0.5 pl-4.5 truncate" title={c.po_number || ''}>
+                            {c.po_number}
+                          </div>
+                        ) : null}
+                      </td>
+
+                      {/* Vendor */}
+                      <td className="py-2 px-1.5 sm:px-2 min-w-0">
+                        <div
+                          className="truncate font-medium text-slate-200 text-[11px]"
+                          title={c.vendor_name || ''}
+                        >
+                          {c.vendor_name || '—'}
                         </div>
-                      ) : null}
-                    </td>
+                        <div className="text-[9px] text-slate-500 font-mono truncate" title={c.invoice_number || ''}>
+                          {c.invoice_number || ''}
+                        </div>
+                      </td>
 
-                    {/* Vendor */}
-                    <td className="py-2 px-1.5 sm:px-2 min-w-0">
-                      <div
-                        className="truncate font-medium text-slate-200 text-[11px]"
-                        title={c.vendor_name || ''}
-                      >
-                        {c.vendor_name || '—'}
-                      </div>
-                      <div className="text-[9px] text-slate-500 font-mono truncate" title={c.invoice_number || ''}>
-                        {c.invoice_number || ''}
-                      </div>
-                    </td>
+                      {/* Status */}
+                      <td className="py-2 px-1.5 sm:px-2 text-center min-w-0">
+                        {renderStatusBadge(c.status)}
+                      </td>
 
-                    {/* Status */}
-                    <td className="py-2 px-1.5 sm:px-2 text-center min-w-0">
-                      {renderStatusBadge(c.status)}
-                    </td>
+                      {/* Action */}
+                      <td className="py-2 px-1.5 sm:px-2 text-right min-w-0">
+                        {renderActionBadge(c.action, c.requires_human_review)}
+                      </td>
+                    </tr>
 
-                    {/* Action */}
-                    <td className="py-2 px-1.5 sm:px-2 text-right min-w-0">
-                      {renderActionBadge(c.action, c.requires_human_review)}
-                    </td>
-                  </tr>
+                    {/* EXPANDABLE ACCORDION: Shows Source Files when Case is Active/Expanded */}
+                    {isSelected && (
+                      <tr className="bg-slate-900/90 border-l-4 border-sky-400 border-b border-sky-500/20">
+                        <td colSpan={4} className="p-2 sm:p-2.5">
+                          <div className="bg-slate-950/90 rounded-lg p-2.5 border border-sky-500/30 shadow-inner">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-1.5 text-[10px] font-bold text-sky-300 uppercase tracking-wider">
+                                <FileText className="w-3.5 h-3.5 text-sky-400" />
+                                <span>Source Documents (Click to inspect)</span>
+                              </div>
+                              <span className="text-[9px] text-slate-400 font-mono">
+                                Active Case
+                              </span>
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              {/* PO Pill */}
+                              {poFile ? (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onViewDoc?.(poFile, 'PURCHASE_ORDER', isSelected ? selectedCaseDetails?.po_file_path : undefined);
+                                  }}
+                                  title={`Inspect ${poFile}`}
+                                  className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-xs text-slate-300 hover:text-white transition group cursor-pointer"
+                                >
+                                  <span className="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0" />
+                                  <span className="font-bold text-sky-300 text-[10px]">PO:</span>
+                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[130px] sm:max-w-none">{poFile}</span>
+                                  <ExternalLink className="w-2.5 h-2.5 text-slate-500 group-hover:text-sky-300 transition flex-shrink-0" />
+                                </button>
+                              ) : (
+                                <div className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />
+                                  <span className="font-semibold text-slate-400">PO:</span>
+                                  <span className="italic text-slate-500 text-[9px]">Not uploaded</span>
+                                </div>
+                              )}
+
+                              {/* Invoice Pill */}
+                              {invFile ? (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onViewDoc?.(invFile, 'INVOICE', isSelected ? selectedCaseDetails?.invoice_file_path : undefined);
+                                  }}
+                                  title={`Inspect ${invFile}`}
+                                  className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-xs text-slate-300 hover:text-white transition group cursor-pointer"
+                                >
+                                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
+                                  <span className="font-bold text-indigo-300 text-[10px]">Invoice:</span>
+                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[130px] sm:max-w-none">{invFile}</span>
+                                  <ExternalLink className="w-2.5 h-2.5 text-slate-500 group-hover:text-indigo-300 transition flex-shrink-0" />
+                                </button>
+                              ) : (
+                                <div className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />
+                                  <span className="font-semibold text-slate-400">Invoice:</span>
+                                  <span className="italic text-slate-500 text-[9px]">Not uploaded</span>
+                                </div>
+                              )}
+
+                              {/* Receipt Pill */}
+                              {rcptFile ? (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onViewDoc?.(rcptFile, 'RECEIPT', isSelected ? selectedCaseDetails?.receipt_file_path : undefined);
+                                  }}
+                                  title={`Inspect ${rcptFile}`}
+                                  className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-xs text-slate-300 hover:text-white transition group cursor-pointer"
+                                >
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+                                  <span className="font-bold text-emerald-300 text-[10px]">Receipt:</span>
+                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[130px] sm:max-w-none">{rcptFile}</span>
+                                  <ExternalLink className="w-2.5 h-2.5 text-slate-500 group-hover:text-emerald-300 transition flex-shrink-0" />
+                                </button>
+                              ) : (
+                                <div className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />
+                                  <span className="font-semibold text-slate-400">Receipt:</span>
+                                  <span className="italic text-slate-500 text-[9px]">None attached</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 );
               })
             )}

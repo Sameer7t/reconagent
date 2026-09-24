@@ -648,6 +648,21 @@ export const App: React.FC = () => {
               onSelectCase={handleSelectCase}
               activeQuickFilter={activeQuickFilter}
               onClearQuickFilter={() => setActiveQuickFilter('ALL')}
+              onViewDoc={handleViewDoc}
+              selectedCaseDetails={
+                threeWayData
+                  ? {
+                      po_file: threeWayData.po_file_name || selectedCaseSummary?.po_file,
+                      invoice_file: threeWayData.invoice_file_name || selectedCaseSummary?.invoice_file,
+                      receipt_files: threeWayData.receipt_file_name
+                        ? [threeWayData.receipt_file_name]
+                        : selectedCaseSummary?.receipt_files,
+                      po_file_path: threeWayData.po_file_path,
+                      invoice_file_path: threeWayData.invoice_file_path,
+                      receipt_file_path: threeWayData.receipt_file_path,
+                    }
+                  : null
+              }
             />
           </div>
 
