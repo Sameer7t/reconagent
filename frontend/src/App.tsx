@@ -13,8 +13,6 @@ import {
   InvestigationData,
   MetricCounts,
   ReviewDecisionRecord,
-  isCaseCleanMatched,
-  doesCaseHaveDiscrepancy,
 } from './types';
 import { AlertCircle } from 'lucide-react';
 
@@ -30,16 +28,19 @@ export const App: React.FC = () => {
   });
 
   // Real-time dynamic metrics calculated directly from active cases
-  // Each case is strictly counted as either clean match OR discrepancy (never both)
   const dynamicMetrics: MetricCounts = React.useMemo(() => {
     if (!cases || cases.length === 0) {
       return metrics;
     }
     const total = cases.length;
-    const matched = cases.filter(isCaseCleanMatched).length;
-    const discrepancies = cases.filter(doesCaseHaveDiscrepancy).length;
+    const matched = cases.filter(
+      (c) => c.status === 'MATCHED' || c.status === 'COMPLETED' || c.discrepancy_count === 0
+    ).length;
     const underReview = cases.filter(
       (c) => Boolean(c.requires_human_review) || c.status === 'PENDING_REVIEW' || c.status === 'NEEDS_REVIEW' || c.status === 'HUMAN_REVIEW'
+    ).length;
+    const discrepancies = cases.filter(
+      (c) => (c.discrepancy_count && c.discrepancy_count > 0) || (c.status !== 'MATCHED' && c.status !== 'COMPLETED' && c.status !== 'CLEAN')
     ).length;
 
     return {
@@ -633,13 +634,13 @@ export const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Master-Detail Layout: Both Left & Right Exactly Fit Screen Height */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0 overflow-hidden">
-          {/* Left Column (Equal Size): Recent Cases Table */}
+        {/* Master-Detail Layout: 1/3 (33.33%) Left, 2/3 (66.67%) Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0 overflow-hidden">
+          {/* Left Column (1/3 Width = 33.33%): Recent Cases Table */}
           <div
             className={`${
               mobileTab === 'DIRECTORY' ? 'flex' : 'hidden'
-            } lg:flex h-full flex-col min-h-0 overflow-hidden`}
+            } lg:flex lg:col-span-4 h-full flex-col min-h-0 overflow-hidden`}
           >
             <CasesTable
               cases={cases}
@@ -647,14 +648,29 @@ export const App: React.FC = () => {
               onSelectCase={handleSelectCase}
               activeQuickFilter={activeQuickFilter}
               onClearQuickFilter={() => setActiveQuickFilter('ALL')}
+              onViewDoc={handleViewDoc}
+              selectedCaseDetails={
+                threeWayData
+                  ? {
+                      po_file: threeWayData.po_file_name || selectedCaseSummary?.po_file,
+                      invoice_file: threeWayData.invoice_file_name || selectedCaseSummary?.invoice_file,
+                      receipt_files: threeWayData.receipt_file_name
+                        ? [threeWayData.receipt_file_name]
+                        : selectedCaseSummary?.receipt_files,
+                      po_file_path: threeWayData.po_file_path,
+                      invoice_file_path: threeWayData.invoice_file_path,
+                      receipt_file_path: threeWayData.receipt_file_path,
+                    }
+                  : null
+              }
             />
           </div>
 
-          {/* Right Column (Equal Size): Full Case Details View */}
+          {/* Right Column (2/3 Width = 66.67%): Full Case Details View */}
           <div
             className={`${
               mobileTab === 'DETAILS' ? 'flex' : 'hidden'
-            } lg:flex h-full flex-col min-h-0 overflow-y-auto pr-1 pb-1`}
+            } lg:flex lg:col-span-8 h-full flex-col min-h-0 overflow-y-auto pr-1 pb-1`}
           >
             {selectedCaseSummary && threeWayData && investigationData ? (
               <CaseDetailView

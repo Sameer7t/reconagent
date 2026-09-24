@@ -355,22 +355,12 @@ def list_cases(
             created_ts = d.get("completed_at") or d.get("started_at")
             recon_raw = d.get("reconciliation_result")
             recon_status = None
-            disc_count = 0
             if recon_raw:
                 try:
                     recon_obj = json.loads(recon_raw) if isinstance(recon_raw, str) else recon_raw
                     recon_status = recon_obj.get("status")
-                    disc_count = len(recon_obj.get("discrepancies", []))
                 except Exception:
                     pass
-
-            if disc_count == 0:
-                try:
-                    cur_f = conn.execute("SELECT COUNT(*) FROM investigation_findings WHERE investigation_id = ?", (d["id"],))
-                    disc_count = cur_f.fetchone()[0]
-                except Exception:
-                    pass
-
             rec = d.get("recommendation", "UNKNOWN")
             if rec == "REJECT_INVOICE":
                 case_status = "REJECTED"
@@ -396,7 +386,6 @@ def list_cases(
                     recommendation=rec,
                     confidence=d.get("confidence", "HIGH"),
                     requires_human_review=bool(d.get("requires_human_review", 0)),
-                    discrepancy_count=disc_count,
                     duration_ms=0.0,
                     created_at=created_ts,
                     completed_at=d.get("completed_at"),

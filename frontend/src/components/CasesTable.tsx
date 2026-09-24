@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Filter, RotateCcw, ChevronRight, ChevronDown, CheckCircle2, AlertTriangle, XCircle, Calendar, Clock, FileText, ExternalLink } from 'lucide-react';
-import { CaseSummary, isCaseCleanMatched, doesCaseHaveDiscrepancy } from '../types';
+import { CaseSummary } from '../types';
 
 interface CasesTableProps {
   cases: CaseSummary[];
@@ -120,8 +120,8 @@ export const CasesTable: React.FC<CasesTableProps> = ({
   const filteredCases = useMemo(() => {
     return cases.filter((c) => {
       // Quick filter from metrics
-      if (activeQuickFilter === 'MATCHED' && !isCaseCleanMatched(c)) return false;
-      if (activeQuickFilter === 'DISCREPANCIES' && !doesCaseHaveDiscrepancy(c)) return false;
+      if (activeQuickFilter === 'MATCHED' && c.status !== 'MATCHED') return false;
+      if (activeQuickFilter === 'DISCREPANCIES' && c.status === 'MATCHED') return false;
       if (activeQuickFilter === 'UNDER_REVIEW' && !c.requires_human_review) return false;
 
       // 1. Case ID search
@@ -514,9 +514,9 @@ export const CasesTable: React.FC<CasesTableProps> = ({
             ) : (
               filteredCases.map((c) => {
                 const isSelected = c.case_id === selectedCaseId;
-                const poFile = (isSelected && selectedCaseDetails?.po_file) || c.po_file || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.po : undefined);
-                const invFile = (isSelected && selectedCaseDetails?.invoice_file) || c.invoice_file || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.invoice : undefined);
-                const rcptFile = (isSelected && selectedCaseDetails?.receipt_files?.[0]) || c.receipt_files?.[0] || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.receipt : undefined);
+                const poFile = (isSelected && selectedCaseDetails?.po_file) || c.po_file || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('po') || f.includes('doc_2')) : (typeof c.source_files === 'object' && c.source_files ? (c.source_files as any).po : undefined));
+                const invFile = (isSelected && selectedCaseDetails?.invoice_file) || c.invoice_file || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('inv') || f.includes('doc_1')) : (typeof c.source_files === 'object' && c.source_files ? (c.source_files as any).invoice : undefined));
+                const rcptFile = (isSelected && selectedCaseDetails?.receipt_files?.[0]) || c.receipt_files?.[0] || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('rcpt') || f.toLowerCase().includes('receipt') || f.includes('doc_3')) : (typeof c.source_files === 'object' && c.source_files ? (c.source_files as any).receipt : undefined));
 
                 return (
                   <React.Fragment key={c.case_id}>
