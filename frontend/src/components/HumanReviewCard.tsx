@@ -134,16 +134,44 @@ export const HumanReviewCard: React.FC<HumanReviewCardProps> = ({
           <div className="pl-5 text-xs text-slate-200">
             {investigation.evidence_citations && investigation.evidence_citations.length > 0 ? (
               <div className="space-y-1.5">
-                {investigation.evidence_citations.map((ev, idx) => (
-                  <div key={idx} className="flex items-center flex-wrap gap-2 text-xs text-slate-300 font-mono">
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-indigo-300 border border-slate-700 font-semibold text-[11px]">
-                      {ev.document || 'Source Record'}
-                    </span>
-                    <span className="text-slate-400">{ev.field}:</span>
-                    <span className="text-white font-bold">{ev.value}</span>
-                    {ev.notes && <span className="text-slate-400 font-sans text-xs">({ev.notes})</span>}
-                  </div>
-                ))}
+                {investigation.evidence_citations.map((ev, idx) => {
+                  let fieldText = ev.field;
+                  let valText = ev.value;
+                  let noteText = ev.notes;
+
+                  if (fieldText === 'internal_math' || valText.includes('sum_line_totals') || valText.startsWith('{')) {
+                    fieldText = 'Line Math Check';
+                    if (noteText && noteText.includes('calculated') && noteText.includes('reported')) {
+                      const match = noteText.match(/calculated\s+([\d\.]+)\s+vs\s+reported\s+([\d\.]+)/i);
+                      if (match) {
+                        valText = `Printed $${Number(match[2]).toFixed(2)} vs Calculated $${Number(match[1]).toFixed(2)}`;
+                      } else {
+                        valText = 'Arithmetic Mismatch';
+                      }
+                    } else if (noteText && noteText.includes('calculated') && noteText.includes('printed')) {
+                      const match = noteText.match(/calculated\s+\$?([\d\.]+)\s+vs\s+printed(?:\s+on\s+document)?\s+\$?([\d\.]+)/i);
+                      if (match) {
+                        valText = `Printed $${Number(match[2]).toFixed(2)} vs Calculated $${Number(match[1]).toFixed(2)}`;
+                      } else {
+                        valText = 'Arithmetic Mismatch';
+                      }
+                    } else {
+                      valText = 'Printed total does not equal calculated sum';
+                    }
+                    noteText = 'Document arithmetic verification failed on itemized calculation';
+                  }
+
+                  return (
+                    <div key={idx} className="flex items-center flex-wrap gap-2 text-xs text-slate-300 font-mono">
+                      <span className="px-2 py-0.5 rounded bg-slate-800 text-indigo-300 border border-slate-700 font-semibold text-[11px]">
+                        {ev.document || 'Source Record'}
+                      </span>
+                      <span className="text-slate-400 capitalize">{fieldText.replace(/_/g, ' ')}:</span>
+                      <span className="text-white font-bold">{valText}</span>
+                      {noteText && <span className="text-slate-400 font-sans text-xs">({noteText})</span>}
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <p className="text-slate-300 leading-relaxed font-sans">

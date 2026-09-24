@@ -170,7 +170,9 @@ def _format_plain_math_error(doc_id: str, doc_label: str, d: Discrepancy) -> str
     for la in line_audits:
         if not la.get("is_valid") and la.get("error_note"):
             desc = la.get("description") or la.get("item_code") or "item"
-            return f"{doc_label} {doc_id} line item '{desc}' math error: {la.get('error_note')}."
+            err = la.get("error_note", "")
+            err_clean = err.replace("Line total discrepancy: calculated", "calculated $").replace("vs reported", "vs printed on document $")
+            return f"{doc_label} {doc_id} item '{desc}' arithmetic mismatch: {err_clean}."
 
     rep_subtotal = resolved.get("reported_subtotal")
     sum_lines = resolved.get("sum_line_totals")
@@ -417,13 +419,37 @@ class MasterOrchestrator:
                     ev_id = f"EVID-{idx:03d}"
                     f_id = f"FIND-{idx:03d}"
 
+                    # Extract human-friendly audit evidence
+                    audit_field = "document_math"
+                    audit_val = "Arithmetic Error"
+                    line_audits = (d.details or {}).get("line_item_audit") or []
+                    failed_items = [la for la in line_audits if not la.get("is_valid")]
+
+                    if failed_items:
+                        first_fail = failed_items[0]
+                        rep_val = first_fail.get("reported_line_total")
+                        calc_val = first_fail.get("calculated_line_total")
+                        item_desc = first_fail.get("description") or "Item"
+                        audit_field = f"Line Math: {item_desc}"
+                        audit_val = f"Printed ${rep_val} vs Calculated ${calc_val}"
+                    else:
+                        resolved = (d.details or {}).get("resolved_totals") or {}
+                        sum_lines = resolved.get("sum_line_totals")
+                        rep_sub = resolved.get("reported_subtotal")
+                        if sum_lines is not None and rep_sub is not None:
+                            audit_field = "Document Subtotal"
+                            audit_val = f"Printed ${rep_sub} vs Calculated ${sum_lines}"
+                        else:
+                            audit_field = "Document Arithmetic"
+                            audit_val = "Math validation failed on document"
+
                     val_evidence.append(
                         Evidence(
                             evidence_id=ev_id,
                             source_type=stype,
                             source_id=doc_id,
-                            field="internal_math",
-                            value=str(d.details.get("resolved_totals") or d.details or {}),
+                            field=audit_field,
+                            value=audit_val,
                             description=clean_reason,
                         )
                     )
@@ -432,9 +458,8 @@ class MasterOrchestrator:
                             finding_id=f_id,
                             discrepancy_type="CALCULATION_ERROR",
                             explanation=(
-                                f"{clean_reason} "
-                                f"Investigation was stopped because the document itself has arithmetic errors. "
-                                f"Required action: Reject invoice and request a corrected document from the vendor."
+                                f"Document validation failed: {clean_reason} "
+                                f"Payment cannot be approved until a corrected document is provided by the vendor."
                             ),
                             supporting_evidence_ids=[ev_id],
                             confidence="HIGH",
