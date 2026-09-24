@@ -33,6 +33,37 @@ export interface CaseSummary {
   completed_at?: string;
 }
 
+export const isCaseCleanMatched = (c: CaseSummary): boolean => {
+  const status = (c.status || '').toUpperCase();
+  const rec = (c.recommendation || '').toUpperCase();
+
+  // If case is rejected, has errors, mismatches, or positive discrepancy count, it is NOT matched
+  if (
+    status === 'REJECTED' ||
+    rec === 'REJECT_INVOICE' ||
+    status.includes('MISMATCH') ||
+    status.includes('ERROR') ||
+    status.includes('FLAGGED') ||
+    status.includes('SHORTAGE') ||
+    status.includes('FAIL') ||
+    (typeof c.discrepancy_count === 'number' && c.discrepancy_count > 0)
+  ) {
+    return false;
+  }
+
+  // A case is clean matched only if its status is clean match or completed with 0 discrepancies
+  return (
+    status === 'MATCHED' ||
+    status === 'MATCHED_WITH_TOLERANCE' ||
+    status === 'CLEAN' ||
+    (status === 'COMPLETED' && (!c.discrepancy_count || c.discrepancy_count === 0))
+  );
+};
+
+export const doesCaseHaveDiscrepancy = (c: CaseSummary): boolean => {
+  return !isCaseCleanMatched(c);
+};
+
 export interface ThreeWayLineItem {
   line_number: number;
   description: string;

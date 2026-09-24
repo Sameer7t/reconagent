@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Filter, RotateCcw, ChevronRight, ChevronDown, CheckCircle2, AlertTriangle, XCircle, Calendar, Clock, FileText, ExternalLink } from 'lucide-react';
-import { CaseSummary } from '../types';
+import { CaseSummary, isCaseCleanMatched, doesCaseHaveDiscrepancy } from '../types';
 
 interface CasesTableProps {
   cases: CaseSummary[];
@@ -71,21 +71,43 @@ export const CasesTable: React.FC<CasesTableProps> = ({
     }
   };
 
-  // Format processed timestamp cleanly as YYYY-MM-DD HH:mm
-  const formatProcessedDateTime = (ts?: string) => {
-    if (!ts) return null;
+  // Format processed timestamp cleanly as separate date and time
+  const formatProcessedDate = (ts?: string) => {
+    if (!ts) return '';
     try {
       const d = new Date(ts);
-      if (isNaN(d.getTime())) return ts.replace('T', ' ').slice(0, 16);
+      if (isNaN(d.getTime())) return ts.split('T')[0] || ts.slice(0, 10);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } catch {
+      return ts.slice(0, 10);
+    }
+  };
+
+  const formatProcessedTime = (ts?: string) => {
+    if (!ts) return '';
+    try {
+      const d = new Date(ts);
+      if (isNaN(d.getTime())) {
+        const parts = ts.split(/[ T]/);
+        return parts[1] ? parts[1].slice(0, 5) : '';
+      }
       const hours = String(d.getHours()).padStart(2, '0');
       const minutes = String(d.getMinutes()).padStart(2, '0');
-      return `${year}-${month}-${day} ${hours}:${minutes}`;
+      return `${hours}:${minutes}`;
     } catch {
-      return ts.replace('T', ' ').slice(0, 16);
+      const parts = ts.split(/[ T]/);
+      return parts[1] ? parts[1].slice(0, 5) : '';
     }
+  };
+
+  const formatProcessedDateTime = (ts?: string) => {
+    if (!ts) return null;
+    const date = formatProcessedDate(ts);
+    const time = formatProcessedTime(ts);
+    return time ? `${date} ${time}` : date;
   };
 
   // Extract unique vendors for dropdown
@@ -120,8 +142,8 @@ export const CasesTable: React.FC<CasesTableProps> = ({
   const filteredCases = useMemo(() => {
     return cases.filter((c) => {
       // Quick filter from metrics
-      if (activeQuickFilter === 'MATCHED' && c.status !== 'MATCHED') return false;
-      if (activeQuickFilter === 'DISCREPANCIES' && c.status === 'MATCHED') return false;
+      if (activeQuickFilter === 'MATCHED' && !isCaseCleanMatched(c)) return false;
+      if (activeQuickFilter === 'DISCREPANCIES' && !doesCaseHaveDiscrepancy(c)) return false;
       if (activeQuickFilter === 'UNDER_REVIEW' && !c.requires_human_review) return false;
 
       // 1. Case ID search
@@ -489,10 +511,10 @@ export const CasesTable: React.FC<CasesTableProps> = ({
       <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
         <table className="w-full text-left border-collapse table-fixed">
           <colgroup>
+            <col className="w-[34%]" />
             <col className="w-[28%]" />
-            <col className="w-[30%]" />
-            <col className="w-[22%]" />
             <col className="w-[20%]" />
+            <col className="w-[18%]" />
           </colgroup>
           <thead className="bg-slate-900/80 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-slate-400 border-b border-slate-700">
             <tr>
@@ -514,9 +536,9 @@ export const CasesTable: React.FC<CasesTableProps> = ({
             ) : (
               filteredCases.map((c) => {
                 const isSelected = c.case_id === selectedCaseId;
-                const poFile = (isSelected && selectedCaseDetails?.po_file) || c.po_file || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('po') || f.includes('doc_2')) : (typeof c.source_files === 'object' && c.source_files ? (c.source_files as any).po : undefined));
-                const invFile = (isSelected && selectedCaseDetails?.invoice_file) || c.invoice_file || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('inv') || f.includes('doc_1')) : (typeof c.source_files === 'object' && c.source_files ? (c.source_files as any).invoice : undefined));
-                const rcptFile = (isSelected && selectedCaseDetails?.receipt_files?.[0]) || c.receipt_files?.[0] || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('rcpt') || f.toLowerCase().includes('receipt') || f.includes('doc_3')) : (typeof c.source_files === 'object' && c.source_files ? (c.source_files as any).receipt : undefined));
+                const poFile = (isSelected && selectedCaseDetails?.po_file) || c.po_file || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.po : undefined) || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('po') || f.includes('doc_2')) : undefined);
+                const invFile = (isSelected && selectedCaseDetails?.invoice_file) || c.invoice_file || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.invoice : undefined) || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('inv') || f.includes('doc_1')) : undefined);
+                const rcptFile = (isSelected && selectedCaseDetails?.receipt_files?.[0]) || c.receipt_files?.[0] || (typeof c.source_files === 'object' && !Array.isArray(c.source_files) ? c.source_files?.receipt : undefined) || (Array.isArray(c.source_files) ? c.source_files.find((f: string) => f.toLowerCase().includes('rcpt') || f.toLowerCase().includes('receipt') || f.includes('doc_3')) : undefined);
 
                 return (
                   <React.Fragment key={c.case_id}>
@@ -541,12 +563,22 @@ export const CasesTable: React.FC<CasesTableProps> = ({
                           </span>
                         </div>
                         {c.created_at ? (
-                          <div className="flex items-center gap-1.5 text-[11px] text-slate-300 font-mono font-medium mt-0.5 pl-4.5" title={`Processed: ${c.created_at}`}>
-                            <Clock className="w-3 h-3 text-sky-400/80 flex-shrink-0" />
-                            <span className="truncate">{formatProcessedDateTime(c.created_at)}</span>
+                          <div
+                            className="mt-0.5 pl-4.5 text-[10px] font-mono leading-tight"
+                            title={`Processed: ${c.created_at}`}
+                          >
+                            <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+                              <span className="text-slate-300 font-medium whitespace-nowrap">
+                                {formatProcessedDate(c.created_at)}
+                              </span>
+                              <span className="text-sky-400 font-semibold whitespace-nowrap inline-flex items-center gap-0.5">
+                                <Clock className="w-2.5 h-2.5 text-sky-400 flex-shrink-0" />
+                                <span>{formatProcessedTime(c.created_at) || '--:--'}</span>
+                              </span>
+                            </div>
                           </div>
                         ) : c.po_number ? (
-                          <div className="text-[11px] text-slate-400 font-mono mt-0.5 pl-4.5 truncate" title={c.po_number || ''}>
+                          <div className="text-[10px] text-slate-400 font-mono mt-0.5 pl-4.5 truncate" title={c.po_number || ''}>
                             {c.po_number}
                           </div>
                         ) : null}

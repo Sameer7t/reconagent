@@ -13,6 +13,8 @@ import {
   InvestigationData,
   MetricCounts,
   ReviewDecisionRecord,
+  isCaseCleanMatched,
+  doesCaseHaveDiscrepancy,
 } from './types';
 import { AlertCircle } from 'lucide-react';
 
@@ -33,14 +35,10 @@ export const App: React.FC = () => {
       return metrics;
     }
     const total = cases.length;
-    const matched = cases.filter(
-      (c) => c.status === 'MATCHED' || c.status === 'COMPLETED' || c.discrepancy_count === 0
-    ).length;
+    const matched = cases.filter(isCaseCleanMatched).length;
+    const discrepancies = cases.filter(doesCaseHaveDiscrepancy).length;
     const underReview = cases.filter(
       (c) => Boolean(c.requires_human_review) || c.status === 'PENDING_REVIEW' || c.status === 'NEEDS_REVIEW' || c.status === 'HUMAN_REVIEW'
-    ).length;
-    const discrepancies = cases.filter(
-      (c) => (c.discrepancy_count && c.discrepancy_count > 0) || (c.status !== 'MATCHED' && c.status !== 'COMPLETED' && c.status !== 'CLEAN')
     ).length;
 
     return {

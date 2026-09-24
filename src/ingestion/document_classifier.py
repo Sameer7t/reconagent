@@ -422,6 +422,17 @@ def classify_document(
         text_result = classify_text_heuristics(doc.text_content, path)
         if text_result and text_result.confidence >= 0.85:
             return text_result
+        if doc.extension.lower() in (".txt", ".csv", ".tsv", ".json", ".log") and len(doc.text_content.strip()) >= 20:
+            return ClassificationResult(
+                file_name=doc.file_name,
+                file_path=str(path),
+                document_type=DocumentType.UNKNOWN,
+                confidence=0.90,
+                tier_used="local_text",
+                reasoning="Text analysis confirmed no invoice, purchase order, or receipt markers present.",
+                key_indicators=[],
+                suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
+            )
 
     # ------------------------------------------------------------
     # Tier 2: Multimodal Vision Fallback (Images & Scanned PDFs)
