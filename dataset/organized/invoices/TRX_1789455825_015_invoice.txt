@@ -1,0 +1,27 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-2234
+Invoice Date: 2023-09-07
+PO Reference: PO-1015-7788
+
+VENDOR: Synergy Raw Materials Corp.
+Address: 900 Ore Processing Way, Pittsburgh, PA 15201
+Tax ID: 55-9012384
+
+BILL TO:
+Build-It Hardware Group
+200 Brick Road
+Atlanta, GA 30301
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+SRM-CEM-80       Premium Concrete Mix (80 lb Bag)   100        $24.50  $2,450.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $2,450.00
+                                                       SHIPPING:         $150.00
+                                                       TAX (8.0%):       $196.00
+                                                       GRAND TOTAL:    $2,796.00
+================================================================================
+ERROR: Invoice uses Unit Price $24.50 instead of PO-agreed $22.00.

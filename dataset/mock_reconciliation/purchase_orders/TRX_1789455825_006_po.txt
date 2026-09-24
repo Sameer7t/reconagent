@@ -1,0 +1,33 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1006-8812
+PO Date: 2023-11-01
+
+SUPPLIER: Horizon Electrical Systems
+Address: 120 Sparky Lane, Suite E, Phoenix, AZ 85001
+Tax ID: 66-1029482
+
+BILL TO:
+Voltex Grid Builders
+Accounts Payable
+303 High Voltage Dr
+Denver, CO 80201
+
+SHIP TO:
+Voltex Grid Builders
+Receiving Dept
+303 High Voltage Dr
+Denver, CO 80201
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+SKU-COP-01       Heavy Duty Copper Cable (500ft)      3     $1,200.00  $3,600.00
+SKU-INS-44       Polyurethane Insulators (Pack of 10) 5       $150.00    $750.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $4,350.00
+                                                       SHIPPING:         $180.00
+                                                       TAX (8.1%):       $352.35
+                                                       GRAND TOTAL:    $4,882.35
+================================================================================

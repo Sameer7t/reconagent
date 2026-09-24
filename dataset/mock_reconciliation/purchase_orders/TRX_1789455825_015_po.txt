@@ -1,0 +1,32 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1015-7788
+PO Date: 2023-09-01
+
+VENDOR: Synergy Raw Materials Corp.
+Address: 900 Ore Processing Way, Pittsburgh, PA 15201
+Tax ID: 55-9012384
+
+BILL TO:
+Build-It Hardware Group
+Attn: AP Dept
+200 Brick Road
+Atlanta, GA 30301
+
+SHIP TO:
+Build-It Hardware Group
+Distribution Center 4
+300 Clay Crossing Blvd
+Atlanta, GA 30336
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+SRM-CEM-80       Premium Concrete Mix (80 lb Bag)   100        $22.00  $2,200.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $2,200.00
+                                                       SHIPPING:         $150.00
+                                                       TAX (8.0%):       $176.00
+                                                       GRAND TOTAL:    $2,526.00
+================================================================================

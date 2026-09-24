@@ -1,0 +1,33 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30041
+Invoice Date: 2024-02-16
+Payment Due Date: 2024-03-16
+PO Reference: PO-2024-0041
+Transaction ID: TRX_100_041
+
+VENDOR: TechTraders Solutions Inc.
+Address: 1024 Silicon Valley Blvd, Bldg 4A, San Jose, CA 95110
+Tax ID: 12-3456789
+Remit To: Wells Fargo Bank, Acct: ******9021, Routing: ******029
+
+BILL TO:
+Alpha Research Labs LLC
+Accounts Payable Dept
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TT-CPU-109       Intel Core i9-13900K Processor         12      $644.00       $7,728.00
+TT-RAM-032       Corsair Vengeance 32GB DDR5 RAM         8      $120.00         $960.00
+TT-SSD-002       Samsung 990 Pro 2TB NVMe SSD           15      $170.00       $2,550.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $11,238.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $899.04
+                                                     GRAND TOTAL:     $12,182.04
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

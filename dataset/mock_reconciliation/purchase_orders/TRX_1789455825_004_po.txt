@@ -1,0 +1,33 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1004-9988
+PO Date: 2023-08-20
+Payment Terms: Net 30
+
+SUPPLIER: Vanguard Chemical Solutions
+Address: 888 Pipeline Dr, Houston, TX 77001
+Tax ID: 44-3210987
+
+BILL TO:
+CleanWater Municipal District
+101 Filtration Way
+Austin, TX 78701
+
+SHIP TO:
+CleanWater Municipal District
+Central Treatment Facility
+10200 Colorado River Rd
+Austin, TX 78725
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+VCS-CL-55        Chlorine Liquid Drums (55 Gal)      12       $250.00  $3,000.00
+VCS-FL-10        Flocculant Powder Bags (50 lb)      20        $85.00  $1,700.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $4,700.00
+                                                       SHIPPING:         $350.00
+                                                       TAX (0.0%):         $0.00
+                                                       GRAND TOTAL:    $5,050.00
+================================================================================

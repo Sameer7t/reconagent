@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0069
+PO Date: 2024-06-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_069
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+Tax ID: 36-4491028
+Phone: (312) 555-4400
+Contact: accounts@globalofficesupplies.com
+
+BILL TO:
+Pinnacle Manufacturing Ltd
+Accounts Payable Division
+900 Industrial Boulevard, Cleveland, OH 44114
+
+SHIP TO:
+Pinnacle Manufacturing Ltd
+Attn: Loading Bay C
+900 Industrial Boulevard, Cleveland, OH 44114
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+GO-TON-055       OEM Black Laser Toner Cartridge 10K Yield     20      $185.00       $3,700.00
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)      8       $55.00         $440.00
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair     20      $320.00       $6,400.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $10,540.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $843.20
+                                                     GRAND TOTAL:     $11,428.20
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0069 on all delivery documents and invoices.
+================================================================================

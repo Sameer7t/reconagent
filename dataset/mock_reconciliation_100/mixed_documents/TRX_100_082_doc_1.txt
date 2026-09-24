@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0082
+PO Date: 2024-03-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_082
+
+VENDOR: Titan Industrial Tools Corp
+Address: 8840 Forge Parkway, Sector 9, Detroit, MI 48201
+Tax ID: 38-9921456
+Phone: (313) 555-7821
+Contact: orders@titanindustrial.com
+
+BILL TO:
+Omega Engineering Corp
+Procurement & Invoicing
+1800 Technology Drive, Building 3, Austin, TX 78758
+
+SHIP TO:
+Omega Engineering Corp
+Attn: Central Warehouse Gate 4
+1800 Technology Drive, Building 3, Austin, TX 78758
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TI-CNC-400       Carbide End Mill 4-Flute 1/2in         20       $45.00         $900.00
+TI-HYD-012       Hydraulic Pressure Valve 3000 PSI       5      $320.00       $1,600.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $2,500.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $200.00
+                                                     GRAND TOTAL:      $2,745.00
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0082 on all delivery documents and invoices.
+================================================================================

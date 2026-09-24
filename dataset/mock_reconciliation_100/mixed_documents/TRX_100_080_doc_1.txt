@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0080
+PO Date: 2024-01-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_080
+
+VENDOR: VoltTech Electric Systems LLC
+Address: 3300 Kilowatt Way, Suite 100, Charlotte, NC 28208
+Tax ID: 56-2299104
+Phone: (704) 555-8900
+Contact: billing@volttechsystems.com
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+SHIP TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+VT-BRK-200       Molded Case Circuit Breaker 200A 3-Pole     10      $450.00       $4,500.00
+VT-TRF-075       Dry-Type Distribution Transformer 75kVA      5    $3,800.00      $19,000.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $23,500.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $1,880.00
+                                                     GRAND TOTAL:     $25,425.00
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0080 on all delivery documents and invoices.
+================================================================================

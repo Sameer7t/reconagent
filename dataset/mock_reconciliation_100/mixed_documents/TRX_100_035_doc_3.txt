@@ -1,0 +1,33 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30035
+Invoice Date: 2024-04-16
+Payment Due Date: 2024-05-16
+PO Reference: PO-2024-0035
+Transaction ID: TRX_100_035
+
+VENDOR: BioMed Scientific Solutions LLC
+Address: 400 Discovery Way, Suite 300, Cambridge, MA 02142
+Tax ID: 04-7812903
+Remit To: Bank of America, Acct: ******8819, Routing: ******011
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+BM-PIP-100       Micro-Pipette Electronic 100uL         15      $280.00       $4,200.00
+BM-CEN-015       Centrifuge Tube Conical 15mL (500pk)      5       $95.00         $475.00
+BM-REA-004       RNA Extraction Reagent Kit 50 Preps     15      $340.00       $5,100.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $9,775.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $782.00
+                                                     GRAND TOTAL:     $10,602.00
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

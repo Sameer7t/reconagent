@@ -1,0 +1,33 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30084
+Invoice Date: 2024-05-16
+Payment Due Date: 2024-06-16
+PO Reference: PO-2024-0084
+Transaction ID: TRX_100_084
+
+VENDOR: TransGlobal Logistics Corp
+Address: 1200 Harbor View Rd, Pier 18, Long Beach, CA 90802
+Tax ID: 95-1029384
+Remit To: JPMorgan Chase, Acct: ******5520, Routing: ******002
+
+BILL TO:
+Pinnacle Manufacturing Ltd
+Accounts Payable Division
+900 Industrial Boulevard, Cleveland, OH 44114
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4      8      $650.00       $5,200.00
+TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40     15       $28.00         $420.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $5,620.00
+                                    EXPEDITED HANDLING SURCHARGE:        $175.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $449.60
+                                                     GRAND TOTAL:      $6,289.60
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

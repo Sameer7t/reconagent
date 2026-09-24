@@ -1,0 +1,27 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-9192-3841               Date: 2024-01-05
+
+VENDOR: Allied Electronics Corp
+1200 Resistor Road
+Dallas, TX 75201
+Tax ID: TX-102-339-1
+
+BILL TO:                             SHIP TO:
+TechLabs Manufacturing               TechLabs Manufacturing
+400 Innovation Way                   Lab Receiving Dock B
+Plano, TX 75024                      Plano, TX 75024
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-LED-RED  5mm Red LED Indicator Pack 100    $1.50          $150.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $150.00
+SHIPPING & HANDLING                                          $20.00
+TAX (8.25%)                                                  $12.38
+GRAND TOTAL                                                  $182.38
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

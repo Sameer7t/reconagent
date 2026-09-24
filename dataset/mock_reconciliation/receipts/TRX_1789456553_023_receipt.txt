@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-1102               Date: 2023-10-22
+PO Reference: PO-3012-9921
+
+VENDOR: BioLab Chemical Supplies
+777 Research Parkway
+Boston, MA 02111
+
+DELIVERED TO:
+PharmaHealth Labs
+Receiving Department
+Cambridge, MA 02139
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-CHEM-05  Reagent Acetone 1L        100            100
+------------------------------------------------------------------------
+Received By: Dr. A. Patel
+Status: COMPLETE
+========================================================================

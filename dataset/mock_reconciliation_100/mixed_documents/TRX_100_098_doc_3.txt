@@ -1,0 +1,32 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30098
+Invoice Date: 2024-03-16
+Payment Due Date: 2024-04-16
+PO Reference: PO-2024-0098
+Transaction ID: TRX_100_098
+
+VENDOR: Titan Industrial Tools Corp
+Address: 8840 Forge Parkway, Sector 9, Detroit, MI 48201
+Tax ID: 38-9921456
+Remit To: Comerica Bank, Acct: ******4412, Routing: ******105
+
+BILL TO:
+Apex Innovations Group
+Finance & Accounting
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TI-CNC-400       Carbide End Mill 4-Flute 1/2in         15       $45.00         $675.00
+TI-HYD-012       Hydraulic Pressure Valve 3000 PSI      10      $320.00       $3,200.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $3,875.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $310.00
+                                                     GRAND TOTAL:      $4,230.00
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

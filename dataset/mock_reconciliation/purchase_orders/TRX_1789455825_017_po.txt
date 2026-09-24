@@ -1,0 +1,31 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1017-9900
+PO Date: 2023-09-05
+
+VENDOR: OmniCorp Manufacturing Group
+Address: 1212 Enterprise Row, Chicago, IL 60601
+Tax ID: 77-8829103
+
+BILL TO:
+Swift Assembly Line
+Accounts Payable
+400 Conveyor Way
+Grand Rapids, MI 49501
+
+SHIP TO:
+Swift Assembly Line
+Receiving Dock A
+400 Conveyor Way
+Grand Rapids, MI 49501
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+OMG-ROB-88       Pneumatic Actuator Arm              10       $50.00    $500.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:         $500.00
+                                                       TAX (6.0%):        $30.00
+                                                       GRAND TOTAL:      $530.00
+================================================================================

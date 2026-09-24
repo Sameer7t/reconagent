@@ -1,0 +1,29 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70069
+Delivery Date: 2024-06-15
+PO Reference: PO-2024-0069
+Transaction ID: TRX_100_069
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+
+DELIVERED TO:
+Pinnacle Manufacturing Ltd
+Attn: Loading Bay C
+900 Industrial Boulevard, Cleveland, OH 44114
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+GO-TON-055       OEM Black Laser Toner Cartridge 10K Yield             20              20
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)              8               8
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair             20              20
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

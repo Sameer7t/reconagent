@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-4820               Date: 2023-12-18
+PO Reference: PO-5102-3948
+
+VENDOR: Matrix Cable Solutions
+100 Copper Road
+Charlotte, NC 28201
+
+DELIVERED TO:
+Enterprise Network Systems
+Suite 10 Dock A
+Charlotte, NC 28203
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-CAB-CAT6 Cat6 Ethernet Spool 1000ft40             25
+------------------------------------------------------------------------
+Comment: 15 Spools on backorder. Delivery truck only dropped 25 spools.
+Received By: T. Sterling
+========================================================================

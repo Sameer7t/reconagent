@@ -1,0 +1,29 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70071
+Delivery Date: 2024-08-15
+PO Reference: PO-2024-0071
+Transaction ID: TRX_100_071
+
+VENDOR: Prairie Harvest Foods Corp
+Address: 1500 Grain Terminal Rd, Omaha, NE 68102
+
+DELIVERED TO:
+Alpha Research Labs LLC
+Attn: Receiving Dock B
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+PH-FLR-050       Organic Hard Red Wheat Flour 50lb Sack             10              10
+PH-OAT-025       Rolled Oats Whole Grain 25lb Bag               10              10
+PH-HNY-060       Pure Clover Raw Honey 60lb Pail                 8               8
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

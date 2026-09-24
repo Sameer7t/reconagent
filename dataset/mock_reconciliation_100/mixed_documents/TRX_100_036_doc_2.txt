@@ -1,0 +1,28 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70036
+Delivery Date: 2024-05-15
+PO Reference: PO-2024-0036
+Transaction ID: TRX_100_036
+
+VENDOR: TransGlobal Logistics Corp
+Address: 1200 Harbor View Rd, Pier 18, Long Beach, CA 90802
+
+DELIVERED TO:
+Alpha Research Labs LLC
+Attn: Receiving Dock B
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4              8               4
+TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40              5               5
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

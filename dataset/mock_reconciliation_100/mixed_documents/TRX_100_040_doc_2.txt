@@ -1,0 +1,32 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30040
+Invoice Date: 2024-01-16
+Payment Due Date: 2024-02-16
+PO Reference: PO-2024-0040
+Transaction ID: TRX_100_040
+
+VENDOR: VoltTech Electric Systems LLC
+Address: 3300 Kilowatt Way, Suite 100, Charlotte, NC 28208
+Tax ID: 56-2299104
+Remit To: Truist Bank, Acct: ******6619, Routing: ******442
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+VT-BRK-200       Molded Case Circuit Breaker 200A 3-Pole     15      $450.00       $6,750.00
+VT-TRF-075       Dry-Type Distribution Transformer 75kVA     10    $3,800.00      $38,000.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $44,750.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $3,580.00
+                                                     GRAND TOTAL:     $48,375.00
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

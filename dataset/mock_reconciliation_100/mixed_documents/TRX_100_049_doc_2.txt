@@ -1,0 +1,33 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30049
+Invoice Date: 2024-02-16
+Payment Due Date: 2024-03-16
+PO Reference: PO-2024-0049
+Transaction ID: TRX_100_049
+
+VENDOR: TechTraders Solutions Inc.
+Address: 1024 Silicon Valley Blvd, Bldg 4A, San Jose, CA 95110
+Tax ID: 12-3456789
+Remit To: Wells Fargo Bank, Acct: ******9021, Routing: ******029
+
+BILL TO:
+Pinnacle Manufacturing Ltd
+Accounts Payable Division
+900 Industrial Boulevard, Cleveland, OH 44114
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TT-CPU-109       Intel Core i9-13900K Processor         20      $644.00      $12,880.00
+TT-RAM-032       Corsair Vengeance 32GB DDR5 RAM        20      $120.00       $2,400.00
+TT-SSD-002       Samsung 990 Pro 2TB NVMe SSD            5      $170.00         $850.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $16,130.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $1,290.40
+                                                     GRAND TOTAL:     $17,465.40
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

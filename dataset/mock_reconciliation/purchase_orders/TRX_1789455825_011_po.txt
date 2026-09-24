@@ -1,0 +1,31 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1011-9944
+PO Date: 2023-09-10
+
+SUPPLIER: Paramount Paper & Packaging
+Address: 440 Industrial Blvd, Scranton, PA 18501
+Tax ID: 22-8849201
+
+BILL TO:
+GreenForest Publisher Co.
+10 Paper Mill Rd
+Portland, OR 97201
+
+SHIP TO:
+GreenForest Publisher Co.
+Warehouse A
+10 Paper Mill Rd
+Portland, OR 97201
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+PPP-NEWS-90      Newsprint Roll (Industrial)         10       $100.00  $1,000.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $1,000.00
+                                                       SHIPPING:          $50.00
+                                                       TAX (10.0%):      $100.00
+                                                       GRAND TOTAL:    $1,150.00
+================================================================================

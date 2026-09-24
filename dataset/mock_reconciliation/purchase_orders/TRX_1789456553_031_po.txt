@@ -1,0 +1,28 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-2231-9982               Date: 2023-12-01
+
+VENDOR: Fastener Warehouse Corp
+99 Bolt Circle
+Cleveland, OH 44101
+Tax ID: TX-551-002-9
+
+BILL TO:                             SHIP TO:
+Machinery Builders Inc               Machinery Builders Inc
+400 Turbine Way                      Bay 2 Receiving
+Cleveland, OH 44114                  Cleveland, OH 44114
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-BOLT-01  Grade 8 Hex Bolt 1/2in    2000   $0.40          $800.00
+SKU-NUT-01   Grade 8 Hex Nut 1/2in     2000   $0.15          $300.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,100.00
+SHIPPING & HANDLING                                          $45.00
+TAX (8% OH)                                                  $88.00
+GRAND TOTAL                                                  $1,233.00
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

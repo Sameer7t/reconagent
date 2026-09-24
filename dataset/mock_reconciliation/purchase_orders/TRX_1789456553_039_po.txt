@@ -1,0 +1,28 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-1092-3829               Date: 2024-01-10
+
+VENDOR: HydroFlow Plumbing Supplies
+40 Pipe Street
+Cleveland, OH 44101
+Tax ID: TX-110-384-2
+
+BILL TO:                             SHIP TO:
+Ohio Construction Group              Ohio Construction Group
+800 Euclid Avenue                    Jobsite 2 Receiving
+Cleveland, OH 44115                  Cleveland, OH 44114
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-VALVE-01 2-inch Brass Ball Valve   50     $35.00         $1,750.00
+SKU-ELBOW-02 2-inch Copper Elbow       100    $8.50          $850.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $2,600.00
+SHIPPING & HANDLING                                          $120.00
+TAX (8%)                                                     $208.00
+GRAND TOTAL                                                  $2,928.00
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

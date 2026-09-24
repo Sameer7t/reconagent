@@ -1,0 +1,24 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-4821               Date: 2024-01-12
+PO Reference: PO-1092-3829
+
+VENDOR: HydroFlow Plumbing Supplies
+40 Pipe Street
+Cleveland, OH 44101
+
+DELIVERED TO:
+Ohio Construction Group
+Jobsite 2 Receiving
+Cleveland, OH 44114
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-VALVE-01 2-inch Brass Ball Valve   50             50
+SKU-ELBOW-02 2-inch Copper Elbow       100            100
+------------------------------------------------------------------------
+Received By: R. Stout
+Status: COMPLETE
+========================================================================

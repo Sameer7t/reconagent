@@ -1,0 +1,32 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30020
+Invoice Date: 2024-05-16
+Payment Due Date: 2024-06-16
+PO Reference: PO-2024-0020
+Transaction ID: TRX_100_020
+
+VENDOR: TransGlobal Logistics Corp
+Address: 1200 Harbor View Rd, Pier 18, Long Beach, CA 90802
+Tax ID: 95-1029384
+Remit To: JPMorgan Chase, Acct: ******5520, Routing: ******002
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4     20      $650.00      $13,000.00
+TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40     15       $28.00         $420.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $13,420.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $1,073.60
+                                                     GRAND TOTAL:     $14,538.60
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

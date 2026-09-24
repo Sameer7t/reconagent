@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0049
+PO Date: 2024-02-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_049
+
+VENDOR: TechTraders Solutions Inc.
+Address: 1024 Silicon Valley Blvd, Bldg 4A, San Jose, CA 95110
+Tax ID: 12-3456789
+Phone: (408) 555-0199
+Contact: sales@techtraders.com
+
+BILL TO:
+Pinnacle Manufacturing Ltd
+Accounts Payable Division
+900 Industrial Boulevard, Cleveland, OH 44114
+
+SHIP TO:
+Pinnacle Manufacturing Ltd
+Attn: Loading Bay C
+900 Industrial Boulevard, Cleveland, OH 44114
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TT-CPU-109       Intel Core i9-13900K Processor         20      $560.00      $11,200.00
+TT-RAM-032       Corsair Vengeance 32GB DDR5 RAM        20      $120.00       $2,400.00
+TT-SSD-002       Samsung 990 Pro 2TB NVMe SSD            5      $170.00         $850.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $14,450.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $1,156.00
+                                                     GRAND TOTAL:     $15,651.00
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0049 on all delivery documents and invoices.
+================================================================================

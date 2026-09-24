@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0070
+PO Date: 2024-07-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_070
+
+VENDOR: Apex Chemical Synthetics Inc
+Address: 770 Catalyst Lane, Building C, Houston, TX 77015
+Tax ID: 74-5519823
+Phone: (713) 555-6677
+Contact: invoicing@apexchemical.com
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+SHIP TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+AC-POL-55G       Polyethylene Glycol Industrial 55-Gal Drum     15      $540.00       $8,100.00
+AC-SOL-020       High-Purity Acetone ACS Grade 20L      10      $130.00       $1,300.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $9,400.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $752.00
+                                                     GRAND TOTAL:     $10,197.00
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0070 on all delivery documents and invoices.
+================================================================================

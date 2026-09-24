@@ -1,0 +1,25 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-5543
+Delivery Date: 2023-11-06
+PO Reference: PO-1006-8812
+
+SUPPLIER: Horizon Electrical Systems
+Address: 120 Sparky Lane, Suite E, Phoenix, AZ 85001
+
+DELIVERED TO:
+Voltex Grid Builders
+Receiving Dept
+303 High Voltage Dr
+Denver, CO 80201
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+SKU-ALU-02       Heavy Duty Aluminum Cable (500ft)            0               3
+SKU-INS-44       Polyurethane Insulators (Pack of 10)         5               5
+--------------------------------------------------------------------------------
+Note: Substituted SKU-COP-01 with SKU-ALU-02 due to manufacturer backorder.
+Receiver: Jim G.
+================================================================================

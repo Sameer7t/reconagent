@@ -1,0 +1,28 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70020
+Delivery Date: 2024-05-15
+PO Reference: PO-2024-0020
+Transaction ID: TRX_100_020
+
+VENDOR: TransGlobal Logistics Corp
+Address: 1200 Harbor View Rd, Pier 18, Long Beach, CA 90802
+
+DELIVERED TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4             20              20
+TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40             15              15
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

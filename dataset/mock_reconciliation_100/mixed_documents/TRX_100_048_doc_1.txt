@@ -1,0 +1,28 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70048
+Delivery Date: 2024-01-15
+PO Reference: PO-2024-0048
+Transaction ID: TRX_100_048
+
+VENDOR: VoltTech Electric Systems LLC
+Address: 3300 Kilowatt Way, Suite 100, Charlotte, NC 28208
+
+DELIVERED TO:
+Apex Innovations Group
+Attn: Receiving Dock 1
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+VT-BRK-200       Molded Case Circuit Breaker 200A 3-Pole             15              15
+VT-TRF-075       Dry-Type Distribution Transformer 75kVA             10              10
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

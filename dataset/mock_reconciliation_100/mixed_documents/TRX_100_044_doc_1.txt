@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0044
+PO Date: 2024-05-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_044
+
+VENDOR: TransGlobal Logistics Corp
+Address: 1200 Harbor View Rd, Pier 18, Long Beach, CA 90802
+Tax ID: 95-1029384
+Phone: (562) 555-9011
+Contact: dispatch@transgloballogistics.com
+
+BILL TO:
+Pinnacle Manufacturing Ltd
+Accounts Payable Division
+900 Industrial Boulevard, Cleveland, OH 44114
+
+SHIP TO:
+Pinnacle Manufacturing Ltd
+Attn: Loading Bay C
+900 Industrial Boulevard, Cleveland, OH 44114
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4      5      $650.00       $3,250.00
+TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40     15       $28.00         $420.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $3,670.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $293.60
+                                                     GRAND TOTAL:      $4,008.60
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0044 on all delivery documents and invoices.
+================================================================================

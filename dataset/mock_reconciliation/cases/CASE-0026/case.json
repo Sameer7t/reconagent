@@ -1,0 +1,23 @@
+{
+  "case_id": "CASE-0026",
+  "po_number": "PO-6012-8839",
+  "vendor": "ElectroCorp Parts Inc",
+  "purchase_order": {
+    "file": "TRX_1789456553_026_po.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\purchase_orders\\TRX_1789456553_026_po.txt"
+  },
+  "receipt": {
+    "file": "TRX_1789456553_026_receipt.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\receipts\\TRX_1789456553_026_receipt.txt"
+  },
+  "invoice": {
+    "file": "TRX_1789456553_026_invoice.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\invoices\\TRX_1789456553_026_invoice.txt"
+  },
+  "matching": {
+    "receipt_found": true,
+    "invoice_found": true,
+    "receipt_score": 85,
+    "invoice_score": 85
+  }
+}

@@ -1,0 +1,28 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70042
+Delivery Date: 2024-03-15
+PO Reference: PO-2024-0042
+Transaction ID: TRX_100_042
+
+VENDOR: Titan Industrial Tools Corp
+Address: 8840 Forge Parkway, Sector 9, Detroit, MI 48201
+
+DELIVERED TO:
+Omega Engineering Corp
+Attn: Central Warehouse Gate 4
+1800 Technology Drive, Building 3, Austin, TX 78758
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+TI-CNC-400       Carbide End Mill 4-Flute 1/2in                  5               5
+TI-HYD-012       Hydraulic Pressure Valve 3000 PSI               5               5
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

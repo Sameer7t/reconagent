@@ -1,0 +1,32 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1010-8833
+PO Date: 2023-08-01
+
+VENDOR: Dynamic Office Essentials
+Address: 820 Cubicle Lane, Dallas, TX 75201
+Tax ID: 44-5566778
+
+BILL TO:
+Horizon Consultants Inc
+Suite 500, Financial Plaza
+New York, NY 10005
+
+SHIP TO:
+Horizon Consultants Inc
+Attn: Office Manager
+Suite 500, Financial Plaza
+New York, NY 10005
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+DOE-CH-88        Ergonomic Mesh Office Chairs         8       $350.00  $2,800.00
+DOE-DSK-12       Standing Desk Converter             12       $180.00  $2,160.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $4,960.00
+                                                       SHIPPING:         $300.00
+                                                       TAX (8.875%):     $440.20
+                                                       GRAND TOTAL:    $5,700.20
+================================================================================

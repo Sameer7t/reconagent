@@ -1,0 +1,24 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-5567
+Delivery Date: 2023-09-18
+PO Reference: PO-1019-2233
+
+VENDOR: Dynamic Office Essentials
+Address: 820 Cubicle Lane, Dallas, TX 75201
+
+DELIVERED TO:
+National Office Space Inc
+Corporate Suite 404
+1200 Broadway Ave
+New York, NY 10001
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+DOE-WST-01       Under-Desk Wastebasket (Black)      50              50
+DOE-ORG-02       Desk Organizer Tray (Silver)        50              50
+--------------------------------------------------------------------------------
+Sign Off: A. Vance
+================================================================================

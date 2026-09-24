@@ -1,0 +1,24 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-9912               Date: 2023-12-12
+PO Reference: PO-4581-2291
+
+VENDOR: H&M Janitorial Services
+10 Cleansing Plaza
+Denver, CO 80201
+
+DELIVERED TO:
+Mile High Properties
+Main Lobby Storage
+Denver, CO 80203
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-JAN-MOP  Industrial Cotton Mop     30             30
+SKU-JAN-SOAP Concentrated Floor Soap 5G15             15
+------------------------------------------------------------------------
+Received By: Robert Downy
+Status: COMPLETE AND INTACT
+========================================================================

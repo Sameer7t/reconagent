@@ -1,0 +1,27 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-9921
+Delivery Date: 2023-09-14
+PO Reference: PO-1002-3011
+
+SUPPLIER: Paramount Paper & Packaging
+Address: 440 Industrial Blvd, Suite 2, Scranton, PA 18501
+
+DELIVERED TO:
+MegaCorp Distribution
+Receiving Dock 12
+1123 Corporate Blvd
+Dallas, TX 75201
+
+Carrier: Yellow Freight (Tracking: YF-881203)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+PPP-RE-A4        UltraWhite A4 Copy Paper (Case)    50              40  **SHORT**
+PPP-ENV-10       Standard #10 Envelopes (Box of 500) 20             20
+--------------------------------------------------------------------------------
+Notes: Warehouse only counted 40 cases of A4 paper. Pallet 2 was missing 10 cases.
+Receiver: S. Vance
+================================================================================

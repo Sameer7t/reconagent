@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0076
+PO Date: 2024-05-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_076
+
+VENDOR: TransGlobal Logistics Corp
+Address: 1200 Harbor View Rd, Pier 18, Long Beach, CA 90802
+Tax ID: 95-1029384
+Phone: (562) 555-9011
+Contact: dispatch@transgloballogistics.com
+
+BILL TO:
+Alpha Research Labs LLC
+Accounts Payable Dept
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+SHIP TO:
+Alpha Research Labs LLC
+Attn: Receiving Dock B
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4     12      $650.00       $7,800.00
+TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40     15       $28.00         $420.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $8,220.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $657.60
+                                                     GRAND TOTAL:      $8,922.60
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0076 on all delivery documents and invoices.
+================================================================================

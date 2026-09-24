@@ -1,0 +1,23 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-1155
+Delivery Date: 2023-09-15
+PO Reference: PO-1011-9944
+
+SUPPLIER: Paramount Paper & Packaging
+Address: 440 Industrial Blvd, Scranton, PA 18501
+
+DELIVERED TO:
+GreenForest Publisher Co.
+Warehouse A
+10 Paper Mill Rd
+Portland, OR 97201
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+PPP-NEWS-90      Newsprint Roll (Industrial)         10              10
+--------------------------------------------------------------------------------
+Sign-off: B. Sterling
+================================================================================

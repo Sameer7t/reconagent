@@ -1,0 +1,27 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-2039-4829               Date: 2024-01-15
+
+VENDOR: Apex Industrial Supply
+100 Apex Boulevard
+Columbus, OH 43201
+Tax ID: TX-449-382-9
+
+BILL TO:                             SHIP TO:
+Central Ohio Manufacturing           Central Ohio Manufacturing
+500 Factory Way                      Warehouse Gate 4
+Columbus, OH 43215                   Columbus, OH 43215
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-FLG-10   10-inch Carbon Steel Flange10     $250.00        $2,500.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $2,500.00
+SHIPPING & HANDLING                                          $150.00
+TAX (7.5%)                                                   $187.50
+GRAND TOTAL                                                  $2,837.50
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

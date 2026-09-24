@@ -1,0 +1,28 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-8821
+Invoice Date: 2023-10-24
+PO Reference: PO-1007-1122
+
+VENDOR: OmniCorp Manufacturing Group
+Address: 1212 Enterprise Row, Suite 10, Chicago, IL 60601
+Tax ID: 77-8829103
+
+BILL TO:
+Stellar Engineering Inc
+PO Box 8812
+Seattle, WA 98101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+OMG-ST-22        Standard Steel Tubing (10ft)       100        $35.00  $3,500.00
+OMG-CP-44        Copper Coupling Joints 1"          250         $8.00  $2,000.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $5,500.00
+                                                       SHIPPING:         $450.00
+                                                       TAX (9.5%):       $522.50
+                                                       GRAND TOTAL:    $6,472.50
+================================================================================
+Payment Terms: Net 30. Remittance to: CitiBank, Acct # 99182746

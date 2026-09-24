@@ -1,0 +1,32 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1020-3344
+PO Date: 2023-10-05
+
+VENDOR: Global Logistics & Supply LLC
+Address: 300 Transport Way, Atlanta, GA 30301
+Tax ID: 11-4433221
+
+BILL TO:
+Prime Cargo Systems
+Accounting Dept
+100 Shipping Way
+Savannah, GA 31402
+
+SHIP TO:
+Prime Cargo Systems
+Loading Dock Yard
+100 Shipping Way
+Savannah, GA 31402
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+GLS-PAL-HD       Heavy-Duty Wooden Pallets (Pack 50) 12       $300.00  $3,600.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $3,600.00
+                                                       SHIPPING:         $250.00
+                                                       TAX (6.0%):       $216.00
+                                                       GRAND TOTAL:    $4,066.00
+================================================================================

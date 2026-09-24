@@ -1,0 +1,28 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-1092
+Invoice Date: 2023-10-06
+PO Reference: PO-1003-4921
+
+VENDOR: Precision Parts Ltd.
+Address: 550 Machining Way, Suite 100, Detroit, MI 48201
+Tax ID: 33-9912048
+
+BILL TO:
+Apex Aero Engine Corp
+AP Department
+890 Rocket Road
+Cape Canaveral, FL 32920
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+PPL-TI-773       Titanium Hub Valve Collar           10       $495.00  $4,950.00
+PPL-AL-901       Anodized Aluminum Brackets          50        $15.00    $750.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $5,700.00
+                                                       TAX (7.0%):       $399.00
+                                                       GRAND TOTAL:    $6,099.00
+================================================================================
+Note: Unit price for PPL-TI-773 increased to $495 without prior PO amendment.

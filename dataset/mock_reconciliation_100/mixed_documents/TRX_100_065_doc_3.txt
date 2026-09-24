@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0065
+PO Date: 2024-02-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_065
+
+VENDOR: TechTraders Solutions Inc.
+Address: 1024 Silicon Valley Blvd, Bldg 4A, San Jose, CA 95110
+Tax ID: 12-3456789
+Phone: (408) 555-0199
+Contact: sales@techtraders.com
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+SHIP TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TT-CPU-109       Intel Core i9-13900K Processor         15      $560.00       $8,400.00
+TT-RAM-032       Corsair Vengeance 32GB DDR5 RAM        15      $120.00       $1,800.00
+TT-SSD-002       Samsung 990 Pro 2TB NVMe SSD           20      $170.00       $3,400.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $13,600.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $1,088.00
+                                                     GRAND TOTAL:     $14,733.00
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0065 on all delivery documents and invoices.
+================================================================================

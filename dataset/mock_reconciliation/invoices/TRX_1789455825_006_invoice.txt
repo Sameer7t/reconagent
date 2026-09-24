@@ -1,0 +1,29 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-3391
+Invoice Date: 2023-11-07
+PO Reference: PO-1006-8812
+
+SUPPLIER: Horizon Electrical Systems
+Address: 120 Sparky Lane, Suite E, Phoenix, AZ 85001
+Tax ID: 66-1029482
+
+BILL TO:
+Voltex Grid Builders
+Accounts Payable
+303 High Voltage Dr
+Denver, CO 80201
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+SKU-ALU-02       Heavy Duty Aluminum Cable (500ft)    3       $950.00  $2,850.00
+SKU-INS-44       Polyurethane Insulators (Pack of 10) 5       $150.00    $750.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $3,600.00
+                                                       SHIPPING:         $180.00
+                                                       TAX (8.1%):       $291.60
+                                                       GRAND TOTAL:    $4,071.60
+================================================================================
+Note: Invoice reflects the substituted Aluminum Cable (SKU-ALU-02) and adjusted price.

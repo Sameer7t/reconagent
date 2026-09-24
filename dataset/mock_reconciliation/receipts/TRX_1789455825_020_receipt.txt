@@ -1,0 +1,23 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-6678
+Delivery Date: 2023-10-10
+PO Reference: PO-1020-3344
+
+VENDOR: Global Logistics & Supply LLC
+Address: 300 Transport Way, Atlanta, GA 30301
+
+DELIVERED TO:
+Prime Cargo Systems
+Loading Dock Yard
+Savannah, GA 31402
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+GLS-PAL-HD       Heavy-Duty Wooden Pallets (Pack 50) 12               9
+--------------------------------------------------------------------------------
+Notes: Only 9 packs of pallets delivered. Carrier reported forklift damage on other 3.
+Receiver: M. Jenkins
+================================================================================

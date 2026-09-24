@@ -1,0 +1,29 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-8831
+Delivery Date: 2023-09-05
+PO Reference: PO-1001-2099
+
+VENDOR: TechTraders Solutions Inc.
+Address: 1024 Silicon Valley Blvd, Building 4A, San Jose, CA 95110
+
+DELIVERED TO:
+Alpha Research Labs LLC
+Attn: Receiving Dock B
+400 Science Parkway, Suite 101
+Rochester, NY 14620
+
+Carrier: FedEx Express (Tracking #: 99281920192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+TT-CPU-109       Intel Core i9-13900K Processor               5               5
+TT-RAM-032       Corsair Vengeance 32GB DDR5                 10              10
+TT-SSD-002       Samsung 990 Pro 2TB NVMe SSD                 8               8
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: Mark Jenkins (Signature on file)
+Time of Delivery: 14:32 EST
+================================================================================

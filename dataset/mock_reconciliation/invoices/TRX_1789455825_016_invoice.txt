@@ -1,0 +1,27 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-3345
+Invoice Date: 2023-11-10
+
+SUPPLIER: Horizon Electrical Systems
+Address: 120 Sparky Lane, Phoenix, AZ 85001
+Tax ID: 66-1029482
+
+BILL TO:
+PowerGrid Partners
+Accounts Payable Dept
+707 Utility Road
+Denver, CO 80202
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+HES-CB-TRF       Grid Grade Transformer Block         2     $4,500.00  $9,000.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $9,000.00
+                                                       SHIPPING:         $800.00
+                                                       TAX (7.5%):       $675.00
+                                                       GRAND TOTAL:   $10,475.00
+================================================================================
+(NOTE: Invoice completely omits Purchase Order Number field to test fuzzy matching)

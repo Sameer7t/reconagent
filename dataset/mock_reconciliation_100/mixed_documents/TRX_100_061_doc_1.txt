@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0061
+PO Date: 2024-06-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_061
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+Tax ID: 36-4491028
+Phone: (312) 555-4400
+Contact: accounts@globalofficesupplies.com
+
+BILL TO:
+Alpha Research Labs LLC
+Accounts Payable Dept
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+SHIP TO:
+Alpha Research Labs LLC
+Attn: Receiving Dock B
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+GO-TON-055       OEM Black Laser Toner Cartridge 10K Yield      5      $185.00         $925.00
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)     12       $55.00         $660.00
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair     20      $320.00       $6,400.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $7,985.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $638.80
+                                                     GRAND TOTAL:      $8,668.80
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0061 on all delivery documents and invoices.
+================================================================================

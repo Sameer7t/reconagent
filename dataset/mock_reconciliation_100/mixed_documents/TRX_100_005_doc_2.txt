@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0005
+PO Date: 2024-06-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_005
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+Tax ID: 36-4491028
+Phone: (312) 555-4400
+Contact: accounts@globalofficesupplies.com
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+SHIP TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+GO-TON-055       OEM Black Laser Toner Cartridge 10K Yield      5      $185.00         $925.00
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)     10       $55.00         $550.00
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair      5      $320.00       $1,600.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $3,075.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $246.00
+                                                     GRAND TOTAL:      $3,366.00
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0005 on all delivery documents and invoices.
+================================================================================

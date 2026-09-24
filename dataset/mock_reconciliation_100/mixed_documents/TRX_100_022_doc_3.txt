@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0022
+PO Date: 2024-07-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_022
+
+VENDOR: Apex Chemical Synthetics Inc
+Address: 770 Catalyst Lane, Building C, Houston, TX 77015
+Tax ID: 74-5519823
+Phone: (713) 555-6677
+Contact: invoicing@apexchemical.com
+
+BILL TO:
+Omega Engineering Corp
+Procurement & Invoicing
+1800 Technology Drive, Building 3, Austin, TX 78758
+
+SHIP TO:
+Omega Engineering Corp
+Attn: Central Warehouse Gate 4
+1800 Technology Drive, Building 3, Austin, TX 78758
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+AC-POL-55G       Polyethylene Glycol Industrial 55-Gal Drum     12      $540.00       $6,480.00
+AC-SOL-020       High-Purity Acetone ACS Grade 20L      12      $130.00       $1,560.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $8,040.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $643.20
+                                                     GRAND TOTAL:      $8,728.20
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0022 on all delivery documents and invoices.
+================================================================================

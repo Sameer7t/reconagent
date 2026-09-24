@@ -1,0 +1,24 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-2291               Date: 2023-12-03
+PO Reference: PO-2231-9982
+
+VENDOR: Fastener Warehouse Corp
+99 Bolt Circle
+Cleveland, OH 44101
+
+DELIVERED TO:
+Machinery Builders Inc
+Bay 2 Receiving
+Cleveland, OH 44114
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-BOLT-01  Grade 8 Hex Bolt 1/2in    2000           2000
+SKU-NUT-01   Grade 8 Hex Nut 1/2in     2000           2000
+------------------------------------------------------------------------
+Received By: J. S.
+Status: VERIFIED BY COUNT
+========================================================================

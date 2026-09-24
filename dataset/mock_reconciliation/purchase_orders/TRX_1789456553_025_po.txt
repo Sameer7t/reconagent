@@ -1,0 +1,28 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-5002-1182               Date: 2023-11-01
+
+VENDOR: Genesis Construction Materials
+220 Concrete Way
+Phoenix, AZ 85001
+Tax ID: TX-009-881-2
+
+BILL TO:                             SHIP TO:
+BuildCorp Developers                 BuildCorp Site 9
+440 Grand Avenue                     1001 North Loop
+Phoenix, AZ 85003                    Phoenix, AZ 85012
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-CMNT-01  Premium Cement Mix (Sack) 50     $12.00         $600.00
+SKU-REBR-02  Steel Rebar Grade 60 20ft 100    $8.00          $800.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,400.00
+SHIPPING & HANDLING                                          $150.00
+TAX (8.1%)                                                   $113.40
+GRAND TOTAL                                                  $1,663.40
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

@@ -1,0 +1,23 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-9988
+Delivery Date: 2023-11-14
+PO Reference: PO-1012-3322
+
+VENDOR: TechTraders Solutions Inc.
+Address: 1024 Silicon Valley Blvd, San Jose, CA 95110
+
+DELIVERED TO:
+NextGen Tech Hub
+Server Room 3
+Austin, TX 78701
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+TT-MON-B27       Model-B UltraSharp 27" Monitor               0              10
+--------------------------------------------------------------------------------
+Note: Sent Model-B (TT-MON-B27) as replacement for obsolete Model-A.
+Receiver: Jack Carter
+================================================================================

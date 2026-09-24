@@ -1,0 +1,27 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-8120-4491               Date: 2023-11-15
+
+VENDOR: Office Furniture Outfitters
+808 Design Row
+New York, NY 10001
+Tax ID: TX-881-229-4
+
+BILL TO:                             SHIP TO:
+Fintech Advisory Group               Fintech Advisory Group
+200 Park Avenue, Fl 45               Suite 4500 Reception
+New York, NY 10166                   New York, NY 10166
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-CHAIR-05 Ergonomic Office Chair    20     $350.00        $7,000.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $7,000.00
+SHIPPING & HANDLING                                          $300.00
+TAX (8.875%)                                                 $621.25
+GRAND TOTAL                                                  $7,921.25
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

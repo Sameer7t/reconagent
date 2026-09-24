@@ -1,0 +1,33 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1005-7721
+PO Date: 2023-07-15
+
+VENDOR: Synergy Raw Materials Corp.
+Address: 900 Ore Processing Way, Suite B, Pittsburgh, PA 15201
+Tax ID: 55-9012384
+
+BILL TO:
+Titan Structural Steel
+Accounts Payable
+770 Foundry Rd
+Allentown, PA 18101
+
+SHIP TO:
+Titan Structural Steel
+Receiving Yard A
+770 Foundry Rd
+Allentown, PA 18101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+SRM-COAL-01      Industrial Coke Coal (Ton)           8       $150.00  $1,200.00
+SRM-IRON-02      Processed Iron Ore (Ton)            10        $80.00    $800.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $2,000.00
+                                                       SHIPPING:         $250.00
+                                                       TAX (6.0%):       $120.00
+                                                       GRAND TOTAL:    $2,370.00
+================================================================================

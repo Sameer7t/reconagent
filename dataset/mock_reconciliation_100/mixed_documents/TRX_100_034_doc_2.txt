@@ -1,0 +1,28 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70034
+Delivery Date: 2024-03-15
+PO Reference: PO-2024-0034
+Transaction ID: TRX_100_034
+
+VENDOR: Titan Industrial Tools Corp
+Address: 8840 Forge Parkway, Sector 9, Detroit, MI 48201
+
+DELIVERED TO:
+Pinnacle Manufacturing Ltd
+Attn: Loading Bay C
+900 Industrial Boulevard, Cleveland, OH 44114
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+TI-CNC-400       Carbide End Mill 4-Flute 1/2in                 15              11
+TI-HYD-012       Hydraulic Pressure Valve 3000 PSI               8               8
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

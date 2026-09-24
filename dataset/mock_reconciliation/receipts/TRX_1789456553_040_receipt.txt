@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-5920               Date: 2024-01-18
+PO Reference: PO-2039-4829
+
+VENDOR: Apex Industrial Supply
+100 Apex Boulevard
+Columbus, OH 43201
+
+DELIVERED TO:
+Central Ohio Manufacturing
+Warehouse Gate 4
+Columbus, OH 43215
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-FLG-10   10-inch Carbon Steel Flange10             6
+------------------------------------------------------------------------
+Comment: 4 units shorted, driver states they will ship next week.
+Received By: T. Vance
+========================================================================

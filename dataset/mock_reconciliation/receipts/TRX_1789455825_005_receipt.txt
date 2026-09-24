@@ -1,0 +1,25 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-4432
+Delivery Date: 2023-07-20
+PO Reference: PO-1005-7721
+
+VENDOR: Synergy Raw Materials Corp.
+Address: 900 Ore Processing Way, Suite B, Pittsburgh, PA 15201
+
+DELIVERED TO:
+Titan Structural Steel
+Receiving Yard A
+770 Foundry Rd
+Allentown, PA 18101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+SRM-COAL-01      Industrial Coke Coal (Ton)           8               8
+SRM-IRON-02      Processed Iron Ore (Ton)            10              10
+--------------------------------------------------------------------------------
+Carrier: Norfolk Southern (Car # NS-88419)
+Weigh Station Operator: F. Miller
+================================================================================

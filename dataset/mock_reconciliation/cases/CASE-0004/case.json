@@ -1,0 +1,20 @@
+{
+  "case_id": "CASE-0004",
+  "po_number": "PO-1004-9988",
+  "vendor": "Vanguard Chemical Solutions",
+  "purchase_order": {
+    "file": "TRX_1789455825_004_po.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\purchase_orders\\TRX_1789455825_004_po.txt"
+  },
+  "receipt": {
+    "file": "TRX_1789455825_004_receipt.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\receipts\\TRX_1789455825_004_receipt.txt"
+  },
+  "invoice": null,
+  "matching": {
+    "receipt_found": true,
+    "invoice_found": false,
+    "receipt_score": 85,
+    "invoice_score": 0
+  }
+}

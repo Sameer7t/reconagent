@@ -1,0 +1,29 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70077
+Delivery Date: 2024-06-15
+PO Reference: PO-2024-0077
+Transaction ID: TRX_100_077
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+
+DELIVERED TO:
+Omega Engineering Corp
+Attn: Central Warehouse Gate 4
+1800 Technology Drive, Building 3, Austin, TX 78758
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+GO-TON-055-SUB   OEM Black Laser Toner Cartridge 10K Yield (Alternate Specification)             12              12
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)             10              10
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair             15              15
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

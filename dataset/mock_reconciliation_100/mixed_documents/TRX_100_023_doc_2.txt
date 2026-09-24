@@ -1,0 +1,33 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30023
+Invoice Date: 2024-08-16
+Payment Due Date: 2024-09-16
+PO Reference: PO-2024-0023
+Transaction ID: TRX_100_023
+
+VENDOR: Prairie Harvest Foods Corp
+Address: 1500 Grain Terminal Rd, Omaha, NE 68102
+Tax ID: 47-8891023
+Remit To: US Bank, Acct: ******7741, Routing: ******991
+
+BILL TO:
+Apex Innovations Group
+Finance & Accounting
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+PH-FLR-050       Organic Hard Red Wheat Flour 50lb Sack     10       $32.00         $320.00
+PH-OAT-025       Rolled Oats Whole Grain 25lb Bag        5       $24.00         $120.00
+PH-HNY-060       Pure Clover Raw Honey 60lb Pail         5      $195.00         $975.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $1,415.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $113.20
+                                                     GRAND TOTAL:      $1,573.20
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

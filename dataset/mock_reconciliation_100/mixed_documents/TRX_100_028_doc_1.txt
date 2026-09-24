@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0028
+PO Date: 2024-05-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_028
+
+VENDOR: TransGlobal Logistics Corp
+Address: 1200 Harbor View Rd, Pier 18, Long Beach, CA 90802
+Tax ID: 95-1029384
+Phone: (562) 555-9011
+Contact: dispatch@transgloballogistics.com
+
+BILL TO:
+Apex Innovations Group
+Finance & Accounting
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+SHIP TO:
+Apex Innovations Group
+Attn: Receiving Dock 1
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4     20      $650.00      $13,000.00
+TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40     20       $28.00         $560.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $13,560.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $1,084.80
+                                                     GRAND TOTAL:     $14,689.80
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0028 on all delivery documents and invoices.
+================================================================================

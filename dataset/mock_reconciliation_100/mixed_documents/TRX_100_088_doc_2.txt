@@ -1,0 +1,39 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0088
+PO Date: 2024-01-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_088
+
+VENDOR: VoltTech Electric Systems LLC
+Address: 3300 Kilowatt Way, Suite 100, Charlotte, NC 28208
+Tax ID: 56-2299104
+Phone: (704) 555-8900
+Contact: billing@volttechsystems.com
+
+BILL TO:
+Apex Innovations Group
+Finance & Accounting
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+SHIP TO:
+Apex Innovations Group
+Attn: Receiving Dock 1
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+VT-BRK-200       Molded Case Circuit Breaker 200A 3-Pole     12      $450.00       $5,400.00
+VT-TRF-075       Dry-Type Distribution Transformer 75kVA     12    $3,800.00      $45,600.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $51,000.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $4,080.00
+                                                     GRAND TOTAL:     $55,125.00
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0088 on all delivery documents and invoices.
+================================================================================

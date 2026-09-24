@@ -1,0 +1,41 @@
+{
+  "receipts": [],
+  "invoices": [
+    {
+      "file": "TRX_1789455825_004_invoice.txt",
+      "invoice_number": "INV-6712",
+      "po_number": null,
+      "vendor": "Vanguard Chemical Solutions"
+    },
+    {
+      "file": "TRX_1789455825_010_invoice.txt",
+      "invoice_number": "INV-1122",
+      "po_number": null,
+      "vendor": "Dynamic Office Essentials"
+    },
+    {
+      "file": "TRX_1789455825_016_invoice.txt",
+      "invoice_number": "INV-3345",
+      "po_number": null,
+      "vendor": "Horizon Electrical Systems"
+    },
+    {
+      "file": "TRX_1789456553_024_invoice.txt",
+      "invoice_number": "INV-1102",
+      "po_number": null,
+      "vendor": "Office Depot Partners"
+    },
+    {
+      "file": "TRX_1789456553_030_invoice.txt",
+      "invoice_number": "INV-9876",
+      "po_number": null,
+      "vendor": "Acme Global Industries"
+    },
+    {
+      "file": "TRX_1789456553_036_invoice.txt",
+      "invoice_number": "INV-5821",
+      "po_number": null,
+      "vendor": "Safety Products Ltd"
+    }
+  ]
+}

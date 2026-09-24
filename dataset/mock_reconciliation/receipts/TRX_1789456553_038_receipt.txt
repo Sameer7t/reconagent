@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-3392               Date: 2024-01-07
+PO Reference: PO-9192-3841
+
+VENDOR: Allied Electronics Corp
+1200 Resistor Road
+Dallas, TX 75201
+
+DELIVERED TO:
+TechLabs Manufacturing
+Lab Receiving Dock B
+Plano, TX 75024
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-LED-GRN  5mm Green LED Indicator Pack0             100
+------------------------------------------------------------------------
+Comment: Out of stock on Red, substituted Green with buyer agreement.
+Received By: J. Cooper
+========================================================================

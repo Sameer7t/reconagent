@@ -1,0 +1,29 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70061
+Delivery Date: 2024-06-15
+PO Reference: PO-2024-0061
+Transaction ID: TRX_100_061
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+
+DELIVERED TO:
+Alpha Research Labs LLC
+Attn: Receiving Dock B
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+GO-TON-055       OEM Black Laser Toner Cartridge 10K Yield              5               5
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)             12              12
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair             20              20
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

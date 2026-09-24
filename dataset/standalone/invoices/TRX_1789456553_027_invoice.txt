@@ -1,0 +1,29 @@
+========================================================================
+INVOICE
+========================================================================
+Invoice Number: INV-2910              Date: 2023-11-13
+PO Reference: PO-7023-4912            Due Date: 2023-12-13
+
+VENDOR: National Packaging Corp
+14 Paper Mill Road
+Atlanta, GA 30301
+Remit To: SunTrust Bank, Acct: *******5521
+
+BILL TO:
+Logistics Hub Inc
+500 Supply Chain Way
+Atlanta, GA 30312
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-BOX-M    Medium Cardboard Box     1000   $1.20          $1,200.00
+SKU-TAPE-01  Heavy Duty Packing Tape  100    $3.50          $350.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,550.00
+SHIPPING & HANDLING                                          $180.00
+TAX (7%)                                                     $108.50
+TOTAL DUE                                                    $1,838.50
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================

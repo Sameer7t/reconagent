@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0095
+PO Date: 2024-08-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_095
+
+VENDOR: Prairie Harvest Foods Corp
+Address: 1500 Grain Terminal Rd, Omaha, NE 68102
+Tax ID: 47-8891023
+Phone: (402) 555-1234
+Contact: orders@prairieharvestfoods.com
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+SHIP TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+PH-FLR-050       Organic Hard Red Wheat Flour 50lb Sack      5       $32.00         $160.00
+PH-OAT-025       Rolled Oats Whole Grain 25lb Bag       20       $24.00         $480.00
+PH-HNY-060       Pure Clover Raw Honey 60lb Pail         5      $195.00         $975.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $1,615.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $129.20
+                                                     GRAND TOTAL:      $1,789.20
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0095 on all delivery documents and invoices.
+================================================================================

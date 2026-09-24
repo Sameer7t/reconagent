@@ -1,0 +1,29 @@
+========================================================================
+INVOICE
+========================================================================
+Invoice Number: INV-3382              Date: 2023-12-04
+PO Reference: PO-2231-9982            Due Date: 2024-01-03
+
+VENDOR: Fastener Warehouse Corp
+99 Bolt Circle
+Cleveland, OH 44101
+Remit To: PNC Bank, Acct: *******8810
+
+BILL TO:
+Machinery Builders Inc
+400 Turbine Way
+Cleveland, OH 44114
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-BOLT-01  Grade 8 Hex Bolt 1/2in    2000   $0.40          $800.00
+SKU-NUT-01   Grade 8 Hex Nut 1/2in     2000   $0.15          $300.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,000.00
+SHIPPING & HANDLING                                          $45.00
+TAX (8% OH)                                                  $88.00
+TOTAL DUE                                                    $1,133.00
+------------------------------------------------------------------------
+Note: Math error: Subtotal of $800 + $300 should be $1100, but billed as $1000.
+========================================================

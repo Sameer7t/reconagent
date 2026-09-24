@@ -1,0 +1,27 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-5566
+Invoice Date: 2023-09-17
+PO Reference: PO-1011-9944
+
+SUPPLIER: Paramount Paper & Packaging
+Address: 440 Industrial Blvd, Scranton, PA 18501
+Tax ID: 22-8849201
+
+BILL TO:
+GreenForest Publisher Co.
+10 Paper Mill Rd
+Portland, OR 97201
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+PPP-NEWS-90      Newsprint Roll (Industrial)         10       $100.00  $1,000.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $1,000.00
+                                                       SHIPPING:          $50.00
+                                                       TAX (10.0%):      $150.00
+                                                       GRAND TOTAL:    $1,150.00
+================================================================================
+MATH ERROR DETAILS: The tax is listed as $150.00, which is 15% instead of 10% ($100.00). The Grand Total is written as $1,150.00, which is mathematically wrong if tax was actually $150 (making it $1,200).

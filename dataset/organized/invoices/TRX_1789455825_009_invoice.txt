@@ -1,0 +1,28 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-9900
+Invoice Date: 2023-09-21
+PO Reference: PO-1009-4400
+
+VENDOR: Global Logistics & Supply LLC
+Address: 300 Transport Way, Atlanta, GA 30301
+Tax ID: 11-4433221
+
+BILL TO:
+FastTrack Logistics
+100 Freight Lane
+Savannah, GA 31401
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+GLS-PAL-HD       Heavy-Duty Wooden Pallets (Pack 50) 20       $320.00  $6,400.00
+GLS-STR-PL       Plastic Strapping Bands (Roll)      15        $45.00    $675.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $7,075.00
+                                                       SHIPPING:         $400.00
+                                                       TAX (6.0%):       $424.50
+                                                       GRAND TOTAL:    $7,899.50
+================================================================================
+Note: Unit price for GLS-PAL-HD listed as $320.00 instead of agreed PO price of $300.00.

@@ -1,0 +1,22 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-3345
+Delivery Date: 2023-09-10
+PO Reference: PO-1017-9900
+
+VENDOR: OmniCorp Manufacturing Group
+Address: 1212 Enterprise Row, Chicago, IL 60601
+
+DELIVERED TO:
+Swift Assembly Line
+400 Conveyor Way
+Grand Rapids, MI 49501
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+OMG-ROB-88       Pneumatic Actuator Arm              10              10
+--------------------------------------------------------------------------------
+Verified By: M. Taylor
+================================================================================

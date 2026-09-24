@@ -1,0 +1,32 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30090
+Invoice Date: 2024-03-16
+Payment Due Date: 2024-04-16
+PO Reference: PO-2024-0090
+Transaction ID: TRX_100_090
+
+VENDOR: Titan Industrial Tools Corp
+Address: 8840 Forge Parkway, Sector 9, Detroit, MI 48201
+Tax ID: 38-9921456
+Remit To: Comerica Bank, Acct: ******4412, Routing: ******105
+
+BILL TO:
+Beacon Health Systems Inc
+Supply Chain & AP
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+TI-CNC-400       Carbide End Mill 4-Flute 1/2in         15       $45.00         $675.00
+TI-HYD-012       Hydraulic Pressure Valve 3000 PSI       5      $320.00       $1,600.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $2,275.00
+                                                        SHIPPING:        $185.00
+                                                      TAX (8.0%):        $182.00
+                                                     GRAND TOTAL:      $2,642.00
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

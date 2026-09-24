@@ -1,0 +1,24 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-1920               Date: 2024-01-03
+PO Reference: PO-8812-4910
+
+VENDOR: Premium Lumber Supply
+55 Woodcutters Way
+Portland, OR 97201
+
+DELIVERED TO:
+Cascade Home Builders
+Jobsite 15 Receiving
+Beaverton, OR 97005
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-LUM-2X4  Douglas Fir Stud 2x4x8ft  400            400
+SKU-LUM-PLY  CDX Plywood Sheathing 4x8 100            100
+------------------------------------------------------------------------
+Received By: T. Lumberman
+Status: COMPLETE AND DRY
+========================================================================

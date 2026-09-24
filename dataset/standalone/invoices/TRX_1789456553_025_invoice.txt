@@ -1,0 +1,29 @@
+========================================================================
+INVOICE
+========================================================================
+Invoice Number: INV-7729              Date: 2023-11-04
+PO Reference: PO-5002-1182            Due Date: 2023-12-04
+
+VENDOR: Genesis Construction Materials
+220 Concrete Way
+Phoenix, AZ 85001
+Remit To: Wells Fargo, Acct: *******1100
+
+BILL TO:
+BuildCorp Developers
+440 Grand Avenue
+Phoenix, AZ 85003
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-CMNT-01  Premium Cement Mix (Sack) 50     $12.00         $600.00
+SKU-REBR-02  Steel Rebar Grade 60 20ft 100    $8.00          $800.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,300.00
+SHIPPING & HANDLING                                          $150.00
+TAX (8.1%)                                                   $113.40
+TOTAL DUE                                                    $1,450.00
+------------------------------------------------------------------------
+Note: Math mismatch on line item summation ($600+$800 != $1300)
+========================================================

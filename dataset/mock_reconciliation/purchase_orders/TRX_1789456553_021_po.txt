@@ -1,0 +1,29 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-1002-3849               Date: 2023-10-12
+
+VENDOR: Apex Industrial Solutions Ltd
+100 Industrial Parkway, Suite 4B
+Chicago, IL 60611
+Tax ID: TX-993-882-1
+
+BILL TO:                             SHIP TO:
+Global Manufacturing Corp            Global Manufacturing Corp
+456 Production Way                   Warehouse Gate 3
+Detroit, MI 48201                    Detroit, MI 48201
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-8829     Heavy Duty Brass Valve    10     $125.00        $1,250.00
+SKU-1029     Steel Flange 4-inch       25     $45.00         $1,125.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $2,375.00
+SHIPPING & HANDLING                                          $75.00
+TAX (6%)                                                     $142.50
+GRAND TOTAL                                                  $2,592.50
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+FOB: Origin
+========================================================================

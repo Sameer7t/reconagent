@@ -1,0 +1,23 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-4411
+Delivery Date: 2023-08-08
+PO Reference: PO-1010-8833
+
+VENDOR: Dynamic Office Essentials
+Address: 820 Cubicle Lane, Dallas, TX 75201
+
+DELIVERED TO:
+Horizon Consultants Inc
+Suite 500, Financial Plaza
+New York, NY 10005
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+DOE-CH-88        Ergonomic Mesh Office Chairs         8               8
+DOE-DSK-12       Standing Desk Converter             12              12
+--------------------------------------------------------------------------------
+Received by: S. Jenkins
+================================================================================

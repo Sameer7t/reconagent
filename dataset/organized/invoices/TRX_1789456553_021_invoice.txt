@@ -1,0 +1,30 @@
+========================================================================
+INVOICE
+========================================================================
+Invoice Number: INV-4921              Date: 2023-10-15
+PO Reference: PO-1002-3849            Due Date: 2023-11-14
+
+VENDOR: Apex Industrial Solutions Ltd
+100 Industrial Parkway, Suite 4B
+Chicago, IL 60611
+Remit To: Wells Fargo Bank, Acct: *******8821
+
+BILL TO:
+Global Manufacturing Corp
+456 Production Way
+Detroit, MI 48201
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-8829     Heavy Duty Brass Valve    10     $125.00        $1,250.00
+SKU-1029     Steel Flange 4-inch       25     $45.00         $1,125.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $2,375.00
+SHIPPING & HANDLING                                          $75.00
+TAX (6%)                                                     $142.50
+TOTAL DUE                                                    $2,592.50
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+Thank you for your business!
+========================================================

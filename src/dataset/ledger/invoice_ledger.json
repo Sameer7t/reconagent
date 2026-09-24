@@ -1,0 +1,163 @@
+{
+    "e6c6f71982204b338864015b2ec846c5816e3e28c0cda36ab085dc860f450afb": {
+        "invoice_id": "INV-201",
+        "vendor": "Acme",
+        "date": "",
+        "total": "0",
+        "first_seen": "2026-09-23T14:55:59.205270"
+    },
+    "676bb2b1a486bc5df6d55edbf567f8203f08101126c02942c0826ba6021b5474": {
+        "invoice_id": "INV-201",
+        "vendor": "",
+        "date": "",
+        "total": "0",
+        "first_seen": "2026-09-23T14:56:30.295870"
+    },
+    "79d05d429b9e6a8b9dba0fc53a6bee345e6d9f63842e494ddbe5c00daf90f617": {
+        "invoice_id": "INV-30001",
+        "vendor": "TechTraders Solutions Inc.",
+        "date": "2024-02-16",
+        "total": "7119.00",
+        "first_seen": "2026-09-23T14:58:56.511141"
+    },
+    "f0c4a8d6d7fcee041a226e616923a7df17dcb957a97dd238db260f15ffe73cfb": {
+        "invoice_id": "INV-30002",
+        "vendor": "Titan Industrial Tools Corp",
+        "date": "2024-03-16",
+        "total": "5617.80",
+        "first_seen": "2026-09-23T15:12:55.123119"
+    },
+    "4435ce3ab67f9bb1d1166bbf13ccc0807b824542b7d67118c08e45d2721549bf": {
+        "invoice_id": "INV-30003",
+        "vendor": "BioMed Scientific Solutions LLC",
+        "date": "2024-04-16",
+        "total": "13464.00",
+        "first_seen": "2026-09-23T15:23:14.639777"
+    },
+    "eb16b6839b497a870d045472d327d0b369b78272334e7a856a35610e92498912": {
+        "invoice_id": "INV-30004",
+        "vendor": "TransGlobal Logistics Corp",
+        "date": "2024-05-16",
+        "total": "5812.20",
+        "first_seen": "2026-09-23T15:35:44.589590"
+    },
+    "0066a6a0a028853b6da184448096b3e8a8d718e94a7ee5d7fcfc0d96751c4af8": {
+        "invoice_id": "INV-30005",
+        "vendor": "Global Office Supplies Inc",
+        "date": "2024-06-16",
+        "total": "3366.00",
+        "first_seen": "2026-09-23T15:36:51.892535"
+    },
+    "887c35a1e0ff423e5f58cdec822eb9aaeed47d8de428becfed18bc26e13a1d9b": {
+        "invoice_id": "INV-30006",
+        "vendor": "Apex Chemical Synthetics Inc",
+        "date": "2024-07-16",
+        "total": "13393.80",
+        "first_seen": "2026-09-23T15:37:20.504570"
+    },
+    "fc42d545280d4e915465ea0a3931f71ac5074c1f1048c8e6137688da2e1d2a82": {
+        "invoice_id": "INV-30007",
+        "vendor": "Prairie Harvest Foods Corp",
+        "date": "2024-08-16",
+        "total": "2738.52",
+        "first_seen": "2026-09-23T15:37:35.298260"
+    },
+    "d4a9555b3ad1151e3aedcb980958fd163d5e6e53aac08d2a8de64f6985f48c13": {
+        "invoice_id": "INV-30008",
+        "vendor": "VoltTech Electric Systems LLC",
+        "date": "2024-01-16",
+        "total": "87957.00",
+        "first_seen": "2026-09-23T15:38:28.354911"
+    },
+    "7bc97bffedf6b43fe9ad89ca4cd44c164042e5f71f1f5e06e310cc705f5215b7": {
+        "invoice_id": "INV-30010",
+        "vendor": "Titan Industrial Tools Corp",
+        "date": "2024-03-16",
+        "total": "4678.20",
+        "first_seen": "2026-09-23T15:45:48.491240"
+    },
+    "8e89b025a414d240a63d51754b2d1aa63a111a7ee51ec5366f7b822a2e72eb6a": {
+        "invoice_id": "INV-30011",
+        "vendor": "BioMed Scientific Solutions LLC",
+        "date": "2024-04-16",
+        "total": "7281.00",
+        "first_seen": "2026-09-23T15:45:58.444775"
+    },
+    "3366076c4c1de5649d2da196d2fac42a696496cd5f4d988a5bbf137c1b70a976": {
+        "invoice_id": "INV-30009",
+        "vendor": "TechTraders Solutions Inc.",
+        "date": "2024-02-16",
+        "total": "14355.00",
+        "first_seen": "2026-09-23T15:49:50.623314"
+    },
+    "ed0ce0ec3e6b5e5f6899081c9755dc8926f56be72d078670edf1e18a4e3f4c2b": {
+        "invoice_id": "INV-30012",
+        "vendor": "TransGlobal Logistics Corp",
+        "date": "2024-05-16",
+        "total": "8620.20",
+        "first_seen": "2026-09-23T15:49:50.693858"
+    },
+    "647fb7b35668e872a4a7bf7140502dfb1a845a65443744657accba546a3f4324": {
+        "invoice_id": "INV-30013",
+        "vendor": "Global Office Supplies Inc",
+        "date": "2024-06-16",
+        "total": "6940.80",
+        "first_seen": "2026-09-23T15:49:50.721240"
+    },
+    "f59c9843c66d09c3eff1ef1d891d12ebe9782e92fb658f7d46866f16d57e3131": {
+        "invoice_id": "INV-30014",
+        "vendor": "Apex Chemical Synthetics Inc",
+        "date": "2024-07-16",
+        "total": "9149.40",
+        "first_seen": "2026-09-23T15:49:50.756631"
+    },
+    "dd8a90d3379d27002014ad13ed5a738638bd58f82de775771b6b1f15b950833e": {
+        "invoice_id": "INV-30015",
+        "vendor": "Prairie Harvest Foods Corp",
+        "date": "2024-08-16",
+        "total": "4033.44",
+        "first_seen": "2026-09-23T15:49:50.786551"
+    },
+    "75b775de15cee767db6125c47d4062c812cf018ac72ded375e5334395fe43fa8": {
+        "invoice_id": "INV-30016",
+        "vendor": "VoltTech Electric Systems LLC",
+        "date": "2024-01-16",
+        "total": "40167.00",
+        "first_seen": "2026-09-23T15:49:50.842519"
+    },
+    "d1bd44ba84a7d65f55ce74e0abae618594e1589f57412f7d322e9d561566ec2d": {
+        "invoice_id": "INV-30017",
+        "vendor": "TechTraders Solutions Inc.",
+        "date": "2024-02-16",
+        "total": "17757.00",
+        "first_seen": "2026-09-23T15:49:50.984496"
+    },
+    "707ad71266d6677797509fe4ddb1abee710f194b4557b3643e4ee4c8450c0201": {
+        "invoice_id": "INV-30018",
+        "vendor": "Titan Industrial Tools Corp",
+        "date": "2024-03-16",
+        "total": "3393.00",
+        "first_seen": "2026-09-23T15:49:51.005759"
+    },
+    "7155e1089233d667fc35d51ba8f58e44614aba9895612a26fb8373e9da1f37e9": {
+        "invoice_id": "INV-30019",
+        "vendor": "BioMed Scientific Solutions LLC",
+        "date": "2024-04-16",
+        "total": "10953.00",
+        "first_seen": "2026-09-23T15:49:51.032742"
+    },
+    "0f84a97eed8e1f850f2b0d773fb80317c8e1b02d330905512e076be9d5d907e6": {
+        "invoice_id": "INV-30020",
+        "vendor": "TransGlobal Logistics Corp",
+        "date": "2024-05-16",
+        "total": "14538.60",
+        "first_seen": "2026-09-23T15:49:51.056367"
+    },
+    "81d7aa8fbe7adb2919cbf22a4fdec512b9238662a292ed9000bd40d43856b4f0": {
+        "invoice_id": "INV-30025",
+        "vendor": "TechTraders Solutions Inc.",
+        "date": "2024-02-16",
+        "total": "10888.20",
+        "first_seen": "2026-09-24T12:44:14.326315"
+    }
+}

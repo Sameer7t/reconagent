@@ -1,0 +1,149 @@
+{
+    "d560190200878335e9c0ad763e33f73ee080e9f0418ca1fcf0ad3fc34e283258": {
+        "invoice_id": "INV-BATCH-001",
+        "vendor": "Supplier-001",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.449576"
+    },
+    "7277cc77451597fed12ac019c6ce4c4857cecb467ca3587a64299b648ff81da4": {
+        "invoice_id": "INV-BATCH-002",
+        "vendor": "Supplier-002",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.480555"
+    },
+    "d84e4d28a9b751645e2cdd530bd7dd1683a4c87ce43558397dacf0549e54942b": {
+        "invoice_id": "INV-BATCH-003",
+        "vendor": "Supplier-003",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.482556"
+    },
+    "59510176f2b47bee6b033bc3e2a213b162ee386714b56c44df435053b0cf5c0f": {
+        "invoice_id": "INV-BATCH-004",
+        "vendor": "Supplier-004",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.489550"
+    },
+    "28151b6056ba1ebfd9d089f3bd54b4d1cccb95bae168733f524aee4c5545e3e9": {
+        "invoice_id": "INV-BATCH-005",
+        "vendor": "Supplier-005",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.496546"
+    },
+    "8ddc7ab22e853d01e7722cc746ddd9db09a8da168da47b171e82c9cacdcb73d9": {
+        "invoice_id": "INV-BATCH-006",
+        "vendor": "Supplier-006",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.498545"
+    },
+    "211f02a1b73fc607d2984a9c7571df3a4025cfc4368f3a45022116af36996205": {
+        "invoice_id": "INV-BATCH-007",
+        "vendor": "Supplier-007",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.501543"
+    },
+    "071ea16bbcdfdcd36608589de689fd1a49b53e6f4cabfb96e3a5ec3b85a2c629": {
+        "invoice_id": "INV-BATCH-008",
+        "vendor": "Supplier-008",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.510548"
+    },
+    "898b7def82d8de3968ea3afc4277caa2f41289d2f1a13d08ec1c4410e935dfb0": {
+        "invoice_id": "INV-BATCH-009",
+        "vendor": "Supplier-009",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.515535"
+    },
+    "999e041cb7a7984029d440ca36975a4f9209162b9b3e876419432d6d6bbae070": {
+        "invoice_id": "INV-BATCH-010",
+        "vendor": "Supplier-010",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.528533"
+    },
+    "fefbe881f4be674eb79f6a09327238793777a263f6ca55f19744a9bbef630a8c": {
+        "invoice_id": "INV-BATCH-011",
+        "vendor": "Supplier-011",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.532527"
+    },
+    "78f9249a77a369fb2c967c0faeb132772699e11442a2911f7860e500034b2ae5": {
+        "invoice_id": "INV-BATCH-012",
+        "vendor": "Supplier-012",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.539528"
+    },
+    "425fc0baaae275e835837d2ad43956f6682817e92c9b7138b1bebea27d490e18": {
+        "invoice_id": "INV-BATCH-013",
+        "vendor": "Supplier-013",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.545518"
+    },
+    "3f860e8df67e78ebc2926c5eb662998bcd2875c06d611106baf3a003124fc0d6": {
+        "invoice_id": "INV-BATCH-014",
+        "vendor": "Supplier-014",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.547517"
+    },
+    "a664b86ef281ad08ca3bddf3c22c0df45a7506a5e5e2628f516102ffad3e7c3e": {
+        "invoice_id": "INV-BATCH-015",
+        "vendor": "Supplier-015",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.550515"
+    },
+    "73969c7db3ba7c42c31b33a6f9666824e005f88266fdb69fde43238e00cd3420": {
+        "invoice_id": "INV-BATCH-016",
+        "vendor": "Supplier-016",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.561516"
+    },
+    "03af0912a9394b13f5ff95ce9904493ba61b380c0a67e53fc6e33b447ed4ce90": {
+        "invoice_id": "INV-BATCH-017",
+        "vendor": "Supplier-017",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.565909"
+    },
+    "d5669a9bf868b656d411761388951bab4dae33e04436aeeaec419de0ee06d6c7": {
+        "invoice_id": "INV-BATCH-018",
+        "vendor": "Supplier-018",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.573423"
+    },
+    "c5954a3c23bd5fbc76fdacfbf1fb9b1caf42d1ab89a08fafee6470a62511dd61": {
+        "invoice_id": "INV-BATCH-019",
+        "vendor": "Supplier-019",
+        "date": "",
+        "total": "1500.0",
+        "first_seen": "2026-09-20T13:41:04.579413"
+    },
+    "0b26d8e0e5cbb85261f58b284f8038c8913400483ff6504bcaa7a33ccda99327": {
+        "invoice_id": "INV-BATCH-020",
+        "vendor": "Supplier-020",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-20T13:41:04.582411"
+    },
+    "83f19d25471f6be34ec55b4e19a50ca9d0c1e6eff042a826fd419cd89c4cb22b": {
+        "invoice_id": "INV-CLEAN-01",
+        "vendor": "",
+        "date": "",
+        "total": "1000.0",
+        "first_seen": "2026-09-21T19:09:05.162593"
+    }
+}

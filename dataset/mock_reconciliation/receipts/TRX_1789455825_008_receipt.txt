@@ -1,0 +1,24 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-1290
+Delivery Date: 2023-09-07
+PO Reference: PO-1008-5544
+
+SUPPLIER: Matrix Lab Equipment
+Address: 700 Science Park Drive, Boston, MA 02108
+
+DELIVERED TO:
+GenTech BioLabs
+500 Biotech Way
+San Diego, CA 92121
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+MLE-PIP-10       Electronic Pipettes (10-100ul)      10               8
+MLE-TIP-96       Sterile Tips (96 Rack, Case)        30              30
+--------------------------------------------------------------------------------
+Notes: Box 1 damaged in transit, 2 pipettes returned to sender directly with driver.
+Receiver: Dr. Alice Vance
+================================================================================

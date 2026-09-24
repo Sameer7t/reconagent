@@ -1,0 +1,29 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70035
+Delivery Date: 2024-04-15
+PO Reference: PO-2024-0035
+Transaction ID: TRX_100_035
+
+VENDOR: BioMed Scientific Solutions LLC
+Address: 400 Discovery Way, Suite 300, Cambridge, MA 02142
+
+DELIVERED TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+BM-PIP-100       Micro-Pipette Electronic 100uL                 15              11
+BM-CEN-015       Centrifuge Tube Conical 15mL (500pk)              5               5
+BM-REA-004       RNA Extraction Reagent Kit 50 Preps             15              15
+--------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

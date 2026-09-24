@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-3341               Date: 2023-10-28
+PO Reference: PO-4029-5511
+
+VENDOR: Office Depot Partners
+120 Retail Blvd
+Orlando, FL 32801
+
+DELIVERED TO:
+Initech Software Corp
+Floor 4 Mailroom
+Austin, TX 78701
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-PAP-A4   Premium Copy Paper Ream   200            200
+------------------------------------------------------------------------
+Received By: T. Smykowski
+Status: COMPLETE
+========================================================================

@@ -1,0 +1,31 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-5612
+Invoice Date: 2023-09-15
+Payment Due Date: 2023-09-30
+PO Reference: PO-1002-3011
+
+SUPPLIER: Paramount Paper & Packaging
+Address: 440 Industrial Blvd, Suite 2, Scranton, PA 18501
+Tax ID: 22-8849201
+
+BILL TO:
+MegaCorp Distribution
+Accounts Payable
+1123 Corporate Blvd
+Dallas, TX 75201
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+PPP-RE-A4        UltraWhite A4 Copy Paper (Case)    50        $45.00  $2,250.00
+PPP-ENV-10       Standard #10 Envelopes (Box of 500) 20       $25.00    $500.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $2,750.00
+                                                       SHIPPING:         $120.00
+                                                       TAX (6.25%):      $171.88
+                                                       GRAND TOTAL:    $3,041.88
+================================================================================
+ALERT: Invoice bills for original PO quantity instead of delivered quantity (40).
+Remit payment to Chase Bank, Account Ending in 4432.

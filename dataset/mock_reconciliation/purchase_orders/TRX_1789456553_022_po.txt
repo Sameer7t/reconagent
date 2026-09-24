@@ -1,0 +1,28 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-2291-0394               Date: 2023-10-15
+
+VENDOR: Global Tech Distributors
+500 Technology Boulevard
+San Jose, CA 95110
+Tax ID: TX-112-445-9
+
+BILL TO:                             SHIP TO:
+Nexus Systems Inc                    Nexus Systems Inc
+1200 Enterprise Way                  Receiving Dock B
+Sunnyvale, CA 94089                  Sunnyvale, CA 94089
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-PRO-10   Enterprise Laptop v10     50     $800.00        $40,000.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $40,000.00
+SHIPPING & HANDLING                                          $250.00
+TAX (8.25%)                                                  $3,300.00
+GRAND TOTAL                                                  $43,550.00
+------------------------------------------------------------------------
+Payment Terms: Net 45 days
+FOB: Destination
+========================================================================

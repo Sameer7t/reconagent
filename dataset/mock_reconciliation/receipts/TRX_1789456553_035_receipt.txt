@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-1290               Date: 2023-12-22
+PO Reference: PO-6192-8839
+
+VENDOR: Heavy Iron Rental
+88 Crane Way
+Salt Lake City, UT 84101
+
+DELIVERED TO:
+Salt Lake Jobsite 4
+2000 Mountain Ridge Road
+Sandy, UT 84070
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-RENT-GEN 100kW Generator 1-Week  2              2
+------------------------------------------------------------------------
+Received By: H. Forester
+Status: DELIVERED AND RUNNING
+========================================================================

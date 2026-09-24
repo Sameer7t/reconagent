@@ -1,0 +1,22 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-8899
+Delivery Date: 2023-10-06
+PO Reference: PO-1014-6677
+
+VENDOR: Precision Parts Ltd.
+Address: 550 Machining Way, Detroit, MI 48201
+
+DELIVERED TO:
+Machining Solutions Corp
+Gary, IN 46401
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+PPL-SCW-TI       Titanium Machined Screws (100 pack) 30              25
+--------------------------------------------------------------------------------
+Notes: Delivered 25 packs of screws. 5 packs are backordered.
+Receiver: T. Collins
+================================================================================

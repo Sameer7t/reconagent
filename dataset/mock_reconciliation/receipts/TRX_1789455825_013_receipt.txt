@@ -1,0 +1,24 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-6677
+Delivery Date: 2023-10-15
+PO Reference: PO-1013-4455
+
+SUPPLIER: Vanguard Chemical Solutions
+Address: 888 Pipeline Dr, Houston, TX 77001
+
+DELIVERED TO:
+AquaPura Treatment Plants
+Warehouse North
+1190 Water Works Road
+Glendale, AZ 85301
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+VCS-PH-100       pH Neutralizer Liquid (Gallon)      50              50
+VCS-TST-02       Water Hardness Test Kit             10              10
+--------------------------------------------------------------------------------
+Received By: S. Jenkins
+================================================================================

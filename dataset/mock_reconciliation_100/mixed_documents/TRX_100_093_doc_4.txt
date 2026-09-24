@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0093
+PO Date: 2024-06-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_093
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+Tax ID: 36-4491028
+Phone: (312) 555-4400
+Contact: accounts@globalofficesupplies.com
+
+BILL TO:
+Apex Innovations Group
+Finance & Accounting
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+SHIP TO:
+Apex Innovations Group
+Attn: Receiving Dock 1
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+GO-TON-055       OEM Black Laser Toner Cartridge 10K Yield     10      $185.00       $1,850.00
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)     10       $55.00         $550.00
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair      8      $320.00       $2,560.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $4,960.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $396.80
+                                                     GRAND TOTAL:      $5,401.80
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0093 on all delivery documents and invoices.
+================================================================================

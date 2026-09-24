@@ -1,0 +1,32 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30016
+Invoice Date: 2024-01-16
+Payment Due Date: 2024-02-16
+PO Reference: PO-2024-0016
+Transaction ID: TRX_100_016
+
+VENDOR: VoltTech Electric Systems LLC
+Address: 3300 Kilowatt Way, Suite 100, Charlotte, NC 28208
+Tax ID: 56-2299104
+Remit To: Truist Bank, Acct: ******6619, Routing: ******442
+
+BILL TO:
+Alpha Research Labs LLC
+Accounts Payable Dept
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+VT-BRK-200       Molded Case Circuit Breaker 200A 3-Pole     15      $450.00       $6,750.00
+VT-TRF-075       Dry-Type Distribution Transformer 75kVA      8    $3,800.00      $30,400.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:     $37,150.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):      $2,972.00
+                                                     GRAND TOTAL:     $40,167.00
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

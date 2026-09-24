@@ -1,0 +1,23 @@
+{
+  "case_id": "CASE-0002",
+  "po_number": "PO-1002-3011",
+  "vendor": "Paramount Paper & Packaging",
+  "purchase_order": {
+    "file": "TRX_1789455825_002_po.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\purchase_orders\\TRX_1789455825_002_po.txt"
+  },
+  "receipt": {
+    "file": "TRX_1789455825_002_receipt.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\receipts\\TRX_1789455825_002_receipt.txt"
+  },
+  "invoice": {
+    "file": "TRX_1789455825_002_invoice.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\invoices\\TRX_1789455825_002_invoice.txt"
+  },
+  "matching": {
+    "receipt_found": true,
+    "invoice_found": true,
+    "receipt_score": 85,
+    "invoice_score": 85
+  }
+}

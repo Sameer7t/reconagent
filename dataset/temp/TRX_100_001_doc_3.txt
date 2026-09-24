@@ -1,0 +1,30 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70001
+Delivery Date: 2024-02-15
+PO Reference: PO-2024-0001
+Transaction ID: TRX_100_001
+
+VENDOR: TechTraders Solutions Inc.
+Address: 1024 Silicon Valley Blvd, Bldg 4A, San Jose, CA 95110
+
+DELIVERED TO:
+Alpha Research Labs LLC
+Attn: Receiving Dock B
+400 Science Parkway, Suite 101, Rochester, NY 14620
+
+Carrier: FedEx Freight Priority (Tracking #: 9812490192)
+
+----------------------------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED	 TOTAL
+----------------------------------------------------------------------------------------------------
+TT-CPU-109       Intel Core i9-13900K Processor                  5               5	 $2,800.00
+TT-RAM-032       Corsair Vengeance 32GB DDR5 RAM                10              10	 $1,200.00
+TT-SSD-002       Samsung 990 Pro 2TB NVMe SSD                   15              15	 $2,550.00
+----------------------------------------------------------------------------------------------------
+Status: Complete / No Damaged Goods Reported						SUBTOTAL:      $6,550.00
+Received By: J. Martinez (Signature on file)						SHIPPING:         $45.00
+Time of Delivery: 10:45 AM								TAX (8.0%):        $525.00
+											 GRAND TOTAL:      $7,119.00
+================================================================================

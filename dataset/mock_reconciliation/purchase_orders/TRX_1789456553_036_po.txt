@@ -1,0 +1,27 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-7721-3948               Date: 2023-12-26
+
+VENDOR: Safety Products Ltd
+100 Helmet Road
+Pittsburgh, PA 15201
+Tax ID: TX-882-991-0
+
+BILL TO:                             SHIP TO:
+Penn Steel Mills                     Penn Steel Mills
+200 Riverfront Drive                 Gate 2 Receiving
+Pittsburgh, PA 15203                 Pittsburgh, PA 15203
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-SFT-VEST High-Viz Safety Vest M    150    $15.00         $2,250.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $2,250.00
+SHIPPING & HANDLING                                          $95.00
+TAX (6%)                                                     $135.00
+GRAND TOTAL                                                  $2,480.00
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

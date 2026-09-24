@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-8832               Date: 2023-10-18
+PO Reference: PO-2291-0394
+
+VENDOR: Global Tech Distributors
+500 Technology Boulevard
+San Jose, CA 95110
+
+DELIVERED TO:
+Nexus Systems Inc
+Receiving Dock B
+Sunnyvale, CA 94089
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-PRO-10   Enterprise Laptop v10     50             40
+------------------------------------------------------------------------
+Received By: S. Jenkins
+Status: SHORTAGE - 10 UNITS BACKORDERED
+========================================================================

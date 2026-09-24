@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-3849               Date: 2023-12-07
+PO Reference: PO-3491-0029
+
+VENDOR: Office Supply Depot
+50 Depot Way
+Seattle, WA 98101
+
+DELIVERED TO:
+Cloud Solutions LLC
+Floor 12 Breakroom
+Seattle, WA 98101
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-PEN-BLK  Gel Pen Black Medium 12pk 0              50
+------------------------------------------------------------------------
+Comment: Substituted Blue Pens with Black Pens as agreed per email.
+Received By: S. Jenkins
+========================================================================

@@ -1,0 +1,40 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-2024-0063
+PO Date: 2024-08-10
+Payment Terms: Net 30
+FOB Point: Destination
+Transaction ID: TRX_100_063
+
+VENDOR: Prairie Harvest Foods Corp
+Address: 1500 Grain Terminal Rd, Omaha, NE 68102
+Tax ID: 47-8891023
+Phone: (402) 555-1234
+Contact: orders@prairieharvestfoods.com
+
+BILL TO:
+Apex Innovations Group
+Finance & Accounting
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+SHIP TO:
+Apex Innovations Group
+Attn: Receiving Dock 1
+750 Innovation Blvd, Floor 4, Seattle, WA 98101
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+PH-FLR-050       Organic Hard Red Wheat Flour 50lb Sack     10       $32.00         $320.00
+PH-OAT-025       Rolled Oats Whole Grain 25lb Bag        8       $24.00         $192.00
+PH-HNY-060       Pure Clover Raw Honey 60lb Pail        10      $195.00       $1,950.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $2,462.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $196.96
+                                                     GRAND TOTAL:      $2,703.96
+================================================================================
+Authorized Signature: _______________________ (Purchasing Dept)
+Terms & Conditions: Please reference PO-2024-0063 on all delivery documents and invoices.
+================================================================================

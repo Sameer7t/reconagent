@@ -1,0 +1,20 @@
+{
+  "case_id": "CASE-0024",
+  "po_number": "PO-4029-5511",
+  "vendor": "Office Depot Partners",
+  "purchase_order": {
+    "file": "TRX_1789456553_024_po.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\purchase_orders\\TRX_1789456553_024_po.txt"
+  },
+  "receipt": {
+    "file": "TRX_1789456553_024_receipt.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\receipts\\TRX_1789456553_024_receipt.txt"
+  },
+  "invoice": null,
+  "matching": {
+    "receipt_found": true,
+    "invoice_found": false,
+    "receipt_score": 85,
+    "invoice_score": 0
+  }
+}

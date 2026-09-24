@@ -1,0 +1,33 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1008-5544
+PO Date: 2023-09-01
+
+SUPPLIER: Matrix Lab Equipment
+Address: 700 Science Park Drive, Boston, MA 02108
+Tax ID: 88-3029104
+
+BILL TO:
+GenTech BioLabs
+Finance Dept
+500 Biotech Way
+San Diego, CA 92121
+
+SHIP TO:
+GenTech BioLabs
+Loading Dock A
+500 Biotech Way
+San Diego, CA 92121
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+MLE-PIP-10       Electronic Pipettes (10-100ul)      10       $450.00  $4,500.00
+MLE-TIP-96       Sterile Tips (96 Rack, Case)        30        $90.00  $2,700.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $7,200.00
+                                                       SHIPPING:          $95.00
+                                                       TAX (7.75%):      $558.00
+                                                       GRAND TOTAL:    $7,853.00
+================================================================================

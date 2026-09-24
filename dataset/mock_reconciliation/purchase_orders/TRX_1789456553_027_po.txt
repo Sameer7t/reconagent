@@ -1,0 +1,28 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-7023-4912               Date: 2023-11-10
+
+VENDOR: National Packaging Corp
+14 Paper Mill Road
+Atlanta, GA 30301
+Tax ID: TX-102-392-8
+
+BILL TO:                             SHIP TO:
+Logistics Hub Inc                    Logistics Hub Inc
+500 Supply Chain Way                 Receiving Bay 12
+Atlanta, GA 30312                    Atlanta, GA 30312
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-BOX-M    Medium Cardboard Box     1000   $1.20          $1,200.00
+SKU-TAPE-01  Heavy Duty Packing Tape  100    $3.50          $350.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,550.00
+SHIPPING & HANDLING                                          $180.00
+TAX (7%)                                                     $108.50
+GRAND TOTAL                                                  $1,838.50
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

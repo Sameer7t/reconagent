@@ -1,0 +1,29 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-70095-A
+Delivery Date: 2024-08-15
+PO Reference: PO-2024-0095
+Transaction ID: TRX_100_095
+
+VENDOR: Prairie Harvest Foods Corp
+Address: 1500 Grain Terminal Rd, Omaha, NE 68102
+
+DELIVERED TO:
+Beacon Health Systems Inc
+Attn: Materials Management Dock
+120 Medical Plaza, Tower East, Boston, MA 02115
+
+Carrier: FedEx Freight Delivery 1/2
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+PH-FLR-050       Organic Hard Red Wheat Flour 50lb Sack              5               2
+PH-OAT-025       Rolled Oats Whole Grain 25lb Bag               20              10
+PH-HNY-060       Pure Clover Raw Honey 60lb Pail                 5               2
+--------------------------------------------------------------------------------
+Status: Partial Delivery #1 Accepted
+Received By: J. Martinez (Signature on file)
+Time of Delivery: 10:45 AM
+================================================================================

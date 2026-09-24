@@ -1,0 +1,29 @@
+========================================================================
+INVOICE
+========================================================================
+Invoice Number: INV-9022              Date: 2023-10-19
+PO Reference: PO-2291-0394            Due Date: 2023-12-03
+
+VENDOR: Global Tech Distributors
+500 Technology Boulevard
+San Jose, CA 95110
+Remit To: Silicon Valley Bank, Acct: *******1029
+
+BILL TO:
+Nexus Systems Inc
+1200 Enterprise Way
+Sunnyvale, CA 94089
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-PRO-10   Enterprise Laptop v10     50     $800.00        $40,000.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $40,000.00
+SHIPPING & HANDLING                                          $250.00
+TAX (8.25%)                                                  $3,300.00
+TOTAL DUE                                                    $43,550.00
+------------------------------------------------------------------------
+Payment Terms: Net 45 days
+Thank you for your business!
+========================================================

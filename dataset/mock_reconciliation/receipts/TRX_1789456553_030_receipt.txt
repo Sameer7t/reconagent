@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-5555               Date: 2023-11-28
+PO Reference: PO-1234-5678
+
+VENDOR: Acme Global Industries
+123 Enterprise Drive
+Metropolis, NY 10011
+
+DELIVERED TO:
+Waystar Royco
+Receiving Dock C
+New York, NY 10036
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-WGT-99   Standard Metal Widget     1000           1000
+------------------------------------------------------------------------
+Received By: Kendall R.
+Status: COMPLETE
+========================================================================

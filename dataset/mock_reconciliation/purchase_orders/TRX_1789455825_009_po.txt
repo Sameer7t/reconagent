@@ -1,0 +1,32 @@
+================================================================================
+PURCHASE ORDER
+================================================================================
+PO Number: PO-1009-4400
+PO Date: 2023-09-15
+
+VENDOR: Global Logistics & Supply LLC
+Address: 300 Transport Way, Atlanta, GA 30301
+Tax ID: 11-4433221
+
+BILL TO:
+FastTrack Logistics
+100 Freight Lane
+Savannah, GA 31401
+
+SHIP TO:
+FastTrack Logistics
+Main Warehouse
+100 Freight Lane
+Savannah, GA 31401
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+GLS-PAL-HD       Heavy-Duty Wooden Pallets (Pack 50) 20       $300.00  $6,000.00
+GLS-STR-PL       Plastic Strapping Bands (Roll)      15        $45.00    $675.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $6,675.00
+                                                       SHIPPING:         $400.00
+                                                       TAX (6.0%):       $400.50
+                                                       GRAND TOTAL:    $7,475.50
+================================================================================

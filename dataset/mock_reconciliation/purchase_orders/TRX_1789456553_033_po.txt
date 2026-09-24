@@ -1,0 +1,28 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-4581-2291               Date: 2023-12-10
+
+VENDOR: H&M Janitorial Services
+10 Cleansing Plaza
+Denver, CO 80201
+Tax ID: TX-881-332-1
+
+BILL TO:                             SHIP TO:
+Mile High Properties                 Mile High Properties
+500 Broadway                         Main Lobby Storage
+Denver, CO 80203                     Denver, CO 80203
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-JAN-MOP  Industrial Cotton Mop     30     $22.00         $660.00
+SKU-JAN-SOAP Concentrated Floor Soap 5G15     $45.00         $675.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,335.00
+SHIPPING & HANDLING                                          $85.00
+TAX (8.81%)                                                  $117.61
+GRAND TOTAL                                                  $1,537.61
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+========================================================================

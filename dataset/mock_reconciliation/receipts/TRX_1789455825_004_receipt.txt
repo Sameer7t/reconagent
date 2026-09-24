@@ -1,0 +1,24 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-3341
+Delivery Date: 2023-08-25
+PO Reference: PO-1004-9988
+
+SUPPLIER: Vanguard Chemical Solutions
+Address: 888 Pipeline Dr, Houston, TX 77001
+
+DELIVERED TO:
+CleanWater Municipal District
+Central Treatment Facility
+10200 Colorado River Rd
+Austin, TX 78725
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+VCS-CL-55        Chlorine Liquid Drums (55 Gal)      12              12
+VCS-FL-10        Flocculant Powder Bags (50 lb)      20              20
+--------------------------------------------------------------------------------
+Received By: T. Sterling
+================================================================================

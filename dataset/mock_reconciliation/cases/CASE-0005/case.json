@@ -1,0 +1,23 @@
+{
+  "case_id": "CASE-0005",
+  "po_number": "PO-1005-7721",
+  "vendor": "Synergy Raw Materials Corp.",
+  "purchase_order": {
+    "file": "TRX_1789455825_005_po.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\purchase_orders\\TRX_1789455825_005_po.txt"
+  },
+  "receipt": {
+    "file": "TRX_1789455825_005_receipt.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\receipts\\TRX_1789455825_005_receipt.txt"
+  },
+  "invoice": {
+    "file": "TRX_1789455825_005_invoice.txt",
+    "path": "C:\\AI Engineer\\Projects\\Month 2\\AI-Powered Invoice Reconciliation & Investigation System, ReconAgent\\dataset\\mock_reconciliation\\invoices\\TRX_1789455825_005_invoice.txt"
+  },
+  "matching": {
+    "receipt_found": true,
+    "invoice_found": true,
+    "receipt_score": 85,
+    "invoice_score": 85
+  }
+}

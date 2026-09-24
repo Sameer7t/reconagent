@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-4839               Date: 2023-12-28
+PO Reference: PO-7721-3948
+
+VENDOR: Safety Products Ltd
+100 Helmet Road
+Pittsburgh, PA 15201
+
+DELIVERED TO:
+Penn Steel Mills
+Gate 2 Receiving
+Pittsburgh, PA 15203
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-SFT-VEST High-Viz Safety Vest M    150            150
+------------------------------------------------------------------------
+Received By: S. Kowalski
+Status: COMPLETE
+========================================================================

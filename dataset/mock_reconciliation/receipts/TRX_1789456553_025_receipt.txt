@@ -1,0 +1,24 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-9921               Date: 2023-11-03
+PO Reference: PO-5002-1182
+
+VENDOR: Genesis Construction Materials
+220 Concrete Way
+Phoenix, AZ 85001
+
+DELIVERED TO:
+BuildCorp Site 9
+1001 North Loop
+Phoenix, AZ 85012
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-CMNT-01  Premium Cement Mix (Sack) 50             50
+SKU-REBR-02  Steel Rebar Grade 60 20ft 100            100
+------------------------------------------------------------------------
+Received By: G. Miller
+Status: SIGNED & VERIFIED
+========================================================================

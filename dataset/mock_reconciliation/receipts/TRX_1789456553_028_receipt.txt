@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-7382               Date: 2023-11-18
+PO Reference: PO-8120-4491
+
+VENDOR: Office Furniture Outfitters
+808 Design Row
+New York, NY 10001
+
+DELIVERED TO:
+Fintech Advisory Group
+Suite 4500 Reception
+New York, NY 10166
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-CHAIR-05 Ergonomic Office Chair    20             15
+------------------------------------------------------------------------
+Comment: 5 Chairs damaged during transit, returned to depot.
+Received By: A. Wong
+========================================================================

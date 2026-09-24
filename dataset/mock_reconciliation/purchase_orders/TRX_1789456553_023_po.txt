@@ -1,0 +1,28 @@
+========================================================================
+PURCHASE ORDER
+========================================================================
+PO Number: PO-3012-9921               Date: 2023-10-20
+
+VENDOR: BioLab Chemical Supplies
+777 Research Parkway
+Boston, MA 02111
+Tax ID: TX-445-992-0
+
+BILL TO:                             SHIP TO:
+PharmaHealth Labs                    PharmaHealth Labs
+100 Science Park Drive               Receiving Department
+Cambridge, MA 02139                  Cambridge, MA 02139
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY    UNIT PRICE     TOTAL
+------------------------------------------------------------------------
+SKU-CHEM-05  Reagent Acetone 1L        100    $15.50         $1,550.00
+------------------------------------------------------------------------
+SUBTOTAL                                                     $1,550.00
+SHIPPING & HANDLING                                          $120.00
+TAX (5%)                                                     $77.50
+GRAND TOTAL                                                  $1,747.50
+------------------------------------------------------------------------
+Payment Terms: Net 30 days
+FOB: Shipping Point
+========================================================================

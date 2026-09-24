@@ -1,0 +1,23 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-2210               Date: 2023-11-07
+PO Reference: PO-6012-8839
+
+VENDOR: ElectroCorp Parts Inc
+90 Silicon Lane, Bldg 2
+Austin, TX 78758
+
+DELIVERED TO:
+Future Robotics Corp
+Dock A, Lab 4
+Austin, TX 78759
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-RES-12K  12k Ohm Resistor 1/4W    0              500
+------------------------------------------------------------------------
+Comment: Substituted SKU-RES-10K with SKU-RES-12K due to stockout.
+Received By: K. Peterson
+========================================================================

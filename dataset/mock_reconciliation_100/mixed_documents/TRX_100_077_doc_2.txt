@@ -1,0 +1,33 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-30077
+Invoice Date: 2024-06-16
+Payment Due Date: 2024-07-16
+PO Reference: PO-2024-0077
+Transaction ID: TRX_100_077
+
+VENDOR: Global Office Supplies Inc
+Address: 2500 Enterprise Ave, Floor 3, Chicago, IL 60606
+Tax ID: 36-4491028
+Remit To: Northern Trust, Acct: ******1982, Routing: ******340
+
+BILL TO:
+Omega Engineering Corp
+Procurement & Invoicing
+1800 Technology Drive, Building 3, Austin, TX 78758
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
+--------------------------------------------------------------------------------
+GO-TON-055-SUB   OEM Black Laser Toner Cartridge 10K Yield (Alternate Specification)     12      $185.00       $2,220.00
+GO-PAP-A40       Multipurpose Copy Paper 20lb (10-Ream Case)     10       $55.00         $550.00
+GO-CHR-ERG       High-Back Ergonomic Mesh Task Chair     15      $320.00       $4,800.00
+--------------------------------------------------------------------------------
+                                                        SUBTOTAL:      $7,570.00
+                                                        SHIPPING:         $45.00
+                                                      TAX (8.0%):        $605.60
+                                                     GRAND TOTAL:      $8,220.60
+================================================================================
+Payment Terms: Net 30. Thank you for your business!
+================================================================================

@@ -1,0 +1,24 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-4921               Date: 2023-10-14
+PO Reference: PO-1002-3849
+
+VENDOR: Apex Industrial Solutions Ltd
+100 Industrial Parkway, Suite 4B
+Chicago, IL 60611
+
+DELIVERED TO:
+Global Manufacturing Corp
+Warehouse Gate 3
+Detroit, MI 48201
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-8829     Heavy Duty Brass Valve    10             10
+SKU-1029     Steel Flange 4-inch       25             25
+------------------------------------------------------------------------
+Received By: M. Alvarez (Warehouse Manager)
+Status: COMPLETE / NO DAMAGE
+========================================================================

@@ -1,0 +1,23 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: DR-9941
+Delivery Date: 2023-10-22
+PO Reference: PO-1007-1122
+
+VENDOR: OmniCorp Manufacturing Group
+Address: 1212 Enterprise Row, Suite 10, Chicago, IL 60601
+
+DELIVERED TO:
+Stellar Engineering Inc
+1900 Industry Road
+Kent, WA 98032
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+OMG-ST-22        Standard Steel Tubing (10ft)       100             100
+OMG-CP-44        Copper Coupling Joints 1"          250             250
+--------------------------------------------------------------------------------
+Signature: T. Henderson (Warehouse Manager)
+================================================================================

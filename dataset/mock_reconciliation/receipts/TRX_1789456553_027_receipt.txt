@@ -1,0 +1,24 @@
+========================================================================
+DELIVERY RECEIPT
+========================================================================
+Receipt Number: REC-3829               Date: 2023-11-12
+PO Reference: PO-7023-4912
+
+VENDOR: National Packaging Corp
+14 Paper Mill Road
+Atlanta, GA 30301
+
+DELIVERED TO:
+Logistics Hub Inc
+Receiving Bay 12
+Atlanta, GA 30312
+
+------------------------------------------------------------------------
+SKU          DESCRIPTION              QTY ORDERED    QTY RECEIVED
+------------------------------------------------------------------------
+SKU-BOX-M    Medium Cardboard Box     1000           1000
+SKU-TAPE-01  Heavy Duty Packing Tape  100            100
+------------------------------------------------------------------------
+Received By: L. Vance
+Status: COMPLETE
+========================================================================

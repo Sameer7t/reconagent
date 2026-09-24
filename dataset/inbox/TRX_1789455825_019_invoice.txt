@@ -1,0 +1,28 @@
+================================================================================
+INVOICE
+================================================================================
+Invoice Number: INV-6678
+Invoice Date: 2023-09-20
+PO Reference: PO-1019-2233
+
+VENDOR: Dynamic Office Essentials
+Address: 820 Cubicle Lane, Dallas, TX 75201
+Tax ID: 44-5566778
+
+BILL TO:
+National Office Space Inc
+Accounts Payable
+1200 Broadway Ave
+New York, NY 10001
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY    UNIT PRICE     TOTAL
+--------------------------------------------------------------------------------
+DOE-WST-01       Under-Desk Wastebasket (Black)      50        $15.00    $750.00
+DOE-ORG-02       Desk Organizer Tray (Silver)        50        $20.00  $1,000.00
+--------------------------------------------------------------------------------
+                                                       SUBTOTAL:       $1,750.00
+                                                       SHIPPING:          $80.00
+                                                       TAX (8.875%):     $155.31
+                                                       GRAND TOTAL:    $1,985.31
+================================================================================

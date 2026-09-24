@@ -1,0 +1,23 @@
+================================================================================
+DELIVERY RECEIPT
+================================================================================
+Receipt Number: REC-2234
+Delivery Date: 2023-11-08
+PO Reference: PO-1016-8899
+
+SUPPLIER: Horizon Electrical Systems
+Address: 120 Sparky Lane, Phoenix, AZ 85001
+
+DELIVERED TO:
+PowerGrid Partners
+Substation Yard 9
+100 High Voltage Hwy
+Boulder, CO 80301
+
+--------------------------------------------------------------------------------
+SKU / ITEM       DESCRIPTION                        QTY ORDERED   QTY DELIVERED
+--------------------------------------------------------------------------------
+HES-CB-TRF       Grid Grade Transformer Block         2               2
+--------------------------------------------------------------------------------
+Receiver Signature: K. Simmons
+================================================================================
