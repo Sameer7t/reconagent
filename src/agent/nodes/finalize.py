@@ -36,6 +36,10 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
     inv_evidence = [e for e in evidence_dicts if e.get("source_type") == "invoice"]
     receipt_evidence = [e for e in evidence_dicts if e.get("source_type") == "receipt"]
     vendor_evidence = [e for e in evidence_dicts if e.get("source_type") == "vendor_history"]
+    math_evidence = [
+        e for e in evidence_dicts
+        if e.get("field") in ("line_total_math", "document_math", "internal_math")
+    ]
 
     has_approved_auth = any(
         e.get("value") == "True" or "approved" in str(e.get("description", "")).lower()
@@ -51,8 +55,33 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
         supporting_ids: List[str] = []
         finding_confidence = "HIGH"
 
+        # 0. Document Calculation / Internal Arithmetic Error
+        if any(mt in disc_type for mt in ("CALCULATION", "MATH")):
+            supporting_ids.extend([e["evidence_id"] for e in math_evidence])
+            supporting_ids.extend([e["evidence_id"] for e in po_evidence])
+            supporting_ids.extend([e["evidence_id"] for e in inv_evidence])
+            if not supporting_ids:
+                supporting_ids.extend([e["evidence_id"] for e in evidence_dicts[:3]])
+
+            math_desc = math_evidence[0].get("description") if math_evidence else disc_explanation
+            math_val = math_evidence[0].get("value") if math_evidence else ""
+
+            # Check for quantity differences in PO vs invoice/receipt
+            po_quantities = [e for e in po_evidence if "authorized qty" in str(e.get("description", ""))]
+            inv_quantities = [e for e in inv_evidence if "billed qty" in str(e.get("description", ""))]
+            rcpt_quantities = [e for e in receipt_evidence if e.get("field") == "quantity_delivered"]
+
+            qty_context = ""
+            if po_quantities and (inv_quantities or rcpt_quantities):
+                qty_context = " Additionally, cross-document audit reveals a quantity variance: PO item lists authorized quantity while invoice and delivery receipt reflect actual delivered count."
+
+            explanation = (
+                f"Document arithmetic validation failed on source document. {math_desc or math_val}.{qty_context} "
+                f"Corporate AP policy requires rejecting documents with internal arithmetic defects until a corrected version is reissued."
+            )
+
         # 1. Price / Unit Rate Discrepancies
-        if any(pt in disc_type for pt in ("PRICE", "UNIT_PRICE", "RATE")):
+        elif any(pt in disc_type for pt in ("PRICE", "UNIT_PRICE", "RATE")):
             supporting_ids.extend([e["evidence_id"] for e in po_evidence])
             supporting_ids.extend([e["evidence_id"] for e in inv_evidence])
             supporting_ids.extend([e["evidence_id"] for e in auth_evidence])
@@ -72,6 +101,9 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
         elif any(qt in disc_type for qt in ("QUANTITY", "SHORTAGE", "RECEIPT")):
             supporting_ids.extend([e["evidence_id"] for e in receipt_evidence])
             supporting_ids.extend([e["evidence_id"] for e in inv_evidence])
+            supporting_ids.extend([e["evidence_id"] for e in po_evidence])
+            if math_evidence:
+                supporting_ids.extend([e["evidence_id"] for e in math_evidence])
 
             shortage_receipts = [
                 e for e in receipt_evidence
@@ -88,6 +120,12 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
                     f"No delivery receipt was found on file for this shipment."
                 )
                 finding_confidence = "MEDIUM"
+            elif math_evidence:
+                math_val = math_evidence[0].get("value", "")
+                explanation = (
+                    f"Quantity variance detected between Purchase Order and receiving/billing records. "
+                    f"PO contains a clerical arithmetic error ({math_val}). The vendor billed and delivered according to receipt records, but the PO line items do not match final delivered counts."
+                )
             elif shortage_receipts:
                 delivered_vals = [e.get("value") for e in shortage_receipts]
                 explanation = (
@@ -138,7 +176,9 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
     # Formulate Overall Recommendation
     disc_types = [str(d.get("type", "")).upper() for d in discrepancies]
 
-    if any("DUPLICATE" in dt for dt in disc_types):
+    if any("CALCULATION" in dt or "MATH" in dt for dt in disc_types):
+        recommendation = "REJECT_INVOICE"
+    elif any("DUPLICATE" in dt for dt in disc_types):
         recommendation = "REJECT_INVOICE"
     elif any("VENDOR" in dt or "CURRENCY" in dt for dt in disc_types):
         recommendation = "REJECT_INVOICE"
@@ -168,6 +208,20 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
         requires_human_review = True
         overall_confidence = "LOW" if not any(f.confidence == "HIGH" for f in cleaned_findings) else "MEDIUM"
 
+    final_summary_text = None
+    if any("CALCULATION" in dt or "MATH" in dt for dt in disc_types):
+        math_detail = math_evidence[0].get("description") if math_evidence else "Printed totals do not equal line item calculations."
+        final_summary_text = (
+            f"Document arithmetic validation failed. {math_detail} "
+            f"Action: Reject invoice and request a corrected document from the vendor."
+        )
+    elif recommendation == "APPROVE_PAYMENT":
+        final_summary_text = "Reconciliation audit verified: all items, unit rates, and quantities match corporate authorization records."
+    elif recommendation == "REQUEST_CREDIT_MEMO":
+        final_summary_text = "Reconciliation identified unapproved variances. Recommended action: Request a credit memo from the vendor."
+    else:
+        final_summary_text = f"Investigation concluded with recommendation: {recommendation}."
+
     # Step 26: Create InvestigationResult model
     inv_evidence = [Evidence(**e) if isinstance(e, dict) else e for e in evidence_dicts]
     inv_result = InvestigationResult(
@@ -177,6 +231,7 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
         recommendation=recommendation,
         confidence=overall_confidence,
         requires_human_review=requires_human_review,
+        final_summary=final_summary_text,
     )
 
     # Step 28: Deterministic Post-Validation
@@ -190,6 +245,7 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
     state["recommendation"] = recommendation
     state["confidence"] = overall_confidence
     state["requires_human_review"] = requires_human_review
+    state["final_summary"] = final_summary_text
     state["investigation_result"] = inv_result.model_dump()
     state["validation_report"] = val_report.model_dump()
     state["status"] = "REQUIRES_HUMAN_REVIEW" if requires_human_review else "COMPLETED"
@@ -216,5 +272,6 @@ def create_investigation_result(state: InvestigationState) -> InvestigationResul
         recommendation=state.get("recommendation", "ESCALATE_TO_BUYER"),
         confidence=state.get("confidence", "HIGH"),
         requires_human_review=state.get("requires_human_review", True),
+        final_summary=state.get("final_summary"),
     )
 

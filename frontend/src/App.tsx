@@ -36,10 +36,10 @@ export const App: React.FC = () => {
     }
     const total = cases.length;
     const matched = cases.filter(isCaseCleanMatched).length;
-    const discrepancies = cases.filter(doesCaseHaveDiscrepancy).length;
     const underReview = cases.filter(
       (c) => Boolean(c.requires_human_review) || c.status === 'PENDING_REVIEW' || c.status === 'NEEDS_REVIEW' || c.status === 'HUMAN_REVIEW'
     ).length;
+    const discrepancies = cases.filter(doesCaseHaveDiscrepancy).length;
 
     return {
       total_cases: total,
@@ -325,15 +325,7 @@ export const App: React.FC = () => {
         let flaggedReason = '';
         if (hasCalculationError) {
           const calcFinding = findingsList.find((f: any) => f.discrepancy_type === 'CALCULATION_ERROR' || f.discrepancy_type === 'INTERNAL_MATH_ERROR');
-          const rawExpl = calcFinding?.explanation || '';
-          if (rawExpl) {
-            flaggedReason = rawExpl
-              .replace(/Investigation was stopped because the document itself has arithmetic errors\.\s*/i, '')
-              .replace(/Required action:\s*/i, 'Action: ')
-              .trim();
-          } else {
-            flaggedReason = 'Document validation failed: Itemized line calculations do not match the printed document total.';
-          }
+          flaggedReason = calcFinding?.explanation || 'Document calculation error: Itemized charges, tax, and shipping do not match the printed total.';
         } else if (findingsList.length > 0 && findingsList[0]?.explanation) {
           flaggedReason = findingsList[0].explanation;
         } else if (isCleanMatch) {
@@ -350,11 +342,11 @@ export const App: React.FC = () => {
 
         // Short-form, non-technical plain English conclusion
         let agentConclusion = '';
-        if (hasCalculationError) {
-          const docName = normalizedThreeWay.receipt_id || normalizedThreeWay.invoice_id || normalizedThreeWay.po_id || 'source document';
-          agentConclusion = `Document arithmetic validation failed on ${docName}. The printed total does not equal the itemized calculation, so the invoice cannot be authorized. Recommended action: Reject invoice and request a corrected document from ${normalizedThreeWay.vendor_name || 'the vendor'}.`;
-        } else if (invDetail?.final_summary && !invDetail.final_summary.startsWith('=== INVESTIGATION REPORT:')) {
+        if (invDetail?.final_summary && !invDetail.final_summary.startsWith('=== INVESTIGATION REPORT:')) {
           agentConclusion = invDetail.final_summary;
+        } else if (hasCalculationError) {
+          const docName = normalizedThreeWay.po_id || normalizedThreeWay.invoice_id || 'source document';
+          agentConclusion = `Document arithmetic error on ${docName}. The printed total does not equal itemized calculations, so the invoice cannot be authorized. Recommended action: Reject invoice and request a corrected document from ${normalizedThreeWay.vendor_name || 'the vendor'}.`;
         } else if (isCleanMatch) {
           agentConclusion = `Clean 3-way match verified. Line items, unit rates, quantities, and totals reconcile with 0 discrepancy. Approved for automated payment release.`;
         } else if (isQuantityMismatch) {
@@ -395,23 +387,46 @@ export const App: React.FC = () => {
 
         // Investigation Steps tailored for non-technical users
         let dynamicSteps = [];
-        if (hasCalculationError) {
+        if (invDetail?.events && invDetail.events.length > 0) {
+          dynamicSteps = invDetail.events.map((ev: any, idx: number) => {
+            const rawTool = ev.tool_name || ev.action || 'Audit Tool';
+            let findingsStr = '';
+            if (typeof ev.result === 'object' && ev.result !== null) {
+              findingsStr = ev.result.summary || ev.result.error_detail || ev.result.details || JSON.stringify(ev.result);
+            } else if (typeof ev.result === 'string') {
+              findingsStr = ev.result;
+            } else {
+              findingsStr = `Executed ${rawTool}`;
+            }
+
+            const cleanTool = rawTool
+              .replace(/_/g, ' ')
+              .replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+            return {
+              step: idx + 1,
+              action: cleanTool,
+              tool: cleanTool,
+              findings: findingsStr,
+            };
+          });
+        } else if (hasCalculationError) {
           dynamicSteps = [
             {
               step: 1,
-              action: 'Document Arithmetic Audit',
+              action: 'Document Math Validation',
               tool: 'Pre-Reconciliation Check',
-              findings: `Audited arithmetic across all line items and document totals. Detected calculation mismatch where printed line totals do not equal Quantity × Unit Price.`,
+              findings: `Audited arithmetic across line items and document totals. Detected calculation mismatch where printed line totals do not equal Quantity × Unit Price.`,
             },
             {
               step: 2,
-              action: 'Document Integrity Verification',
+              action: 'Multi-Way Discrepancy Cross-Check',
               tool: 'Validation Policy',
-              findings: `Source document contains an unresolved arithmetic defect. Corporate AP policy prohibits paying invoices against mathematically invalid source documents.`,
+              findings: `Source document contains an unresolved arithmetic defect. Investigated ordered vs billed vs delivered quantities.`,
             },
             {
               step: 3,
-              action: 'Remediation Recommendation',
+              action: 'Settlement Recommendation',
               tool: 'Resolution Policy',
               findings: `Marked invoice for rejection and requested a corrected document from ${normalizedThreeWay.vendor_name || 'the vendor'}.`,
             },
@@ -454,41 +469,12 @@ export const App: React.FC = () => {
           transaction_id: `TXN-${selectedCaseId}`,
           flagged_reason: flaggedReason,
           investigation_steps: dynamicSteps,
-          evidence_citations: evidenceList.map((e: any) => {
-            let fieldStr = e.field || 'unit_price';
-            let valStr = String(e.value || '—');
-            let notesStr = e.description || '';
-
-            // Clean up any raw internal python dictionary dumps or internal_math labels
-            if (fieldStr === 'internal_math' || valStr.includes('sum_line_totals') || valStr.startsWith('{')) {
-              fieldStr = 'Line Total Math';
-              if (notesStr && notesStr.includes('calculated') && notesStr.includes('reported')) {
-                const match = notesStr.match(/calculated\s+([\d\.]+)\s+vs\s+reported\s+([\d\.]+)/i);
-                if (match) {
-                  valStr = `Printed $${Number(match[2]).toFixed(2)} vs Calculated $${Number(match[1]).toFixed(2)}`;
-                } else {
-                  valStr = 'Arithmetic Mismatch';
-                }
-              } else if (notesStr && notesStr.includes('calculated') && notesStr.includes('printed')) {
-                const match = notesStr.match(/calculated\s+\$?([\d\.]+)\s+vs\s+printed(?:\s+on\s+document)?\s+\$?([\d\.]+)/i);
-                if (match) {
-                  valStr = `Printed $${Number(match[2]).toFixed(2)} vs Calculated $${Number(match[1]).toFixed(2)}`;
-                } else {
-                  valStr = 'Arithmetic Mismatch';
-                }
-              } else {
-                valStr = 'Printed line total does not equal calculated sum';
-              }
-              notesStr = 'Document arithmetic verification failed on itemized calculation';
-            }
-
-            return {
-              document: e.source_id || '',
-              field: fieldStr,
-              value: valStr,
-              notes: notesStr,
-            };
-          }),
+          evidence_citations: evidenceList.map((e: any) => ({
+            document: e.source_id || '',
+            field: e.field || 'unit_price',
+            value: String(e.value || '—'),
+            notes: e.description || '',
+          })),
           agent_conclusion: agentConclusion,
           agent_recommendation:
             caseDetail?.recommendation ||
@@ -496,10 +482,7 @@ export const App: React.FC = () => {
             (isMatched ? 'APPROVE_PAYMENT' : 'REQUEST_CREDIT_MEMO'),
           confidence_score: dynamicScore,
           provenance: {
-            finding: (hasCalculationError
-              ? (findingsList[0]?.explanation || 'Document validation failed due to internal arithmetic discrepancy.')
-              : (findingsList[0]?.explanation || (hasPo && hasInv ? 'Unapproved supplier rate hike over purchase order.' : 'Incomplete document triplet comparison.')))
-              .replace(/Investigation was stopped because the document itself has arithmetic errors\.\s*/i, ''),
+            finding: findingsList[0]?.explanation || (hasPo && hasInv ? 'Unapproved supplier rate hike over purchase order.' : 'Incomplete document triplet comparison.'),
             variance_type: isMatched ? 'MATCHED' : (hasPo && hasInv ? (isQuantityMismatch ? 'QUANTITY_SHORTAGE' : 'PRICE_MISMATCH') : 'MISSING_DOCUMENTS'),
             po_field: {
               label: 'Authorized Unit Price on PO',
@@ -672,13 +655,13 @@ export const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Master-Detail Layout: 1/3 (33.33%) Left, 2/3 (66.67%) Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0 overflow-hidden">
-          {/* Left Column (1/3 Width = 33.33%): Recent Cases Table */}
+        {/* Master-Detail Layout: Both Left & Right Exactly Fit Screen Height */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0 overflow-hidden">
+          {/* Left Column (Equal Size): Recent Cases Table */}
           <div
             className={`${
               mobileTab === 'DIRECTORY' ? 'flex' : 'hidden'
-            } lg:flex lg:col-span-4 h-full flex-col min-h-0 overflow-hidden`}
+            } lg:flex h-full flex-col min-h-0 overflow-hidden`}
           >
             <CasesTable
               cases={cases}
@@ -686,29 +669,14 @@ export const App: React.FC = () => {
               onSelectCase={handleSelectCase}
               activeQuickFilter={activeQuickFilter}
               onClearQuickFilter={() => setActiveQuickFilter('ALL')}
-              onViewDoc={handleViewDoc}
-              selectedCaseDetails={
-                threeWayData
-                  ? {
-                      po_file: threeWayData.po_file_name || selectedCaseSummary?.po_file,
-                      invoice_file: threeWayData.invoice_file_name || selectedCaseSummary?.invoice_file,
-                      receipt_files: threeWayData.receipt_file_name
-                        ? [threeWayData.receipt_file_name]
-                        : selectedCaseSummary?.receipt_files,
-                      po_file_path: threeWayData.po_file_path,
-                      invoice_file_path: threeWayData.invoice_file_path,
-                      receipt_file_path: threeWayData.receipt_file_path,
-                    }
-                  : null
-              }
             />
           </div>
 
-          {/* Right Column (2/3 Width = 66.67%): Full Case Details View */}
+          {/* Right Column (Equal Size): Full Case Details View */}
           <div
             className={`${
               mobileTab === 'DETAILS' ? 'flex' : 'hidden'
-            } lg:flex lg:col-span-8 h-full flex-col min-h-0 overflow-y-auto pr-1 pb-1`}
+            } lg:flex h-full flex-col min-h-0 overflow-y-auto pr-1 pb-1`}
           >
             {selectedCaseSummary && threeWayData && investigationData ? (
               <CaseDetailView

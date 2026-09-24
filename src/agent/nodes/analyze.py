@@ -106,6 +106,82 @@ def _deterministic_analyze(state: InvestigationState) -> AgentAction:
     has_receipt_evidence = any(e.get("source_type") == "receipt" for e in evidence)
 
     # -------------------------------------------------------------
+    # PATHWAY 0: DOCUMENT CALCULATION / INTERNAL MATH ERROR
+    # Target: verify_document_arithmetic -> PO -> Invoice -> Receipt
+    # Synthesizes both calculation defects and document discrepancies.
+    # -------------------------------------------------------------
+    is_calc_issue = any("CALCULATION" in dt or "MATH" in dt for dt in disc_types)
+    if is_calc_issue:
+        # Determine which document has math error
+        calc_docs = []
+        for d in discrepancies:
+            dtype = str(d.get("type", "")).upper()
+            if "CALCULATION" in dtype or "MATH" in dtype:
+                calc_docs.extend(d.get("document_ids", []))
+
+        po_flagged = any("PO" in cd.upper() or cd == po_id for cd in calc_docs) if calc_docs else True
+        inv_flagged = any("INV" in cd.upper() or cd == inv_id for cd in calc_docs)
+
+        if "verify_document_arithmetic" in allowed_tools:
+            if po_flagged and po_id:
+                called_po_math = any(
+                    tc.get("tool") == "verify_document_arithmetic"
+                    and (tc.get("arguments", {}).get("document_type") in ("po", "purchase_order"))
+                    for tc in tool_calls
+                )
+                if not called_po_math:
+                    return AgentAction(
+                        action="investigate",
+                        reason=f"Validating mathematical correctness and line calculations for Purchase Order {po_id}.",
+                        tool="verify_document_arithmetic",
+                        arguments={"document_type": "purchase_order", "document_id": po_id},
+                    )
+
+            if inv_flagged and inv_id:
+                called_inv_math = any(
+                    tc.get("tool") == "verify_document_arithmetic"
+                    and (tc.get("arguments", {}).get("document_type") in ("inv", "invoice"))
+                    for tc in tool_calls
+                )
+                if not called_inv_math:
+                    return AgentAction(
+                        action="investigate",
+                        reason=f"Validating mathematical correctness and line calculations for Invoice {inv_id}.",
+                        tool="verify_document_arithmetic",
+                        arguments={"document_type": "invoice", "document_id": inv_id},
+                    )
+
+        # Cross-examine case documents so agent can explain quantity or rate differences too
+        if "get_purchase_order" in allowed_tools and po_id and "get_purchase_order" not in executed_tools:
+            return AgentAction(
+                action="investigate",
+                reason=f"Inspecting purchase order {po_id} to compare authorized quantities and rates against billed amounts.",
+                tool="get_purchase_order",
+                arguments={"po_id": po_id},
+            )
+
+        if "get_invoice" in allowed_tools and inv_id and "get_invoice" not in executed_tools:
+            return AgentAction(
+                action="investigate",
+                reason=f"Inspecting billed quantities and item lines on invoice {inv_id}.",
+                tool="get_invoice",
+                arguments={"invoice_id": inv_id},
+            )
+
+        if "get_receipt" in allowed_tools and receipt_ids and "get_receipt" not in executed_tools:
+            return AgentAction(
+                action="investigate",
+                reason=f"Checking physical receipt records {receipt_ids[0]} to verify actual delivered quantities.",
+                tool="get_receipt",
+                arguments={"receipt_id": receipt_ids[0]},
+            )
+
+        return AgentAction(
+            action="finish",
+            reason="Completed audit: verified document arithmetic and cross-referenced lines across PO, Invoice, and Receipts.",
+        )
+
+    # -------------------------------------------------------------
     # PATHWAY A: PRICE MISMATCH / UNIT RATE (Steps 34 & 35)
     # Target: PO -> check authorization -> vendor history
     # Never query receipts! Stop immediately if authorization is found.

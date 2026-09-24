@@ -203,5 +203,78 @@ def _convert_tool_result_to_evidence(
             description=desc
         ))
 
+    elif tool_name == "verify_document_arithmetic":
+        doc_type = result.get("document_type") or arguments.get("document_type", "document")
+        doc_id = result.get("document_id") or arguments.get("document_id", "")
+        is_valid = result.get("is_valid", False)
+        failed_lines = result.get("failed_lines", [])
+
+        if not result.get("found", True) or status == "NOT_FOUND":
+            cnt += 1
+            evidence_items.append(Evidence(
+                evidence_id=f"EVID-{cnt:03d}",
+                source_type=doc_type,
+                source_id=doc_id,
+                field="document_status",
+                value="NOT_FOUND",
+                description=f"{doc_type.replace('_', ' ').title()} {doc_id} was not found on file for arithmetic verification."
+            ))
+        elif failed_lines:
+            first_fail = failed_lines[0]
+            item_desc = first_fail.get("description") or first_fail.get("product_code") or "Item"
+            rep_val = first_fail.get("reported_line_total")
+            calc_val = first_fail.get("calculated_line_total")
+
+            try:
+                rep_str = f"${float(rep_val):.2f}" if rep_val is not None else "N/A"
+            except (ValueError, TypeError):
+                rep_str = str(rep_val or "N/A")
+
+            try:
+                calc_str = f"${float(calc_val):.2f}" if calc_val is not None else "N/A"
+            except (ValueError, TypeError):
+                calc_str = str(calc_val or "N/A")
+
+            cnt += 1
+            evidence_items.append(Evidence(
+                evidence_id=f"EVID-{cnt:03d}",
+                source_type=doc_type,
+                source_id=doc_id,
+                field="line_total_math",
+                value=f"Printed {rep_str} vs Calculated {calc_str}",
+                description=f"{doc_type.replace('_', ' ').title()} {doc_id} line '{item_desc}' math mismatch: calculated {calc_str} vs printed {rep_str}."
+            ))
+        else:
+            resolved = result.get("resolved_totals") or {}
+            calc_gt = resolved.get("calculated_grand_total") or resolved.get("calculated_subtotal")
+            rep_gt = resolved.get("reported_grand_total") or resolved.get("reported_subtotal")
+
+            try:
+                calc_gt_str = f"${float(calc_gt):.2f}" if calc_gt is not None else "N/A"
+            except (ValueError, TypeError):
+                calc_gt_str = str(calc_gt or "N/A")
+
+            try:
+                rep_gt_str = f"${float(rep_gt):.2f}" if rep_gt is not None else "N/A"
+            except (ValueError, TypeError):
+                rep_gt_str = str(rep_gt or "N/A")
+
+            cnt += 1
+            if is_valid:
+                val_text = f"Verified Valid ({calc_gt_str})"
+                desc_text = f"{doc_type.replace('_', ' ').title()} {doc_id} arithmetic verified: item totals and document summary match."
+            else:
+                val_text = f"Printed {rep_gt_str} vs Calculated {calc_gt_str}"
+                desc_text = f"{doc_type.replace('_', ' ').title()} {doc_id} total arithmetic mismatch: calculated {calc_gt_str} vs printed {rep_gt_str}."
+
+            evidence_items.append(Evidence(
+                evidence_id=f"EVID-{cnt:03d}",
+                source_type=doc_type,
+                source_id=doc_id,
+                field="document_math",
+                value=val_text,
+                description=desc_text,
+            ))
+
     return evidence_items
 

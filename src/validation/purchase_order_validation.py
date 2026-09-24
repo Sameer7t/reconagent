@@ -62,7 +62,7 @@ def verify_po_line_items(items: List[Dict[str, Any]]) -> Tuple[List[Dict[str, An
         # Support both PO schema naming (discount/tax) and aliases (unit_discount/unit_tax)
         line_discount = to_decimal(item.get("discount") or item.get("unit_discount")) or Decimal("0.00")
         line_tax = to_decimal(item.get("tax") or item.get("unit_tax")) or Decimal("0.00")
-        line_total = to_decimal(item.get("line_total"))
+        line_total = to_decimal(item.get("line_total") or item.get("total_price") or item.get("total"))
 
         item_audit = {
             "index": idx,
@@ -141,14 +141,14 @@ def verify_purchase_order_math(po_data: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     try:
-        items = po_data.get("items") or []
+        items = po_data.get("items") or po_data.get("lines") or []
         reported_total_qty = to_decimal(po_data.get("total_quantity"))
         subtotal = to_decimal(po_data.get("subtotal"))
         doc_discount = to_decimal(po_data.get("discount") or po_data.get("total_discount")) or Decimal("0.00")
         doc_tax = to_decimal(po_data.get("tax") or po_data.get("total_tax")) or Decimal("0.00")
         shipping = to_decimal(po_data.get("shipping")) or Decimal("0.00")
         round_adj = to_decimal(po_data.get("rounding_adjustment") or po_data.get("round_adjustment")) or Decimal("0.00")
-        grand_total = to_decimal(po_data.get("total"))
+        grand_total = to_decimal(po_data.get("total") or po_data.get("total_amount") or po_data.get("grand_total"))
 
         # Score Weight Components (Max: 100)
         score = Decimal("0.0")

@@ -329,6 +329,85 @@ def test_registry_validation_and_case_scoping():
     print("  PASS: test_registry_validation_and_case_scoping")
 
 
+def test_tool_verify_document_arithmetic():
+    """Validates the verify_document_arithmetic tool and case boundary enforcement."""
+    store = _setup_test_datastore()
+    from agent.tools.validation import verify_document_arithmetic
+    from agent.tools.registry import ToolRegistry
+
+    # 1. Valid PO math check
+    res_valid = verify_document_arithmetic(
+        document_type="purchase_order",
+        document_id="PO-8831",
+        store=store,
+    )
+    assert res_valid["found"] is True
+    assert res_valid["status"] == "VALID"
+    assert res_valid["is_valid"] is True
+
+    # 2. Add PO with calculation mismatch (e.g. QTY 6 @ $560 = $3360, but printed $2800)
+    store.add_purchase_order("PO-CALC-FAIL", {
+        "purchase_order_number": "PO-CALC-FAIL",
+        "vendor_name": "TechTraders Solutions Inc.",
+        "currency": "USD",
+        "items": [
+            {
+                "product_code": "TT-CPU-109",
+                "description": "Intel Core i9-13900K Processor",
+                "quantity": Decimal("6"),
+                "unit_price": Decimal("560.00"),
+                "line_total": Decimal("2800.00"),  # Error! 6 * 560 = 3360
+            }
+        ],
+        "subtotal": Decimal("2800.00"),
+        "total": Decimal("2800.00"),
+    })
+
+    res_invalid = verify_document_arithmetic(
+        document_type="purchase_order",
+        document_id="PO-CALC-FAIL",
+        store=store,
+    )
+    assert res_invalid["found"] is True
+    assert res_invalid["status"] == "INVALID"
+    assert res_invalid["is_valid"] is False
+    assert len(res_invalid["failed_lines"]) > 0
+    assert "Printed $2800.00 vs Calculated $3360.00" in (res_invalid.get("formatted_math") or "")
+
+    # 3. ToolRegistry case scoping check
+    registry = ToolRegistry(datastore=store)
+    state = {
+        "case_id": "CASE-100",
+        "reconciliation_result": {
+            "purchase_order_id": "PO-8831",
+            "invoice_id": "INV-4512",
+            "receipt_ids": ["DR-8831"],
+        },
+        "discrepancies": [{"type": "CALCULATION_ERROR"}],
+        "tool_calls": [],
+        "tool_call_count": 0,
+        "evidence": [],
+    }
+
+    # Unauthorized access to foreign PO
+    res_denied = registry.validate_and_execute(
+        "verify_document_arithmetic",
+        {"document_type": "purchase_order", "document_id": "PO-FOREIGN-999"},
+        state,
+    )
+    assert res_denied["status"] == "UNAUTHORIZED"
+
+    # Authorized access to case PO
+    res_allowed = registry.validate_and_execute(
+        "verify_document_arithmetic",
+        {"document_type": "purchase_order", "document_id": "PO-8831"},
+        state,
+    )
+    assert res_allowed["status"] in ("VALID", "INVALID")
+    assert res_allowed["document_id"] == "PO-8831"
+    print("  PASS: test_tool_verify_document_arithmetic")
+
+
 def run_all_tests():
     print("\n" + "=" * 60)
     print("RUNNING AGENT INVESTIGATION TOOLS & REGISTRY TEST SUITE")
@@ -340,8 +419,9 @@ def run_all_tests():
     test_tool_check_authorization()
     test_tool_find_similar_invoices()
     test_registry_validation_and_case_scoping()
+    test_tool_verify_document_arithmetic()
     print("=" * 60)
-    print("ALL AGENT INVESTIGATION TOOLS TESTS PASSED (7/7)!")
+    print("ALL AGENT INVESTIGATION TOOLS TESTS PASSED (8/8)!")
     print("=" * 60)
 
 

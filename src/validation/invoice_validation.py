@@ -63,7 +63,7 @@ def verify_line_items(items: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]]
         # Support both Invoice schema naming (unit_discount/unit_tax) and generic naming (discount/tax)
         line_discount = to_decimal(item.get("unit_discount") or item.get("discount")) or Decimal("0.00")
         line_tax = to_decimal(item.get("unit_tax") or item.get("tax")) or Decimal("0.00")
-        line_total = to_decimal(item.get("line_total"))
+        line_total = to_decimal(item.get("line_total") or item.get("total_price") or item.get("total"))
 
         item_audit = {
             "index": idx,
@@ -141,14 +141,14 @@ def verify_invoice_math(invoice_data: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     try:
-        items = invoice_data.get("items") or []
+        items = invoice_data.get("items") or invoice_data.get("lines") or []
         reported_total_qty = to_decimal(invoice_data.get("total_quantity"))
         subtotal = to_decimal(invoice_data.get("subtotal"))
         doc_discount = to_decimal(invoice_data.get("total_discount") or invoice_data.get("discount")) or Decimal("0.00")
         doc_tax = to_decimal(invoice_data.get("total_tax") or invoice_data.get("tax")) or Decimal("0.00")
         shipping = to_decimal(invoice_data.get("shipping")) or Decimal("0.00")
         round_adj = to_decimal(invoice_data.get("round_adjustment") or invoice_data.get("rounding_adjustment")) or Decimal("0.00")
-        grand_total = to_decimal(invoice_data.get("total"))
+        grand_total = to_decimal(invoice_data.get("total") or invoice_data.get("total_amount") or invoice_data.get("grand_total"))
 
         # Score Weight Components (Max: 100)
         score = Decimal("0.0")

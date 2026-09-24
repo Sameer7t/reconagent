@@ -135,30 +135,21 @@ export const HumanReviewCard: React.FC<HumanReviewCardProps> = ({
             {investigation.evidence_citations && investigation.evidence_citations.length > 0 ? (
               <div className="space-y-1.5">
                 {investigation.evidence_citations.map((ev, idx) => {
-                  let fieldText = ev.field;
-                  let valText = ev.value;
-                  let noteText = ev.notes;
+                  const fieldLabel = (ev.field || '').replace(/_/g, ' ');
+                  let valText = String(ev.value || '—');
+                  const noteText = ev.notes || '';
 
-                  if (fieldText === 'internal_math' || valText.includes('sum_line_totals') || valText.startsWith('{')) {
-                    fieldText = 'Line Math Check';
-                    if (noteText && noteText.includes('calculated') && noteText.includes('reported')) {
-                      const match = noteText.match(/calculated\s+([\d\.]+)\s+vs\s+reported\s+([\d\.]+)/i);
-                      if (match) {
-                        valText = `Printed $${Number(match[2]).toFixed(2)} vs Calculated $${Number(match[1]).toFixed(2)}`;
-                      } else {
-                        valText = 'Arithmetic Mismatch';
-                      }
-                    } else if (noteText && noteText.includes('calculated') && noteText.includes('printed')) {
-                      const match = noteText.match(/calculated\s+\$?([\d\.]+)\s+vs\s+printed(?:\s+on\s+document)?\s+\$?([\d\.]+)/i);
-                      if (match) {
-                        valText = `Printed $${Number(match[2]).toFixed(2)} vs Calculated $${Number(match[1]).toFixed(2)}`;
-                      } else {
-                        valText = 'Arithmetic Mismatch';
-                      }
+                  // Clean up internal math raw dicts or NaN
+                  if (valText.startsWith('{') && valText.endsWith('}')) {
+                    valText = 'Calculation Discrepancy Audited';
+                  }
+                  if (valText.includes('NaN')) {
+                    const numbers = noteText.match(/[\d,]+(?:\.\d+)?/g);
+                    if (numbers && numbers.length >= 2) {
+                      valText = `Calculated $${numbers[0]} vs Printed $${numbers[1]}`;
                     } else {
-                      valText = 'Printed total does not equal calculated sum';
+                      valText = valText.replace(/\$NaN/g, 'N/A').replace(/NaN/g, 'N/A');
                     }
-                    noteText = 'Document arithmetic verification failed on itemized calculation';
                   }
 
                   return (
@@ -166,7 +157,7 @@ export const HumanReviewCard: React.FC<HumanReviewCardProps> = ({
                       <span className="px-2 py-0.5 rounded bg-slate-800 text-indigo-300 border border-slate-700 font-semibold text-[11px]">
                         {ev.document || 'Source Record'}
                       </span>
-                      <span className="text-slate-400 capitalize">{fieldText.replace(/_/g, ' ')}:</span>
+                      <span className="text-slate-400 capitalize">{fieldLabel}:</span>
                       <span className="text-white font-bold">{valText}</span>
                       {noteText && <span className="text-slate-400 font-sans text-xs">({noteText})</span>}
                     </div>

@@ -86,10 +86,28 @@ INVESTIGATION_POLICY: Dict[str, List[str]] = {
         "get_invoice",
         "check_authorization",
     ],
+    "CALCULATION_ERROR": [
+        "verify_document_arithmetic",
+        "get_purchase_order",
+        "get_invoice",
+        "get_receipt",
+    ],
+    "INTERNAL_MATH_ERROR": [
+        "verify_document_arithmetic",
+        "get_purchase_order",
+        "get_invoice",
+        "get_receipt",
+    ],
+    "MATH_DISCREPANCY": [
+        "verify_document_arithmetic",
+        "get_purchase_order",
+        "get_invoice",
+        "get_receipt",
+    ],
 }
 
 # Baseline fallback if discrepancy type is not specifically mapped
-DEFAULT_BASELINE_TOOLS = ["get_purchase_order", "get_invoice", "get_receipt"]
+DEFAULT_BASELINE_TOOLS = ["verify_document_arithmetic", "get_purchase_order", "get_invoice", "get_receipt"]
 
 
 def get_allowed_tools_for_discrepancies(discrepancies: List[Dict[str, Any]]) -> Set[str]:

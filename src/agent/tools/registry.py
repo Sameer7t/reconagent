@@ -16,6 +16,7 @@ from agent.tools.invoice import get_invoice
 from agent.tools.receipt import get_receipt
 from agent.tools.authorization import check_authorization
 from agent.tools.vendor import get_vendor_history, find_similar_invoices
+from agent.tools.validation import verify_document_arithmetic
 
 
 # =====================================================================
@@ -115,6 +116,7 @@ TOOLS: Dict[str, Callable] = {
     "get_vendor_history": get_vendor_history,
     "check_authorization": check_authorization,
     "find_similar_invoices": find_similar_invoices,
+    "verify_document_arithmetic": verify_document_arithmetic,
 }
 
 TOOL_REQUIRED_ARGS: Dict[str, List[str]] = {
@@ -124,6 +126,7 @@ TOOL_REQUIRED_ARGS: Dict[str, List[str]] = {
     "get_vendor_history": ["vendor_id"],
     "check_authorization": ["po_id", "discrepancy_type"],
     "find_similar_invoices": ["vendor_id", "item_description"],
+    "verify_document_arithmetic": ["document_type", "document_id"],
 }
 
 
@@ -232,6 +235,25 @@ class ToolRegistry:
                 return {
                     "status": "UNAUTHORIZED",
                     "error": f"Access denied: Authorization check for PO '{req_po}' does not belong to case '{case_id}'.",
+                }
+
+        elif tool_name == "verify_document_arithmetic":
+            req_type = (arguments.get("document_type") or "").strip().lower()
+            req_id = (arguments.get("document_id") or "").strip()
+            if req_type in ("po", "purchase_order") and allowed_po and req_id != allowed_po:
+                return {
+                    "status": "UNAUTHORIZED",
+                    "error": f"Access denied: Purchase Order '{req_id}' does not belong to case '{case_id}' (associated PO: '{allowed_po}').",
+                }
+            elif req_type in ("inv", "invoice") and allowed_inv and req_id != allowed_inv:
+                return {
+                    "status": "UNAUTHORIZED",
+                    "error": f"Access denied: Invoice '{req_id}' does not belong to case '{case_id}' (associated Invoice: '{allowed_inv}').",
+                }
+            elif req_type in ("rcpt", "receipt") and allowed_receipts and req_id not in allowed_receipts:
+                return {
+                    "status": "UNAUTHORIZED",
+                    "error": f"Access denied: Receipt '{req_id}' does not belong to case '{case_id}' (associated Receipts: {allowed_receipts}).",
                 }
 
         # 4. Duplicate Tool Protection

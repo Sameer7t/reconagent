@@ -170,9 +170,7 @@ def _format_plain_math_error(doc_id: str, doc_label: str, d: Discrepancy) -> str
     for la in line_audits:
         if not la.get("is_valid") and la.get("error_note"):
             desc = la.get("description") or la.get("item_code") or "item"
-            err = la.get("error_note", "")
-            err_clean = err.replace("Line total discrepancy: calculated", "calculated $").replace("vs reported", "vs printed on document $")
-            return f"{doc_label} {doc_id} item '{desc}' arithmetic mismatch: {err_clean}."
+            return f"{doc_label} {doc_id} line item '{desc}' math error: {la.get('error_note')}."
 
     rep_subtotal = resolved.get("reported_subtotal")
     sum_lines = resolved.get("sum_line_totals")
@@ -387,154 +385,6 @@ class MasterOrchestrator:
                     reconciliation_result=recon_res.model_dump(),
                 )
 
-        elif any(
-            d.type in (DiscrepancyType.CALCULATION_ERROR, DiscrepancyType.INTERNAL_MATH_ERROR)
-            for d in recon_res.discrepancies
-        ):
-            # INTERNAL VALIDATION FAILED -> DO NOT START AGENT INVESTIGATION
-            logger.warning(
-                f"[Orchestrator] Case {active_case_id}: Internal document validation failed. "
-                f"Bypassing AI agent investigation loop; generating immediate rejection report."
-            )
-            val_findings = []
-            val_evidence = []
-            val_errors = []
-
-            for idx, d in enumerate(recon_res.discrepancies, start=1):
-                if d.type in (DiscrepancyType.CALCULATION_ERROR, DiscrepancyType.INTERNAL_MATH_ERROR):
-                    doc_id = d.document_ids[0] if d.document_ids else "Document"
-                    doc_lower = doc_id.lower()
-                    if "po" in doc_lower or "purchase" in doc_lower:
-                        stype = "purchase_order"
-                        doc_label = "Purchase Order"
-                    elif "rec" in doc_lower or "trx" in doc_lower or "slip" in doc_lower or "receipt" in doc_lower or "dr" in doc_lower:
-                        stype = "receipt"
-                        doc_label = "Delivery Receipt"
-                    else:
-                        stype = "invoice"
-                        doc_label = "Invoice"
-
-                    clean_reason = _format_plain_math_error(doc_id, doc_label, d)
-                    val_errors.append(clean_reason)
-                    ev_id = f"EVID-{idx:03d}"
-                    f_id = f"FIND-{idx:03d}"
-
-                    # Extract human-friendly audit evidence
-                    audit_field = "document_math"
-                    audit_val = "Arithmetic Error"
-                    line_audits = (d.details or {}).get("line_item_audit") or []
-                    failed_items = [la for la in line_audits if not la.get("is_valid")]
-
-                    if failed_items:
-                        first_fail = failed_items[0]
-                        rep_val = first_fail.get("reported_line_total")
-                        calc_val = first_fail.get("calculated_line_total")
-                        item_desc = first_fail.get("description") or "Item"
-                        audit_field = f"Line Math: {item_desc}"
-                        audit_val = f"Printed ${rep_val} vs Calculated ${calc_val}"
-                    else:
-                        resolved = (d.details or {}).get("resolved_totals") or {}
-                        sum_lines = resolved.get("sum_line_totals")
-                        rep_sub = resolved.get("reported_subtotal")
-                        if sum_lines is not None and rep_sub is not None:
-                            audit_field = "Document Subtotal"
-                            audit_val = f"Printed ${rep_sub} vs Calculated ${sum_lines}"
-                        else:
-                            audit_field = "Document Arithmetic"
-                            audit_val = "Math validation failed on document"
-
-                    val_evidence.append(
-                        Evidence(
-                            evidence_id=ev_id,
-                            source_type=stype,
-                            source_id=doc_id,
-                            field=audit_field,
-                            value=audit_val,
-                            description=clean_reason,
-                        )
-                    )
-                    val_findings.append(
-                        Finding(
-                            finding_id=f_id,
-                            discrepancy_type="CALCULATION_ERROR",
-                            explanation=(
-                                f"Document validation failed: {clean_reason} "
-                                f"Payment cannot be approved until a corrected document is provided by the vendor."
-                            ),
-                            supporting_evidence_ids=[ev_id],
-                            confidence="HIGH",
-                        )
-                    )
-
-            rejection_summary = (
-                f"Invoice rejected: Internal arithmetic validation failed. "
-                f"{'; '.join(val_errors)}. "
-                f"Action: Request a corrected document from the vendor."
-            )
-
-            inv_res = InvestigationResult(
-                case_id=active_case_id,
-                findings=val_findings,
-                evidence=val_evidence,
-                recommendation="REJECT_INVOICE",
-                confidence="HIGH",
-                requires_human_review=True,
-                final_summary=rejection_summary,
-            )
-
-            recommendation = inv_res.recommendation
-            confidence = inv_res.confidence
-            requires_human_review = inv_res.requires_human_review
-            inv_result_dict = inv_res.model_dump()
-
-            if self.db:
-                clean_state = {
-                    "case_id": active_case_id,
-                    "reconciliation_result": recon_res.model_dump(),
-                    "discrepancies": discrepancies_list,
-                    "findings": [f.model_dump() for f in val_findings],
-                    "evidence": [e.model_dump() for e in val_evidence],
-                    "final_summary": rejection_summary,
-                    "recommendation": "REJECT_INVOICE",
-                    "confidence": "HIGH",
-                    "requires_human_review": True,
-                    "status": "REJECTED",
-                    "po_file": po_file,
-                    "invoice_file": inv_file,
-                    "receipt_files": rcpt_files,
-                    "source_files": all_files,
-                    "vendor_name": vendor_name,
-                    "po_number": po_num,
-                    "invoice_number": inv_num,
-                    "receipt_numbers": rcpt_nums,
-                }
-                self.db.save_investigation(
-                    state=clean_state,
-                    result=inv_res,
-                    po_file=po_file,
-                    invoice_file=inv_file,
-                    receipt_files=rcpt_files,
-                    source_files=all_files,
-                    vendor_name=vendor_name,
-                    po_number=po_num,
-                    invoice_number=inv_num,
-                    receipt_numbers=rcpt_nums,
-                    reconciliation_result=recon_res.model_dump(),
-                )
-
-            if self.review_queue:
-                self.review_queue.enqueue(
-                    case_id=active_case_id,
-                    discrepancy_count=discrepancy_count,
-                    recommendation="REJECT_INVOICE",
-                    confidence="HIGH",
-                    requires_human_review=True,
-                    metadata=clean_state if self.db else {},
-                    discrepancies=discrepancies_list,
-                    findings=val_findings,
-                    evidence=val_evidence,
-                )
-
         else:
             # PROBLEMS DETECTED -> AGENT INVESTIGATION
             logger.info(
@@ -545,17 +395,24 @@ class MasterOrchestrator:
             # Populate sandboxed agent datastore for this case
             agent_store = AgentDataStore()
             if po_data:
-                p_id = po_data.get("purchase_order_number") or po_data.get("po_number") or active_case_id
+                p_id = po_data.get("purchase_order_number") or po_data.get("po_number") or recon_res.purchase_order_id or active_case_id
                 agent_store.add_purchase_order(p_id, po_data)
+                if recon_res.purchase_order_id and recon_res.purchase_order_id != p_id:
+                    agent_store.add_purchase_order(recon_res.purchase_order_id, po_data)
 
             if invoice_data:
-                i_id = invoice_data.get("invoice_number") or active_case_id
+                i_id = invoice_data.get("invoice_number") or recon_res.invoice_id or active_case_id
                 agent_store.add_invoice(i_id, invoice_data)
+                if recon_res.invoice_id and recon_res.invoice_id != i_id:
+                    agent_store.add_invoice(recon_res.invoice_id, invoice_data)
 
             for rcpt in receipts:
                 r_id = rcpt.get("receipt_number") or rcpt.get("delivery_receipt_number")
                 if r_id:
                     agent_store.add_receipt(r_id, rcpt)
+                for rid in (recon_res.receipt_ids or []):
+                    if rid:
+                        agent_store.add_receipt(rid, rcpt)
 
             # Execute LangGraph autonomous reasoning loop
             inv_res: InvestigationResult = run_investigation(

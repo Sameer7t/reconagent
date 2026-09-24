@@ -9,6 +9,7 @@ from agent.tools.invoice import get_invoice
 from agent.tools.receipt import get_receipt
 from agent.tools.authorization import check_authorization
 from agent.tools.vendor import get_vendor_history, find_similar_invoices
+from agent.tools.validation import verify_document_arithmetic
 from agent.tools.registry import (
     AgentDataStore,
     ToolRegistry,
@@ -24,6 +25,7 @@ __all__ = [
     "check_authorization",
     "get_vendor_history",
     "find_similar_invoices",
+    "verify_document_arithmetic",
     "AgentDataStore",
     "ToolRegistry",
     "TOOLS",
