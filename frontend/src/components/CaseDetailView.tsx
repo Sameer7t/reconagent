@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import { CaseSummary, ThreeWayMatchData, InvestigationData, ReviewDecisionRecord } from '../types';
 import { ThreeWayMatchCard } from './ThreeWayMatchCard';
-import { EvidenceCard } from './EvidenceCard';
 import { HumanReviewCard } from './HumanReviewCard';
 
 interface CaseDetailViewProps {
@@ -214,13 +213,7 @@ export const CaseDetailView: React.FC<CaseDetailViewProps> = ({
       {/* 1. DEDICATED THREE-WAY MATCH COMPARISON (USER DIRECTIVE 3) */}
       <ThreeWayMatchCard data={threeWayData} />
 
-      {/* 2. DEEP EVIDENCE PROVENANCE (SECTION 7.3) */}
-      <EvidenceCard
-        investigation={investigation}
-        onViewDoc={(fn, dt) => onViewDoc(fn, dt)}
-      />
-
-      {/* 3. HUMAN REVIEW & AUDIT TRAIL (SECTION 7.4) */}
+      {/* 2. HUMAN REVIEW & AUDIT TRAIL (SECTION 7.4) */}
       <HumanReviewCard
         investigation={investigation}
         onDecisionSubmit={onDecisionSubmit}
