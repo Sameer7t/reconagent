@@ -180,5 +180,12 @@
         "date": "2024-07-16",
         "total": "8728.20",
         "first_seen": "2026-09-24T19:03:31.356938"
+    },
+    "a44af0ab58a4e793ece6f3f305ef9183cf38a6d9c4cb35190a519020a0ad21cc": {
+        "invoice_id": "INV-30021",
+        "vendor": "Global Office Supplies Inc",
+        "date": "2024-06-16",
+        "total": "9819.00",
+        "first_seen": "2026-09-24T19:16:02.874592"
     }
 }

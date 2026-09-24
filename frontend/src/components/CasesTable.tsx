@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Filter, RotateCcw, ChevronRight, ChevronDown, CheckCircle2, AlertTriangle, XCircle, Calendar, Clock, FileText, ExternalLink } from 'lucide-react';
-import { CaseSummary } from '../types';
+import { CaseSummary, isCaseCleanMatched, doesCaseHaveDiscrepancy } from '../types';
 
 interface CasesTableProps {
   cases: CaseSummary[];
@@ -120,8 +120,8 @@ export const CasesTable: React.FC<CasesTableProps> = ({
   const filteredCases = useMemo(() => {
     return cases.filter((c) => {
       // Quick filter from metrics
-      if (activeQuickFilter === 'MATCHED' && c.status !== 'MATCHED') return false;
-      if (activeQuickFilter === 'DISCREPANCIES' && c.status === 'MATCHED') return false;
+      if (activeQuickFilter === 'MATCHED' && !isCaseCleanMatched(c)) return false;
+      if (activeQuickFilter === 'DISCREPANCIES' && !doesCaseHaveDiscrepancy(c)) return false;
       if (activeQuickFilter === 'UNDER_REVIEW' && !c.requires_human_review) return false;
 
       // 1. Case ID search
