@@ -524,8 +524,8 @@ export const CasesTable: React.FC<CasesTableProps> = ({
                       onClick={() => onSelectCase(c.case_id)}
                       className={`cursor-pointer transition group ${
                         isSelected
-                          ? 'bg-sky-500/15 border-l-4 border-sky-400 text-white font-medium'
-                          : 'hover:bg-slate-800/50 text-slate-300'
+                          ? 'bg-slate-800/80 border-l-4 border-sky-400 text-white font-medium'
+                          : 'hover:bg-slate-800/40 text-slate-300'
                       }`}
                     >
                       {/* Case ID and Processed Date+Time */}
@@ -578,20 +578,15 @@ export const CasesTable: React.FC<CasesTableProps> = ({
 
                     {/* EXPANDABLE ACCORDION: Shows Source Files when Case is Active/Expanded */}
                     {isSelected && (
-                      <tr className="bg-slate-900/90 border-l-4 border-sky-400 border-b border-sky-500/20">
+                      <tr className="bg-slate-800/80 border-l-4 border-sky-400 border-b border-slate-700/60">
                         <td colSpan={4} className="p-2 sm:p-2.5">
-                          <div className="bg-slate-950/90 rounded-lg p-2.5 border border-sky-500/30 shadow-inner">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center gap-1.5 text-[10px] font-bold text-sky-300 uppercase tracking-wider">
-                                <FileText className="w-3.5 h-3.5 text-sky-400" />
-                                <span>Source Documents (Click to inspect)</span>
-                              </div>
-                              <span className="text-[9px] text-slate-400 font-mono">
-                                Active Case
-                              </span>
+                          <div className="bg-slate-900/80 rounded-lg p-2.5 border border-slate-700/70 shadow-sm flex flex-col items-center justify-center text-center w-full">
+                            <div className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-sky-300 uppercase tracking-wider mb-2">
+                              <FileText className="w-3.5 h-3.5 text-sky-400" />
+                              <span>Source Documents (Click to inspect)</span>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-1.5">
+                            <div className="flex flex-wrap items-center justify-center gap-2 w-full">
                               {/* PO Pill */}
                               {poFile ? (
                                 <button
@@ -601,15 +596,15 @@ export const CasesTable: React.FC<CasesTableProps> = ({
                                     onViewDoc?.(poFile, 'PURCHASE_ORDER', isSelected ? selectedCaseDetails?.po_file_path : undefined);
                                   }}
                                   title={`Inspect ${poFile}`}
-                                  className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-xs text-slate-300 hover:text-white transition group cursor-pointer"
+                                  className="flex items-center justify-center space-x-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700/90 border border-slate-700 hover:border-sky-500/50 text-xs text-slate-300 hover:text-white transition group cursor-pointer shadow-sm"
                                 >
                                   <span className="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0" />
                                   <span className="font-bold text-sky-300 text-[10px]">PO:</span>
-                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[130px] sm:max-w-none">{poFile}</span>
+                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[120px]">{poFile}</span>
                                   <ExternalLink className="w-2.5 h-2.5 text-slate-500 group-hover:text-sky-300 transition flex-shrink-0" />
                                 </button>
                               ) : (
-                                <div className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
+                                <div className="flex items-center justify-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
                                   <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />
                                   <span className="font-semibold text-slate-400">PO:</span>
                                   <span className="italic text-slate-500 text-[9px]">Not uploaded</span>
@@ -625,15 +620,15 @@ export const CasesTable: React.FC<CasesTableProps> = ({
                                     onViewDoc?.(invFile, 'INVOICE', isSelected ? selectedCaseDetails?.invoice_file_path : undefined);
                                   }}
                                   title={`Inspect ${invFile}`}
-                                  className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-xs text-slate-300 hover:text-white transition group cursor-pointer"
+                                  className="flex items-center justify-center space-x-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700/90 border border-slate-700 hover:border-indigo-500/50 text-xs text-slate-300 hover:text-white transition group cursor-pointer shadow-sm"
                                 >
                                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
                                   <span className="font-bold text-indigo-300 text-[10px]">Invoice:</span>
-                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[130px] sm:max-w-none">{invFile}</span>
+                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[120px]">{invFile}</span>
                                   <ExternalLink className="w-2.5 h-2.5 text-slate-500 group-hover:text-indigo-300 transition flex-shrink-0" />
                                 </button>
                               ) : (
-                                <div className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
+                                <div className="flex items-center justify-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
                                   <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />
                                   <span className="font-semibold text-slate-400">Invoice:</span>
                                   <span className="italic text-slate-500 text-[9px]">Not uploaded</span>
@@ -649,15 +644,15 @@ export const CasesTable: React.FC<CasesTableProps> = ({
                                     onViewDoc?.(rcptFile, 'RECEIPT', isSelected ? selectedCaseDetails?.receipt_file_path : undefined);
                                   }}
                                   title={`Inspect ${rcptFile}`}
-                                  className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-xs text-slate-300 hover:text-white transition group cursor-pointer"
+                                  className="flex items-center justify-center space-x-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700/90 border border-slate-700 hover:border-emerald-500/50 text-xs text-slate-300 hover:text-white transition group cursor-pointer shadow-sm"
                                 >
                                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
                                   <span className="font-bold text-emerald-300 text-[10px]">Receipt:</span>
-                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[130px] sm:max-w-none">{rcptFile}</span>
+                                  <span className="font-mono text-[10px] text-slate-200 group-hover:underline truncate max-w-[120px]">{rcptFile}</span>
                                   <ExternalLink className="w-2.5 h-2.5 text-slate-500 group-hover:text-emerald-300 transition flex-shrink-0" />
                                 </button>
                               ) : (
-                                <div className="flex items-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
+                                <div className="flex items-center justify-center space-x-1.5 px-2 py-1 rounded bg-slate-900/60 border border-dashed border-slate-800 text-[10px] text-slate-500">
                                   <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />
                                   <span className="font-semibold text-slate-400">Receipt:</span>
                                   <span className="italic text-slate-500 text-[9px]">None attached</span>

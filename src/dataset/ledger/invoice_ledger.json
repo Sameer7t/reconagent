@@ -159,5 +159,26 @@
         "date": "2024-02-16",
         "total": "10888.20",
         "first_seen": "2026-09-24T12:44:14.326315"
+    },
+    "9e65928d9ed62bc0ffeb2a795acc5db3e5bcfd9f25e8b7909f14a37d3c38b966": {
+        "invoice_id": "INV-30024",
+        "vendor": "VoltTech Electric Systems LLC",
+        "date": "2024-01-16",
+        "total": "56583.00",
+        "first_seen": "2026-09-24T19:02:54.662725"
+    },
+    "510b295a2e1422738ff188d6c0c4b256e53c97920722208fa0d3791ba462ba92": {
+        "invoice_id": "INV-30023",
+        "vendor": "Prairie Harvest Foods Corp",
+        "date": "2024-08-16",
+        "total": "1573.20",
+        "first_seen": "2026-09-24T19:03:26.238759"
+    },
+    "e1762ec287ce706e39d7159d1c68e3eb71fcc1d792f4c0da7dabfb4dfc9ced66": {
+        "invoice_id": "INV-30022",
+        "vendor": "Apex Chemical Synthetics Inc",
+        "date": "2024-07-16",
+        "total": "8728.20",
+        "first_seen": "2026-09-24T19:03:31.356938"
     }
 }

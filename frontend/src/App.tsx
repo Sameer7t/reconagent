@@ -634,13 +634,13 @@ export const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Master-Detail Layout: Both Left & Right Exactly Fit Screen Height */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0 overflow-hidden">
-          {/* Left Column (Equal Size): Recent Cases Table */}
+        {/* Master-Detail Layout: 1/3 (33.33%) Left, 2/3 (66.67%) Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0 overflow-hidden">
+          {/* Left Column (1/3 Width = 33.33%): Recent Cases Table */}
           <div
             className={`${
               mobileTab === 'DIRECTORY' ? 'flex' : 'hidden'
-            } lg:flex h-full flex-col min-h-0 overflow-hidden`}
+            } lg:flex lg:col-span-4 h-full flex-col min-h-0 overflow-hidden`}
           >
             <CasesTable
               cases={cases}
@@ -666,11 +666,11 @@ export const App: React.FC = () => {
             />
           </div>
 
-          {/* Right Column (Equal Size): Full Case Details View */}
+          {/* Right Column (2/3 Width = 66.67%): Full Case Details View */}
           <div
             className={`${
               mobileTab === 'DETAILS' ? 'flex' : 'hidden'
-            } lg:flex h-full flex-col min-h-0 overflow-y-auto pr-1 pb-1`}
+            } lg:flex lg:col-span-8 h-full flex-col min-h-0 overflow-y-auto pr-1 pb-1`}
           >
             {selectedCaseSummary && threeWayData && investigationData ? (
               <CaseDetailView
