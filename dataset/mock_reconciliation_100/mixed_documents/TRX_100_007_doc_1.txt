@@ -26,7 +26,7 @@ Attn: Central Warehouse Gate 4
 --------------------------------------------------------------------------------
 SKU / ITEM       DESCRIPTION                           QTY   UNIT PRICE           TOTAL
 --------------------------------------------------------------------------------
-PH-FLR-050       Organic Hard Red Wheat Flour 50lb Sack      8       $32.00         $256.00
+PH-FLR-050       Organic Hard Red Wheat Flour 50lb Sack      8       $33.00         $256.00
 PH-OAT-025       Rolled Oats Whole Grain 25lb Bag       12       $24.00         $288.00
 PH-HNY-060       Pure Clover Raw Honey 60lb Pail        10      $195.00       $1,950.00
 --------------------------------------------------------------------------------

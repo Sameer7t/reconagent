@@ -391,7 +391,7 @@ SRV-01           Server Maintenance                  1     $1,500.00  $1,500.00
         self.assertEqual(tx.case_id, "CASE_INV-UNLINKED-99")
         self.assertGreater(tx.discrepancy_count, 0)
         self.assertTrue(tx.requires_human_review)
-        self.assertIn(tx.recommendation, ("ESCALATE_TO_BUYER", "REJECT_INVOICE"))
+        self.assertIn(tx.recommendation, ("HUMAN_REVIEW", "ESCALATE_TO_BUYER", "REJECT_INVOICE"))
 
         # Must be in human review queue
         metrics = self.review_queue.get_metrics()

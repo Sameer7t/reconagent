@@ -110,103 +110,175 @@ export const CasesTable: React.FC<CasesTableProps> = ({
     return time ? `${date} ${time}` : date;
   };
 
+  // Helper to parse any time string ("18:23", "06:23 PM", "6:23 am", etc.) into total minutes from midnight (0 - 1439)
+  const parseTimeToMinutes = (tStr: string): number | null => {
+    if (!tStr || !tStr.trim()) return null;
+    const s = tStr.trim();
+    // 12-hour format with AM/PM (e.g. "06:23 PM", "6:23 am")
+    const match12 = s.match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/i);
+    if (match12) {
+      let h = parseInt(match12[1], 10);
+      const m = parseInt(match12[2], 10);
+      const isPm = match12[3].toLowerCase() === 'pm';
+      if (isPm && h < 12) h += 12;
+      if (!isPm && h === 12) h = 0;
+      return h * 60 + m;
+    }
+    // 24-hour format (e.g. "18:23", "06:23")
+    const match24 = s.match(/^(\d{1,2}):(\d{2})/);
+    if (match24) {
+      const h = parseInt(match24[1], 10);
+      const m = parseInt(match24[2], 10);
+      return h * 60 + m;
+    }
+    return null;
+  };
+
+  // Deduplicate cases by case_id keeping the latest record
+  const dedupedCases = useMemo(() => {
+    const map = new Map<string, CaseSummary>();
+    cases.forEach((c) => {
+      if (!c.case_id) return;
+      const existing = map.get(c.case_id);
+      if (!existing) {
+        map.set(c.case_id, c);
+      } else {
+        const exTime = existing.completed_at || existing.created_at || '';
+        const curTime = c.completed_at || c.created_at || '';
+        if (curTime >= exTime) {
+          map.set(c.case_id, c);
+        }
+      }
+    });
+    return Array.from(map.values());
+  }, [cases]);
+
   // Extract unique vendors for dropdown
   const uniqueVendors = useMemo(() => {
     const set = new Set<string>();
-    cases.forEach((c) => {
+    dedupedCases.forEach((c) => {
       if (c.vendor_name) set.add(c.vendor_name);
     });
     return Array.from(set).sort();
-  }, [cases]);
+  }, [dedupedCases]);
 
   // Extract unique statuses
   const uniqueStatuses = useMemo(() => {
     const set = new Set<string>();
-    cases.forEach((c) => {
+    dedupedCases.forEach((c) => {
       if (c.status) set.add(c.status);
     });
     return Array.from(set).sort();
-  }, [cases]);
+  }, [dedupedCases]);
 
   // Extract unique actions
   const uniqueActions = useMemo(() => {
     const set = new Set<string>();
-    cases.forEach((c) => {
+    dedupedCases.forEach((c) => {
       const act = c.action || (c.requires_human_review ? 'Review Required' : 'Eligible');
       set.add(act);
     });
     return Array.from(set).sort();
-  }, [cases]);
+  }, [dedupedCases]);
 
   // Filtered cases combining all filters + quick filter + date range filter
   const filteredCases = useMemo(() => {
-    return cases.filter((c) => {
-      // Quick filter from metrics
-      if (activeQuickFilter === 'MATCHED' && !isCaseCleanMatched(c)) return false;
-      if (activeQuickFilter === 'DISCREPANCIES' && !doesCaseHaveDiscrepancy(c)) return false;
-      if (activeQuickFilter === 'UNDER_REVIEW' && !c.requires_human_review) return false;
+    return dedupedCases
+      .filter((c) => {
+        // Quick filter from metrics
+        if (activeQuickFilter === 'MATCHED' && !isCaseCleanMatched(c)) return false;
+        if (activeQuickFilter === 'DISCREPANCIES' && !doesCaseHaveDiscrepancy(c)) return false;
+        if (activeQuickFilter === 'UNDER_REVIEW' && !c.requires_human_review) return false;
 
-      // 1. Case ID search
-      if (caseSearch.trim()) {
-        const query = caseSearch.toLowerCase();
-        const cid = (c.case_id || '').toLowerCase();
-        const po = (c.po_number || '').toLowerCase();
-        const inv = (c.invoice_number || '').toLowerCase();
-        if (!cid.includes(query) && !po.includes(query) && !inv.includes(query)) {
+        // 1. Case ID search
+        if (caseSearch.trim()) {
+          const query = caseSearch.toLowerCase();
+          const cid = (c.case_id || '').toLowerCase();
+          const po = (c.po_number || '').toLowerCase();
+          const inv = (c.invoice_number || '').toLowerCase();
+          if (!cid.includes(query) && !po.includes(query) && !inv.includes(query)) {
+            return false;
+          }
+        }
+
+        // 2. Vendor filter
+        if (vendorFilter !== 'ALL' && c.vendor_name !== vendorFilter) {
           return false;
         }
-      }
 
-      // 2. Vendor filter
-      if (vendorFilter !== 'ALL' && c.vendor_name !== vendorFilter) {
-        return false;
-      }
+        // 3. Status filter
+        if (statusFilter !== 'ALL' && c.status !== statusFilter) {
+          return false;
+        }
 
-      // 3. Status filter
-      if (statusFilter !== 'ALL' && c.status !== statusFilter) {
-        return false;
-      }
+        // 4. Action filter
+        if (actionFilter !== 'ALL') {
+          const act = c.action || (c.requires_human_review ? 'Review Required' : 'Eligible');
+          if (act !== actionFilter) return false;
+        }
 
-      // 4. Action filter
-      if (actionFilter !== 'ALL') {
-        const act = c.action || (c.requires_human_review ? 'Review Required' : 'Eligible');
-        if (act !== actionFilter) return false;
-      }
+        // 5. Date & Time Range filter
+        if (startDate || endDate || startTime || endTime) {
+          if (!c.created_at) return false;
 
-      // 5. Date & Time Range filter
-      if (startDate || endDate || startTime || endTime) {
-        if (!c.created_at) return false;
-        const cDateStr = c.created_at.slice(0, 10);
-        if (startDate && cDateStr < startDate) return false;
-        if (endDate && cDateStr > endDate) return false;
+          const d = new Date(c.created_at);
+          const isValidDate = !isNaN(d.getTime());
 
-        if (startTime || endTime) {
-          let cTimeStr = '';
-          try {
-            const d = new Date(c.created_at);
-            if (!isNaN(d.getTime())) {
-              const hours = String(d.getHours()).padStart(2, '0');
-              const minutes = String(d.getMinutes()).padStart(2, '0');
-              cTimeStr = `${hours}:${minutes}`;
-            } else if (c.created_at.includes('T')) {
-              cTimeStr = c.created_at.split('T')[1].slice(0, 5);
-            }
-          } catch {
-            if (c.created_at.includes('T')) {
-              cTimeStr = c.created_at.split('T')[1].slice(0, 5);
+          // Extract local date in YYYY-MM-DD to align with <input type="date" />
+          let cLocalDate = '';
+          if (isValidDate) {
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            cLocalDate = `${year}-${month}-${day}`;
+          } else {
+            cLocalDate = c.created_at.slice(0, 10);
+          }
+
+          // Case local time in total minutes from midnight (0 - 1439)
+          let cMinutes: number | null = null;
+          if (isValidDate) {
+            cMinutes = d.getHours() * 60 + d.getMinutes();
+          } else if (c.created_at.includes('T')) {
+            const tPart = c.created_at.split('T')[1].slice(0, 5);
+            cMinutes = parseTimeToMinutes(tPart);
+          }
+
+          const startMin = parseTimeToMinutes(startTime);
+          const endMin = parseTimeToMinutes(endTime);
+
+          // Check Start Date/Time boundary
+          if (startDate) {
+            if (cLocalDate < startDate) return false;
+            if (cLocalDate === startDate && startMin !== null && cMinutes !== null) {
+              if (cMinutes < startMin) return false;
             }
           }
 
-          if (cTimeStr) {
-            if (startTime && cTimeStr < startTime) return false;
-            if (endTime && cTimeStr > endTime) return false;
+          // Check End Date/Time boundary
+          if (endDate) {
+            if (cLocalDate > endDate) return false;
+            if (cLocalDate === endDate && endMin !== null && cMinutes !== null) {
+              if (cMinutes > endMin) return false;
+            }
+          }
+
+          // Scenario where NO dates are provided, ONLY time range is selected
+          if (!startDate && !endDate && (startMin !== null || endMin !== null)) {
+            if (cMinutes === null) return false;
+            if (startMin !== null && cMinutes < startMin) return false;
+            if (endMin !== null && cMinutes > endMin) return false;
           }
         }
-      }
 
-      return true;
-    });
-  }, [cases, activeQuickFilter, caseSearch, vendorFilter, statusFilter, actionFilter, startDate, endDate, startTime, endTime]);
+        return true;
+      })
+      .sort((a, b) => {
+        const tA = a.completed_at || a.created_at || '';
+        const tB = b.completed_at || b.created_at || '';
+        return tB.localeCompare(tA);
+      });
+  }, [dedupedCases, activeQuickFilter, caseSearch, vendorFilter, statusFilter, actionFilter, startDate, endDate, startTime, endTime]);
 
   const hasActiveFilters =
     caseSearch !== '' ||

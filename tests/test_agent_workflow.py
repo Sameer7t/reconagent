@@ -318,9 +318,9 @@ def test_investigation_authorized_price_variance():
 
     assert isinstance(result, InvestigationResult)
     assert result.case_id == "REC-AUTH-01"
-    assert result.recommendation == "APPROVE_PAYMENT"
+    assert result.recommendation == "HUMAN_REVIEW"
     assert result.confidence == "HIGH"
-    assert result.requires_human_review is False
+    assert result.requires_human_review is True
 
     # Check evidence & findings
     assert len(result.findings) == 1

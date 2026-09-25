@@ -29,6 +29,7 @@ from agent.db import InvestigationDatabase
 from ingestion import ingest_document, classify_document
 from extraction import extract_document
 from schemas.document_classification import DocumentType
+from api.routes.auth import require_role
 
 router = APIRouter(prefix="/cases", tags=["Cases & Reconciliation"])
 
@@ -299,7 +300,12 @@ def list_cases(
     Supports status, requires_review, search, processed date-range, and time-range filters.
     """
     with db._get_connection() as conn:
-        query = "SELECT * FROM investigations WHERE 1=1"
+        query = """
+            SELECT * FROM (
+                SELECT *, ROW_NUMBER() OVER (PARTITION BY case_id ORDER BY completed_at DESC, id DESC) as rn
+                FROM investigations
+            ) WHERE rn = 1
+        """
         params = []
 
         if status:
@@ -628,7 +634,7 @@ def get_case_investigation(
     return get_investigation_detail(case_id=case_id, db=db)
 
 
-@router.post("/reconcile", response_model=CaseDetailResponse)
+@router.post("/reconcile", response_model=CaseDetailResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 def reconcile_case(
     payload: ReconcileTransactionRequest,
     orchestrator: MasterOrchestrator = Depends(get_orchestrator),
@@ -646,7 +652,7 @@ def reconcile_case(
     return _transaction_result_to_response(tx_res)
 
 
-@router.post("/reconcile-triplet", response_model=CaseDetailResponse)
+@router.post("/reconcile-triplet", response_model=CaseDetailResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 async def reconcile_triplet(
     purchase_order_file: Optional[UploadFile] = File(
         None,
@@ -794,7 +800,7 @@ async def reconcile_triplet(
     return _transaction_result_to_response(tx_res)
 
 
-@router.post("/reconcile-mixed", response_model=BatchReconcileResponse)
+@router.post("/reconcile-mixed", response_model=BatchReconcileResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 async def reconcile_mixed(
     files: List[UploadFile] = File(
         ...,
@@ -868,7 +874,7 @@ async def reconcile_mixed(
     )
 
 
-@router.post("/batch-reconcile", response_model=BatchReconcileResponse)
+@router.post("/batch-reconcile", response_model=BatchReconcileResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 def batch_reconcile(
     payload: BatchReconcileRequest,
     orchestrator: MasterOrchestrator = Depends(get_orchestrator),

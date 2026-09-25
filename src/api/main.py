@@ -22,14 +22,14 @@ if str(SRC_ROOT) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, Request, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from api.schemas import HealthResponse, SystemInfoResponse
 from api.dependencies import get_db, get_review_queue_dep, get_orchestrator
-from api.routes import documents, cases, investigations, review, transactions
+from api.routes import documents, cases, investigations, review, transactions, auth
 
 logger = logging.getLogger("ReconAgentAPI")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -46,11 +46,22 @@ async def lifespan(app: FastAPI):
     """
     logger.info("Initializing ReconAgent API and persisting datastores...")
     db = get_db()
+    
+    from api.dependencies import get_user_db
+    user_db = get_user_db()
+    
     rq = get_review_queue_dep()
     orchestrator = get_orchestrator()
 
     loaded_review_items = len(rq.queue)
     logger.info(f"ReconAgent API ready. Loaded {loaded_review_items} cases into Review Queue.")
+
+    # Seed default Admin user in PostgreSQL
+    from api.routes.auth import get_password_hash
+    if not user_db.get_user_by_email('admin@reconagent.local'):
+        hashed = get_password_hash("admin")
+        user_db.create_user("admin@reconagent.local", hashed, "Admin")
+        logger.info("Created default admin user 'admin@reconagent.local' with password 'admin'")
 
     yield
 
@@ -140,26 +151,30 @@ async def generic_exception_handler(request: Request, exc: Exception):
 # Router Inclusions (Direct routes and /api prefixed routes)
 # -----------------------------------------------------------------------------
 # Documents: /documents and /api/documents
-app.include_router(documents.router, prefix="/api")
-app.include_router(documents.router, prefix="")
+app.include_router(documents.router, prefix="/api", dependencies=[Depends(auth.get_current_user)])
+app.include_router(documents.router, prefix="", dependencies=[Depends(auth.get_current_user)])
  
 # Transactions: /transactions and /api/transactions
-app.include_router(transactions.router, prefix="/api")
-app.include_router(transactions.router, prefix="")
+app.include_router(transactions.router, prefix="/api", dependencies=[Depends(auth.get_current_user)])
+app.include_router(transactions.router, prefix="", dependencies=[Depends(auth.get_current_user)])
 
 # Cases: /cases and /api/cases
-app.include_router(cases.router, prefix="/api")
-app.include_router(cases.router, prefix="")
+app.include_router(cases.router, prefix="/api", dependencies=[Depends(auth.get_current_user)])
+app.include_router(cases.router, prefix="", dependencies=[Depends(auth.get_current_user)])
 
 # Investigations: /investigations and /api/investigations
-app.include_router(investigations.router, prefix="/api")
-app.include_router(investigations.router, prefix="")
+app.include_router(investigations.router, prefix="/api", dependencies=[Depends(auth.get_current_user)])
+app.include_router(investigations.router, prefix="", dependencies=[Depends(auth.get_current_user)])
 
 # Review Queue: /review, /api/review, /review-queue, and /api/review-queue
-app.include_router(review.router, prefix="/api/review")
-app.include_router(review.router, prefix="/review")
-app.include_router(review.router, prefix="/api/review-queue")
-app.include_router(review.router, prefix="/review-queue")
+app.include_router(review.router, prefix="/api/review", dependencies=[Depends(auth.get_current_user)])
+app.include_router(review.router, prefix="/review", dependencies=[Depends(auth.get_current_user)])
+app.include_router(review.router, prefix="/api/review-queue", dependencies=[Depends(auth.get_current_user)])
+app.include_router(review.router, prefix="/review-queue", dependencies=[Depends(auth.get_current_user)])
+
+# Authentication: /auth and /api/auth
+app.include_router(auth.router, prefix="/api/auth")
+app.include_router(auth.router, prefix="/auth")
 
 
 from fastapi.staticfiles import StaticFiles

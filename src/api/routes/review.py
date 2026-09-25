@@ -22,6 +22,7 @@ from api.schemas import (
     EvidenceSchema,
 )
 from agent.review_queue import ReviewQueueManager, ReviewItem
+from api.routes.auth import require_role
 
 router = APIRouter(tags=["Review Queue"])
 
@@ -126,7 +127,7 @@ def get_review_item(
     return _to_review_item_response(item)
 
 
-@router.post("/{case_id}/decision", response_model=ReviewDecisionResponse)
+@router.post("/{case_id}/decision", response_model=ReviewDecisionResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 def submit_decision(
     case_id: str,
     payload: ReviewDecisionRequest,
@@ -160,7 +161,7 @@ def submit_decision(
     )
 
 
-@router.post("/{case_id}/approve", response_model=ReviewDecisionResponse)
+@router.post("/{case_id}/approve", response_model=ReviewDecisionResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 def approve_case(
     case_id: str,
     payload: Optional[DecisionActionRequest] = None,
@@ -190,7 +191,7 @@ def approve_case(
     )
 
 
-@router.post("/{case_id}/reject", response_model=ReviewDecisionResponse)
+@router.post("/{case_id}/reject", response_model=ReviewDecisionResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 def reject_case(
     case_id: str,
     payload: Optional[DecisionActionRequest] = None,
@@ -220,7 +221,7 @@ def reject_case(
     )
 
 
-@router.post("/{case_id}/escalate", response_model=ReviewDecisionResponse)
+@router.post("/{case_id}/escalate", response_model=ReviewDecisionResponse, dependencies=[Depends(require_role(["Admin", "Reviewer"]))])
 def escalate_case(
     case_id: str,
     payload: Optional[DecisionActionRequest] = None,

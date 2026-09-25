@@ -1,19 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   UserCheck,
   AlertCircle,
-  HelpCircle,
   CheckCircle2,
   XCircle,
   ArrowUpRight,
   Info,
   Clock,
   ShieldCheck,
-  FileCheck,
   Send,
   Loader2,
+  Lock,
 } from 'lucide-react';
 import { InvestigationData, ReviewDecisionRecord } from '../types';
+import { useAuth } from '../AuthContext';
 
 interface HumanReviewCardProps {
   investigation: InvestigationData;
@@ -32,18 +32,25 @@ export const HumanReviewCard: React.FC<HumanReviewCardProps> = ({
   isSubmitting,
   pastDecision,
 }) => {
-  const [reviewer, setReviewer] = useState('Jane Doe (AP Senior Specialist)');
+  const { user } = useAuth();
+  const canReview = user?.role === 'Admin' || user?.role === 'Reviewer';
+  
+  const [reviewer, setReviewer] = useState(user?.email || 'jane@example.com');
   const [reason, setReason] = useState('');
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const hoverTimerRef = useRef<any>(null);
 
+  useEffect(() => {
+    if (user?.email) {
+      setReviewer(user.email);
+    }
+  }, [user]);
+
   // 2-Second Hover Delay Implementation
   const handleMouseEnter = (buttonKey: string) => {
-    // Clear any previous timer
     if (hoverTimerRef.current) {
       clearTimeout(hoverTimerRef.current);
     }
-    // Start 2000ms delay timer
     hoverTimerRef.current = setTimeout(() => {
       setActiveTooltip(buttonKey);
     }, 2000);
@@ -66,6 +73,34 @@ export const HumanReviewCard: React.FC<HumanReviewCardProps> = ({
         ? 'Dispute billing rate with vendor.'
         : 'Escalated for senior leadership policy review.');
     onDecisionSubmit(action, reviewer, finalReason);
+  };
+
+  // Helper to format concise short details without redundant repetitions
+  const cleanShortDetail = (text?: string): string => {
+    if (!text) return '';
+    const cleaned = text.replace(/\.{2,}/g, '.').trim();
+    const sentences = cleaned.split(/(?<=[.!?])\s+/);
+    const unique: string[] = [];
+    for (const s of sentences) {
+      const trimmed = s.trim();
+      if (trimmed && !unique.some((u) => u.toLowerCase() === trimmed.toLowerCase())) {
+        unique.push(trimmed);
+      }
+    }
+    return unique.slice(0, 2).join(' ');
+  };
+
+  const formatShortConclusion = (text?: string): string => {
+    if (!text) return '';
+    if (text.includes('Resolution Policy:')) {
+      const parts = text.split('Resolution Policy:');
+      return cleanShortDetail(parts[1]);
+    }
+    if (text.includes('Recommended action:')) {
+      const parts = text.split('Recommended action:');
+      return `Recommended action: ${cleanShortDetail(parts[1])}`;
+    }
+    return cleanShortDetail(text);
   };
 
   return (
@@ -91,274 +126,225 @@ export const HumanReviewCard: React.FC<HumanReviewCardProps> = ({
         </span>
       </div>
 
-      {/* THE 5 ESSENTIAL HUMAN REVIEW QUESTIONS */}
-      <div className="space-y-3 mb-6 bg-slate-900/90 rounded-xl p-4 border border-slate-800">
+      {/* 2 ESSENTIAL HUMAN REVIEW QUESTIONS */}
+      <div className="space-y-4 mb-6 bg-slate-900/90 rounded-xl p-4 border border-slate-800">
         {/* Q1: Why was this flagged? */}
         <div>
-          <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5 mb-1">
-            <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
-            <span>1. Why was this flagged?</span>
+          <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5 mb-1.5">
+            <AlertCircle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+            <span className="text-amber-400 font-bold">1. Why was this flagged?</span>
           </div>
           <p className="text-xs text-slate-200 pl-5 leading-relaxed font-sans">
-            {investigation.flagged_reason ||
+            {cleanShortDetail(investigation.flagged_reason) ||
               'Reconciliation review initiated for case verification.'}
           </p>
         </div>
 
-        {/* Q2: What did the agent investigate? */}
-        <div>
+        {/* Q2: What did it conclude? */}
+        <div className="pt-3 border-t border-slate-800/80">
           <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5 mb-1.5">
-            <HelpCircle className="w-3.5 h-3.5 text-sky-400" />
-            <span>2. What did the agent investigate?</span>
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+            <span className="text-emerald-400 font-bold">2. What did the agent conclude?</span>
           </div>
-          <div className="space-y-1.5 pl-5">
-            {(investigation.investigation_steps || [
-              { tool: 'Reconciliation Audit', findings: 'Audited case documents and line records' },
-            ]).map((step, idx) => (
-              <div key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                <span className="font-semibold text-sky-400 min-w-[150px] flex-shrink-0">
-                  {step.tool || step.action}:
+          <div className="pl-5 space-y-2.5">
+            <p className="text-xs text-slate-200 leading-relaxed font-sans whitespace-pre-line">
+              {formatShortConclusion(investigation.agent_conclusion) ||
+                'Reconciliation completed against contract rate repository and enterprise authorization records.'}
+            </p>
+            <div className="flex items-center flex-wrap gap-2 pt-0.5">
+              <span className="text-[10px] text-slate-400 uppercase font-semibold">Recommendation:</span>
+              <span className="px-2.5 py-0.5 rounded text-xs font-bold uppercase bg-gradient-to-r from-sky-500/20 to-blue-500/20 text-sky-300 border border-sky-400/40">
+                {investigation.agent_recommendation || 'HUMAN_REVIEW'}
+              </span>
+              <span className="text-[11px] text-slate-400">
+                (Confidence:{' '}
+                <span
+                  className={`font-semibold ${
+                    investigation.confidence_score >= 0.9
+                      ? 'text-emerald-400'
+                      : investigation.confidence_score >= 0.75
+                      ? 'text-amber-400'
+                      : 'text-rose-400'
+                  }`}
+                >
+                  {Math.round(investigation.confidence_score * 100)}%
                 </span>
-                <span className="text-slate-200 leading-snug">{step.findings}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Q3: What evidence did it use? */}
-        <div>
-          <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5 mb-1.5">
-            <FileCheck className="w-3.5 h-3.5 text-indigo-400" />
-            <span>3. What evidence did it use?</span>
-          </div>
-          <div className="pl-5 text-xs text-slate-200">
-            {investigation.evidence_citations && investigation.evidence_citations.length > 0 ? (
-              <div className="space-y-1.5">
-                {investigation.evidence_citations.map((ev, idx) => {
-                  const fieldLabel = (ev.field || '').replace(/_/g, ' ');
-                  let valText = String(ev.value || '—');
-                  const noteText = ev.notes || '';
-
-                  // Clean up internal math raw dicts or NaN
-                  if (valText.startsWith('{') && valText.endsWith('}')) {
-                    valText = 'Calculation Discrepancy Audited';
-                  }
-                  if (valText.includes('NaN')) {
-                    const numbers = noteText.match(/[\d,]+(?:\.\d+)?/g);
-                    if (numbers && numbers.length >= 2) {
-                      valText = `Calculated $${numbers[0]} vs Printed $${numbers[1]}`;
-                    } else {
-                      valText = valText.replace(/\$NaN/g, 'N/A').replace(/NaN/g, 'N/A');
-                    }
-                  }
-
-                  return (
-                    <div key={idx} className="flex items-center flex-wrap gap-2 text-xs text-slate-300 font-mono">
-                      <span className="px-2 py-0.5 rounded bg-slate-800 text-indigo-300 border border-slate-700 font-semibold text-[11px]">
-                        {ev.document || 'Source Record'}
-                      </span>
-                      <span className="text-slate-400 capitalize">{fieldLabel}:</span>
-                      <span className="text-white font-bold">{valText}</span>
-                      {noteText && <span className="text-slate-400 font-sans text-xs">({noteText})</span>}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-slate-300 leading-relaxed font-sans">
-                Reconciled source records: Verified Purchase Order approved pricing, Vendor Invoice billed item rates, and physical Goods Receipt counts. Cross-document consistency verified.
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Q4: What did it conclude? */}
-        <div>
-          <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5 mb-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>4. What did it conclude?</span>
-          </div>
-          <p className="text-xs text-slate-200 pl-5 leading-relaxed font-sans whitespace-pre-line">
-            {investigation.agent_conclusion ||
-              'Reconciliation completed against contract rate repository and enterprise authorization records.'}
-          </p>
-        </div>
-
-        {/* Q5: What does it recommend? */}
-        <div className="pt-1 border-t border-slate-800/80">
-          <div className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5 mb-1">
-            <ArrowUpRight className="w-3.5 h-3.5 text-sky-400" />
-            <span>5. What does it recommend?</span>
-          </div>
-          <div className="pl-5 flex items-center space-x-2">
-            <span className="px-3 py-1 rounded-lg text-xs font-bold uppercase bg-gradient-to-r from-sky-500/20 to-blue-500/20 text-sky-300 border border-sky-400/40">
-              {investigation.agent_recommendation || 'REQUEST_CREDIT_MEMO'}
-            </span>
-            <span className="text-[11px] text-slate-400">
-              (Confidence: <span className={`font-semibold ${investigation.confidence_score >= 0.9 ? 'text-emerald-400' : investigation.confidence_score >= 0.75 ? 'text-amber-400' : 'text-rose-400'}`}>{Math.round(investigation.confidence_score * 100)}%</span>)
-            </span>
+                )
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Reviewer Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-        <div>
-          <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
-            Reviewer Specialist ID / Name
-          </label>
-          <input
-            type="text"
-            value={reviewer}
-            onChange={(e) => setReviewer(e.target.value)}
-            disabled={isSubmitting || !!pastDecision}
-            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 disabled:opacity-50"
-          />
+      {canReview ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              Reviewer Specialist ID / Name
+            </label>
+            <input
+              type="text"
+              value={reviewer}
+              onChange={(e) => setReviewer(e.target.value)}
+              disabled={isSubmitting || !!pastDecision}
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 disabled:opacity-50"
+            />
+          </div>
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              Decision Rationale / Dispute Reason
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. Price hike unapproved; requesting credit adjustment"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              disabled={isSubmitting || !!pastDecision}
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 disabled:opacity-50"
+            />
+          </div>
         </div>
-        <div>
-          <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
-            Decision Rationale / Dispute Reason
-          </label>
-          <input
-            type="text"
-            placeholder="e.g. Price hike unapproved; requesting credit adjustment"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            disabled={isSubmitting || !!pastDecision}
-            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 disabled:opacity-50"
-          />
-        </div>
-      </div>
+      ) : (
+        !pastDecision && (
+          <div className="mb-4 p-3 rounded-lg bg-slate-900/50 border border-slate-700 flex items-center justify-center space-x-2 text-slate-400 text-xs">
+            <Lock className="w-4 h-4" />
+            <span>You do not have permission to review this case. (Role: {user?.role})</span>
+          </div>
+        )
+      )}
 
       {/* 3 SETTLEMENT ACTION BUTTONS WITH 2-SECOND DELAYED TOOLTIP */}
-      <div className="relative pt-2">
-        <div className="flex flex-col sm:flex-row items-center justify-center flex-wrap gap-2.5 sm:gap-4">
-          {/* Button 1: Approve Recommendation */}
-          <div
-            className="relative w-full sm:w-auto"
-            onMouseEnter={() => handleMouseEnter('APPROVE')}
-            onMouseLeave={handleMouseLeave}
-          >
-            <button
-              onClick={() => handleAction('APPROVE')}
-              disabled={isSubmitting || !!pastDecision}
-              className="w-full sm:w-auto min-w-[200px] flex items-center justify-center space-x-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md shadow-emerald-900/30 transition transform active:scale-95 disabled:opacity-50"
+      {canReview && (
+        <div className="relative pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center flex-wrap gap-2.5 sm:gap-4">
+            {/* Button 1: Approve Recommendation */}
+            <div
+              className="relative w-full sm:w-auto"
+              onMouseEnter={() => handleMouseEnter('APPROVE')}
+              onMouseLeave={handleMouseLeave}
             >
-              {isSubmitting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <CheckCircle2 className="w-4 h-4" />
-              )}
-              <span>Approve Recommendation</span>
-              <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveTooltip((prev) => (prev === 'APPROVE' ? null : 'APPROVE'));
-                }}
-                className="p-1 -mr-1 rounded hover:bg-white/10"
-                title="Hover 2s or tap for details"
-              >
-                <Info className="w-3.5 h-3.5 opacity-80 hover:opacity-100 transition" />
-              </span>
-            </button>
-          </div>
-
-          {/* Button 2: Reject Recommendation */}
-          <div
-            className="relative w-full sm:w-auto"
-            onMouseEnter={() => handleMouseEnter('REJECT')}
-            onMouseLeave={handleMouseLeave}
-          >
-            <button
-              onClick={() => handleAction('REJECT')}
-              disabled={isSubmitting || !!pastDecision}
-              className="w-full sm:w-auto min-w-[200px] flex items-center justify-center space-x-2 px-5 py-2.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-md shadow-rose-900/30 transition transform active:scale-95 disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <XCircle className="w-4 h-4" />
-              )}
-              <span>Reject Recommendation</span>
-              <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveTooltip((prev) => (prev === 'REJECT' ? null : 'REJECT'));
-                }}
-                className="p-1 -mr-1 rounded hover:bg-white/10"
-                title="Hover 2s or tap for details"
-              >
-                <Info className="w-3.5 h-3.5 opacity-80 hover:opacity-100 transition" />
-              </span>
-            </button>
-          </div>
-
-          {/* Button 3: Escalate Case */}
-          <div
-            className="relative w-full sm:w-auto"
-            onMouseEnter={() => handleMouseEnter('ESCALATE')}
-            onMouseLeave={handleMouseLeave}
-          >
-            <button
-              onClick={() => handleAction('ESCALATE')}
-              disabled={isSubmitting || !!pastDecision}
-              className="w-full sm:w-auto min-w-[200px] flex items-center justify-center space-x-2 px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-md shadow-purple-900/30 transition transform active:scale-95 disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <ArrowUpRight className="w-4 h-4" />
-              )}
-              <span>Escalate Case</span>
-              <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveTooltip((prev) => (prev === 'ESCALATE' ? null : 'ESCALATE'));
-                }}
-                className="p-1 -mr-1 rounded hover:bg-white/10"
-                title="Hover 2s or tap for details"
-              >
-                <Info className="w-3.5 h-3.5 opacity-80 hover:opacity-100 transition" />
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* 2-SECOND DELAYED HOVER TOOLTIP BOX */}
-        {activeTooltip && (
-          <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 z-30 w-full max-w-sm sm:w-96 p-3.5 rounded-xl bg-slate-900 border border-sky-500/50 shadow-2xl text-xs text-slate-200 animate-fadeIn backdrop-blur-md">
-            <div className="flex items-center justify-between text-sky-400 font-bold mb-1">
-              <div className="flex items-center space-x-1.5">
-                <Info className="w-4 h-4" />
-                <span>
-                  {activeTooltip === 'APPROVE'
-                    ? 'Approve Recommendation'
-                    : activeTooltip === 'REJECT'
-                    ? 'Reject Recommendation'
-                    : 'Escalate Case'}
-                </span>
-              </div>
               <button
-                onClick={() => setActiveTooltip(null)}
-                className="text-slate-400 hover:text-white text-xs font-mono px-1 rounded"
+                onClick={() => handleAction('APPROVE')}
+                disabled={isSubmitting || !!pastDecision}
+                className="w-full sm:w-auto min-w-[200px] flex items-center justify-center space-x-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md shadow-emerald-900/30 transition transform active:scale-95 disabled:opacity-50"
               >
-                ✕
+                {isSubmitting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <CheckCircle2 className="w-4 h-4" />
+                )}
+                <span>Approve Recommendation</span>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveTooltip((prev) => (prev === 'APPROVE' ? null : 'APPROVE'));
+                  }}
+                  className="p-1 -mr-1 rounded hover:bg-white/10"
+                  title="Hover 2s or tap for details"
+                >
+                  <Info className="w-3.5 h-3.5 opacity-80 hover:opacity-100 transition" />
+                </span>
               </button>
             </div>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              {activeTooltip === 'APPROVE' &&
-                "Accepts the AI agent's synthesized recommendation (e.g. Request Credit Memo or Approve Payment), marks the case as resolved, and permanently logs approval in SQLite."}
-              {activeTooltip === 'REJECT' &&
-                'Overrules the agent recommendation, places invoice payment on indefinite administrative hold, and queues case for formal vendor contract dispute.'}
-              {activeTooltip === 'ESCALATE' &&
-                'Routes this discrepancy directly to Senior Procurement or Finance Leadership for executive exception approval and policy override.'}
-            </p>
-            <div className="mt-2 text-[10px] text-sky-400/80 font-mono">
-              ℹ Appears after 2.0s hover delay (or instant tap)
+
+            {/* Button 2: Reject Recommendation */}
+            <div
+              className="relative w-full sm:w-auto"
+              onMouseEnter={() => handleMouseEnter('REJECT')}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                onClick={() => handleAction('REJECT')}
+                disabled={isSubmitting || !!pastDecision}
+                className="w-full sm:w-auto min-w-[200px] flex items-center justify-center space-x-2 px-5 py-2.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-md shadow-rose-900/30 transition transform active:scale-95 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <XCircle className="w-4 h-4" />
+                )}
+                <span>Reject Recommendation</span>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveTooltip((prev) => (prev === 'REJECT' ? null : 'REJECT'));
+                  }}
+                  className="p-1 -mr-1 rounded hover:bg-white/10"
+                  title="Hover 2s or tap for details"
+                >
+                  <Info className="w-3.5 h-3.5 opacity-80 hover:opacity-100 transition" />
+                </span>
+              </button>
+            </div>
+
+            {/* Button 3: Escalate Case */}
+            <div
+              className="relative w-full sm:w-auto"
+              onMouseEnter={() => handleMouseEnter('ESCALATE')}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                onClick={() => handleAction('ESCALATE')}
+                disabled={isSubmitting || !!pastDecision}
+                className="w-full sm:w-auto min-w-[200px] flex items-center justify-center space-x-2 px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-md shadow-purple-900/30 transition transform active:scale-95 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <ArrowUpRight className="w-4 h-4" />
+                )}
+                <span>Escalate Case</span>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveTooltip((prev) => (prev === 'ESCALATE' ? null : 'ESCALATE'));
+                  }}
+                  className="p-1 -mr-1 rounded hover:bg-white/10"
+                  title="Hover 2s or tap for details"
+                >
+                  <Info className="w-3.5 h-3.5 opacity-80 hover:opacity-100 transition" />
+                </span>
+              </button>
             </div>
           </div>
-        )}
-      </div>
+
+          {/* 2-SECOND DELAYED HOVER TOOLTIP BOX */}
+          {activeTooltip && (
+            <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 z-30 w-full max-w-sm sm:w-96 p-3.5 rounded-xl bg-slate-900 border border-sky-500/50 shadow-2xl text-xs text-slate-200 animate-fadeIn backdrop-blur-md">
+              <div className="flex items-center justify-between text-sky-400 font-bold mb-1">
+                <div className="flex items-center space-x-1.5">
+                  <Info className="w-4 h-4" />
+                  <span>
+                    {activeTooltip === 'APPROVE'
+                      ? 'Approve Recommendation'
+                      : activeTooltip === 'REJECT'
+                      ? 'Reject Recommendation'
+                      : 'Escalate Case'}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setActiveTooltip(null)}
+                  className="text-slate-400 hover:text-white text-xs font-mono px-1 rounded"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                {activeTooltip === 'APPROVE' &&
+                  "Accepts the AI agent's synthesized recommendation (e.g. Request Credit Memo or Approve Payment), marks the case as resolved, and permanently logs approval in SQLite."}
+                {activeTooltip === 'REJECT' &&
+                  'Overrules the agent recommendation, places invoice payment on indefinite administrative hold, and queues case for formal vendor contract dispute.'}
+                {activeTooltip === 'ESCALATE' &&
+                  'Routes this discrepancy directly to Senior Procurement or Finance Leadership for executive exception approval and policy override.'}
+              </p>
+              <div className="mt-2 text-[10px] text-sky-400/80 font-mono">
+                ℹ Appears after 2.0s hover delay (or instant tap)
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* DURABLE AUDIT TRAIL LOGGING */}
       {pastDecision ? (

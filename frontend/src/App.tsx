@@ -5,6 +5,7 @@ import { CasesTable } from './components/CasesTable';
 import { CaseDetailView } from './components/CaseDetailView';
 import { DocumentViewerModal } from './components/DocumentViewerModal';
 import { UploadModal } from './components/UploadModal';
+import { UserManagementModal } from './components/UserManagementModal';
 import { api } from './services/api';
 import {
   CaseSummary,
@@ -22,6 +23,7 @@ export const App: React.FC = () => {
   // Global State
   const [cases, setCases] = useState<CaseSummary[]>([]);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+  const [isUserMgmtOpen, setIsUserMgmtOpen] = useState<boolean>(false);
   const [metrics, setMetrics] = useState<MetricCounts>({
     total_cases: 0,
     matched: 0,
@@ -363,7 +365,7 @@ export const App: React.FC = () => {
         } else if (isPriceMismatch || Math.abs(diffAmount) > 0.01) {
           agentConclusion = `Vendor billed $${(invPriceVal || 0).toFixed(2)} vs authorized PO rate $${(poPriceVal || 0).toFixed(2)}. No approved price change was found on file. Recommended action: Request a credit memo of $${Math.abs(diffAmount).toFixed(2)} from ${normalizedThreeWay.vendor_name || 'the vendor'}.`;
         } else if (!hasPo || !hasInv || isMissingDoc) {
-          agentConclusion = `Cannot reconcile transaction because required matching documents are missing. Escalated to procurement buyer to locate missing files.`;
+          agentConclusion = `Cannot reconcile transaction because required matching documents are missing. Flagged for human review to locate missing files.`;
         } else {
           agentConclusion = `Audited transaction against contract terms. Recommended action: ${caseDetail?.recommendation || invDetail?.recommendation || 'REQUEST_CREDIT_MEMO'}.`;
         }
@@ -709,6 +711,7 @@ export const App: React.FC = () => {
       {/* Top Navigation */}
       <Navbar
         onOpenUpload={() => setIsUploadOpen(true)}
+        onOpenUserMgmt={() => setIsUserMgmtOpen(true)}
         onRefresh={loadData}
         isRefreshing={isRefreshing}
         onlineStatus={onlineStatus}
@@ -769,6 +772,7 @@ export const App: React.FC = () => {
               onSelectCase={handleSelectCase}
               activeQuickFilter={activeQuickFilter}
               onClearQuickFilter={() => setActiveQuickFilter('ALL')}
+              onViewDoc={handleViewDoc}
             />
           </div>
 
@@ -818,6 +822,12 @@ export const App: React.FC = () => {
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
         onReconciledSuccess={handleReconciledSuccess}
+      />
+
+      {/* User Management Modal (Admin only) */}
+      <UserManagementModal
+        isOpen={isUserMgmtOpen}
+        onClose={() => setIsUserMgmtOpen(false)}
       />
     </div>
   );

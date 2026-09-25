@@ -187,5 +187,33 @@
         "date": "2024-06-16",
         "total": "9819.00",
         "first_seen": "2026-09-24T19:16:02.874592"
+    },
+    "523f0b238024dc914da1ec7eb2d7bd927ef5196d27df0ed5b1e3bc763fc0fcfc": {
+        "invoice_id": "INV-30026",
+        "vendor": "Titan Industrial Tools Corp",
+        "date": "2024-03-16",
+        "total": "5812.20",
+        "first_seen": "2026-09-25T19:34:33.982208"
+    },
+    "2920228bfb926cabff43c8eafd6f88ef1bf48154d8024f6867bba394061e7cd7": {
+        "invoice_id": "INV-30027",
+        "vendor": "BioMed Scientific Solutions LLC",
+        "date": "2024-04-16",
+        "total": "8501.40",
+        "first_seen": "2026-09-25T19:37:54.018509"
+    },
+    "e69c52851fb97695e2e7d62dd62a4a3ab7fa27e39449bd2c771b75e0c1901251": {
+        "invoice_id": "INV-30028",
+        "vendor": "TransGlobal Logistics Corp",
+        "date": "2024-05-16",
+        "total": "14689.80",
+        "first_seen": "2026-09-25T19:38:50.820163"
+    },
+    "3fd51184ab4c607120de022d0a26c920b30d17c36a2cc309ffe288ab84bef5fd": {
+        "invoice_id": "INV-30029",
+        "vendor": "Global Office Supplies Inc",
+        "date": "2024-06-16",
+        "total": "7065.00",
+        "first_seen": "2026-09-25T19:39:02.537223"
     }
 }

@@ -341,7 +341,7 @@ MISC-01          Consulting Services                 1       $800.00    $800.00
         tx = report.transactions[0]
         self.assertEqual(tx.case_id, "CASE_INV-NO-PO-123")
         self.assertTrue(tx.requires_human_review)
-        self.assertIn(tx.recommendation, ("ESCALATE_TO_BUYER", "REJECT_INVOICE"))
+        self.assertIn(tx.recommendation, ("HUMAN_REVIEW", "ESCALATE_TO_BUYER", "REJECT_INVOICE"))
 
 
 if __name__ == "__main__":

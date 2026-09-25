@@ -309,8 +309,10 @@ class InvestigationResult(BaseModel):
                 "CREDIT_MEMO": "REQUEST_CREDIT_MEMO",
                 "REQUEST_CREDIT": "REQUEST_CREDIT_MEMO",
                 "REJECT": "REJECT_INVOICE",
-                "ESCALATE": "ESCALATE_TO_BUYER",
-                "BUYER_REVIEW": "ESCALATE_TO_BUYER",
+                "ESCALATE": "HUMAN_REVIEW",
+                "ESCALATE_TO_BUYER": "HUMAN_REVIEW",
+                "BUYER_REVIEW": "HUMAN_REVIEW",
+                "MANUAL_REVIEW": "HUMAN_REVIEW",
                 "HOLD": "HOLD_FOR_RECEIPT",
                 "DUPLICATE": "CANCEL_DUPLICATE",
             }

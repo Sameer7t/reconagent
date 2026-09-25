@@ -224,8 +224,9 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
 
             if has_approved_auth:
                 explanation = (
-                    f"Unit price variance (expected ${expected}, billed ${actual}) was investigated and confirmed. "
-                    f"A formal price escalation amendment was found on file and verified."
+                    f"Unit price variance (expected ${expected}, billed ${actual}) was investigated. "
+                    f"A formal price escalation amendment was found on file. "
+                    f"Left to human review for final decision."
                 )
             else:
                 explanation = (
@@ -332,11 +333,11 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
     elif not discrepancies:
         recommendation = "APPROVE_PAYMENT"
     elif has_approved_auth and all("PRICE" in dt or "CHARGE" in dt for dt in disc_types):
-        recommendation = "APPROVE_PAYMENT"
+        recommendation = "HUMAN_REVIEW"
     elif any("PRICE" in dt or "SHORTAGE" in dt or "QUANTITY" in dt or "CHARGE" in dt or "UNAUTHORIZED" in dt for dt in disc_types):
         recommendation = "REQUEST_CREDIT_MEMO"
     else:
-        recommendation = "ESCALATE_TO_BUYER"
+        recommendation = "HUMAN_REVIEW"
 
     # Overall confidence: HIGH unless any finding has LOW/MEDIUM or missing evidence
     if any(f.confidence in ("LOW", "MEDIUM") for f in findings):
@@ -422,7 +423,7 @@ def create_investigation_result(state: InvestigationState) -> InvestigationResul
         case_id=state.get("case_id", "UNKNOWN_CASE"),
         findings=findings,
         evidence=evidence,
-        recommendation=state.get("recommendation", "ESCALATE_TO_BUYER"),
+        recommendation=state.get("recommendation", "HUMAN_REVIEW"),
         confidence=state.get("confidence", "HIGH"),
         requires_human_review=state.get("requires_human_review", True),
         final_summary=state.get("final_summary"),

@@ -19,7 +19,7 @@ Carrier: FedEx Freight Priority (Tracking #: 9812490192)
 --------------------------------------------------------------------------------
 SKU / ITEM       DESCRIPTION                           QTY ORDERED   QTY DELIVERED
 --------------------------------------------------------------------------------
-TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4             12              12
+TG-FRT-LTL       Less-Than-Truckload Freight Standard Zone 4             13              13
 TG-PAL-HD4       Heavy Duty Heat-Treated Wood Pallet 48x40              5               5
 --------------------------------------------------------------------------------
 Status: Complete / No Damaged Goods Reported

@@ -18,6 +18,7 @@ htmlcov/
 reports/
 
 # Database & Storage
+*.db
 data/*.db
 data/investigations.db
 reconagent_investigations.db

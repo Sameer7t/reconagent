@@ -205,10 +205,10 @@ def test_scenario_2_authorized_price_change():
 
     result = run_investigation(case_data, datastore=store, db=db, review_queue=queue)
 
-    assert result.recommendation == "APPROVE_PAYMENT"
-    assert result.requires_human_review is False
+    assert result.recommendation == "HUMAN_REVIEW"
+    assert result.requires_human_review is True
     assert "formal price escalation amendment was found on file" in result.findings[0].explanation
-    print("  PASS: Test 2 — Authorized Price Change -> APPROVE_PAYMENT")
+    print("  PASS: Test 2 — Authorized Price Change -> HUMAN_REVIEW")
 
 
 # =====================================================================
@@ -328,8 +328,8 @@ def test_scenario_6_insufficient_evidence():
     result = run_investigation(case_data, datastore=store, db=db)
 
     assert result.requires_human_review is True
-    assert result.recommendation in ("ESCALATE_TO_BUYER", "REJECT_INVOICE")
-    print("  PASS: Test 6 — Insufficient Evidence -> ESCALATE_TO_BUYER")
+    assert result.recommendation in ("HUMAN_REVIEW", "ESCALATE_TO_BUYER", "REJECT_INVOICE")
+    print("  PASS: Test 6 — Insufficient Evidence -> HUMAN_REVIEW")
 
 
 # =====================================================================

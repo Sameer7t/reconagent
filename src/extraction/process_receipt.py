@@ -85,9 +85,9 @@ ITEM EXTRACTION RULES:
 - Preserve the original item description as closely as possible.
 - Preserve item/product codes exactly when visible.
 - quantity must represent the purchased quantity, not a number appearing elsewhere in the row.
-- unit_price: Price for one unit. If an item row shows an explicit unit price marked with '@' (e.g. '@149.00' or net '@89.21'), extract that as unit_price.
+- unit_price: Price for one unit. If an item row shows an explicit unit price marked with '@' (e.g. '@149.00' or net '@89.21'), extract that as unit_price. IMPORTANT: Do not calculate or hallucinate this value if it is not explicitly printed on the receipt. Many delivery receipts do not contain prices. Leave it as null if absent.
 - discount: Extract line-item discounts when explicitly shown underneath an item (e.g. 'Aeon card DISC -4.69', 'Item promo -20.00', '@DISC 10% -5.59'). If an item has multiple discounts listed under it, sum them into the item's total discount.
-- total: Final amount for this line item. If a gross amount is printed on the item row, extract it; if an item discount appears, make sure to extract the discount in the item's discount field. If a final net price is printed with '@' (e.g. '@89.21') after discounts, extract the net amount or extract the gross amount with the discount so the net line total can be reconciled. Return null if no line total is explicitly printed on that line.
+- total: Final amount for this line item. If a gross amount is printed on the item row, extract it; if an item discount appears, make sure to extract the discount in the item's discount field. If a final net price is printed with '@' (e.g. '@89.21') after discounts, extract the net amount or extract the gross amount with the discount so the net line total can be reconciled. Return null if no line total is explicitly printed on that line. IMPORTANT: It is perfectly normal for receipts to lack line totals. Do not hallucinate them.
 - Do not substitute subtotal, tax, discount, or grand total for line item total.
 - If a value is unreadable or ambiguous, return null rather than guessing.
 - If a line item exists but one of its fields is missing, still return the line item with the missing field as null.

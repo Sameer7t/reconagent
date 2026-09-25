@@ -90,6 +90,14 @@ class InvestigationDatabase:
                     FOREIGN KEY (investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
                 );
 
+                CREATE TABLE IF NOT EXISTS users (
+                    id TEXT PRIMARY KEY,
+                    username TEXT UNIQUE NOT NULL,
+                    hashed_password TEXT NOT NULL,
+                    role TEXT NOT NULL,
+                    created_at TEXT
+                );
+
                 CREATE TABLE IF NOT EXISTS investigation_findings (
                     id TEXT PRIMARY KEY,
                     investigation_id TEXT NOT NULL,
@@ -99,6 +107,7 @@ class InvestigationDatabase:
                     created_at TEXT,
                     FOREIGN KEY (investigation_id) REFERENCES investigations(id) ON DELETE CASCADE
                 );
+
 
                 CREATE TABLE IF NOT EXISTS review_decisions (
                     case_id TEXT PRIMARY KEY,

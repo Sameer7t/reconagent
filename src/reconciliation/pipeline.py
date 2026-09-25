@@ -130,67 +130,121 @@ def reconcile_transaction(
         logger.info(f"[{case_id}] Stage 0: Internal Document Validation")
         val_checks: List[ReconciliationCheck] = []
 
+        def _generate_granular_discrepancies(val_report: Dict[str, Any], doc_id: str, doc_name: str, id_field: str) -> List[Discrepancy]:
+            discs = []
+            
+            # 1. Line item math errors
+            for item in val_report.get("line_item_audit", []):
+                if item.get("is_valid") is False and item.get("error_note"):
+                    # Extract values safely
+                    calc_val = item.get("calculated_line_total")
+                    rep_val = item.get("reported_line_total")
+                    diff = None
+                    diff_pct = None
+                    if calc_val is not None and rep_val is not None:
+                        diff = abs(calc_val - rep_val)
+                        if calc_val > Decimal("0"):
+                            diff_pct = (diff / calc_val) * 100
+
+                    line_id = str(item.get("index")) if item.get("index") else ""
+                    if item.get("sku"):
+                        line_id += f"-{item.get('sku')}"
+
+                    kwargs = {
+                        "type": DiscrepancyType.CALCULATION_ERROR,
+                        "severity": Severity.HIGH,
+                        "document_ids": [doc_id],
+                        "expected_value": str(calc_val) if calc_val is not None else None,
+                        "actual_value": str(rep_val) if rep_val is not None else None,
+                        "difference": diff,
+                        "difference_percent": diff_pct,
+                        "explanation": f"{doc_name} {doc_id} line item '{item.get('description') or item.get('sku') or 'Item'}' math failed: {item.get('error_note')}",
+                        "details": {"item_audit": item},
+                    }
+                    kwargs[id_field] = f"{doc_id}-L{line_id}"
+                    discs.append(Discrepancy(**kwargs))
+
+            # 2. Extract Document-Level Discrepancies (Subtotal, Grand Total, Missing Items)
+            for d_msg in val_report.get("discrepancies", []):
+                # Skip the generic line item failure message since we already added granular line-by-line discs above
+                if "line item math checks" in d_msg.lower() or "Failed" in d_msg and "/" in d_msg and "line" in d_msg.lower():
+                    continue
+                
+                # Check if it's subtotal or grand total related to map to a specific difference if possible
+                exp_val = None
+                act_val = None
+                
+                # Example: "Subtotal discrepancy: sum of lines (500.00) != reported subtotal (600.00)."
+                if "sum of lines" in d_msg and "reported subtotal" in d_msg:
+                    import re
+                    m = re.search(r"sum of lines \(([^)]+)\) != reported subtotal \(([^)]+)\)", d_msg)
+                    if m:
+                        exp_val = m.group(1)
+                        act_val = m.group(2)
+                # Example: "Grand total discrepancy: calculated 650.00 != reported 750.00 (Diff: 100.00)."
+                elif "Grand total discrepancy: calculated" in d_msg and "!= reported" in d_msg:
+                    import re
+                    m = re.search(r"calculated ([0-9.]+) != reported ([0-9.]+)", d_msg)
+                    if m:
+                        exp_val = m.group(1)
+                        act_val = m.group(2)
+
+                discs.append(Discrepancy(
+                    type=DiscrepancyType.CALCULATION_ERROR,
+                    severity=Severity.HIGH,
+                    document_ids=[doc_id],
+                    expected_value=exp_val,
+                    actual_value=act_val,
+                    difference=abs(Decimal(exp_val) - Decimal(act_val)) if exp_val and act_val else None,
+                    explanation=f"{doc_name} {doc_id} internal integrity discrepancy: {d_msg}",
+                    details=val_report.get("resolved_totals", {})
+                ))
+
+            return discs
+
         # 0.1 Purchase Order Internal Validation
         if po_data:
             po_id = result.purchase_order_id or "PO"
             po_val = verify_purchase_order_math(po_data)
-            po_discs = po_val.get("discrepancies", [])
-            po_passed = po_val.get("is_valid", True) and len(po_discs) == 0
+            po_discs_msgs = po_val.get("discrepancies", [])
+            po_passed = po_val.get("is_valid", True) and len(po_discs_msgs) == 0
             val_checks.append(
                 ReconciliationCheck(
                     stage="DOCUMENT_VALIDATION",
                     check_name="po_internal_validation",
                     passed=po_passed,
                     details=po_val,
-                    message="PO internal math and integrity verified." if po_passed else f"PO math issues: {'; '.join(po_discs)}",
+                    message="PO internal math and integrity verified." if po_passed else f"PO math issues: {'; '.join(po_discs_msgs)}",
                 )
             )
-            for d_msg in po_discs:
-                all_discrepancies.append(
-                    Discrepancy(
-                        type=DiscrepancyType.CALCULATION_ERROR,
-                        severity=Severity.HIGH,
-                        document_ids=[po_id],
-                        explanation=f"Purchase Order {po_id} internal math discrepancy: {d_msg}",
-                        details=po_val,
-                    )
-                )
+            all_discrepancies.extend(_generate_granular_discrepancies(po_val, po_id, "Purchase Order", "po_line_id"))
 
         # 0.2 Invoice Internal Validation
         if invoice_data:
             inv_id = result.invoice_id or "INV"
             inv_val = verify_invoice_math(invoice_data)
-            inv_discs = inv_val.get("discrepancies", [])
-            inv_passed = inv_val.get("is_valid", True) and len(inv_discs) == 0
+            inv_discs_msgs = inv_val.get("discrepancies", [])
+            inv_passed = inv_val.get("is_valid", True) and len(inv_discs_msgs) == 0
             val_checks.append(
                 ReconciliationCheck(
                     stage="DOCUMENT_VALIDATION",
                     check_name="invoice_internal_validation",
                     passed=inv_passed,
                     details=inv_val,
-                    message="Invoice internal math and integrity verified." if inv_passed else f"Invoice math issues: {'; '.join(inv_discs)}",
+                    message="Invoice internal math and integrity verified." if inv_passed else f"Invoice math issues: {'; '.join(inv_discs_msgs)}",
                 )
             )
-            for d_msg in inv_discs:
-                all_discrepancies.append(
-                    Discrepancy(
-                        type=DiscrepancyType.CALCULATION_ERROR,
-                        severity=Severity.HIGH,
-                        document_ids=[inv_id],
-                        explanation=f"Invoice {inv_id} internal math discrepancy: {d_msg}",
-                        details=inv_val,
-                    )
-                )
+            all_discrepancies.extend(_generate_granular_discrepancies(inv_val, inv_id, "Invoice", "invoice_line_id"))
 
         # 0.3 Receipt Internal Validation
         if receipt_data_list:
             for idx, r_data in enumerate(receipt_data_list):
                 r_id = result.receipt_ids[idx] if idx < len(result.receipt_ids) else f"RECEIPT-{idx+1}"
                 rcpt_val = verify_receipt_math(r_data)
-                rcpt_discs = rcpt_val.get("discrepancies", [])
+                rcpt_discs_msgs = rcpt_val.get("discrepancies", [])
                 # For delivery receipts with only quantities, ignore insufficient price variables note
                 filtered_rcpt_discs = [
-                    d for d in rcpt_discs
+                    d for d in rcpt_discs_msgs
                     if not ("Line item variables insufficient" in d and r_data.get("items"))
                 ]
                 rcpt_passed = rcpt_val.get("is_valid", True) and len(filtered_rcpt_discs) == 0
@@ -203,16 +257,28 @@ def reconcile_transaction(
                         message=f"Receipt {r_id} internal integrity verified." if rcpt_passed else f"Receipt {r_id} issues: {'; '.join(filtered_rcpt_discs)}",
                     )
                 )
-                for d_msg in filtered_rcpt_discs:
-                    all_discrepancies.append(
-                        Discrepancy(
-                            type=DiscrepancyType.CALCULATION_ERROR,
-                            severity=Severity.HIGH,
-                            document_ids=[r_id],
-                            explanation=f"Receipt {r_id} internal integrity discrepancy: {d_msg}",
-                            details=rcpt_val,
-                        )
-                    )
+                
+                # Use a slightly modified fallback logic for receipt since we filtered its generic messages
+                granular = _generate_granular_discrepancies(rcpt_val, r_id, "Receipt", "receipt_line_id")
+                # Remove fallbacks that might be just the generic message if we filtered it
+                if not any(d.details and "item_audit" in d.details for d in granular) and not rcpt_val.get("checks", {}).get("subtotal_verified", True) and len(filtered_rcpt_discs) > 0:
+                     pass # keep it
+                
+                if granular:
+                    # Replace the fallback generic messages with filtered ones if needed
+                    final_granular = []
+                    for d in granular:
+                        if not d.details or "item_audit" not in d.details:
+                            # It's a fallback or total error. Use filtered messages if it's a fallback
+                            if d.explanation.startswith(f"Receipt {r_id} internal integrity discrepancy:"):
+                                msg = d.explanation.split(": ", 1)[-1]
+                                if msg in filtered_rcpt_discs:
+                                    final_granular.append(d)
+                            else:
+                                final_granular.append(d)
+                        else:
+                            final_granular.append(d)
+                    all_discrepancies.extend(final_granular)
 
         result.document_validation_checks = val_checks
 

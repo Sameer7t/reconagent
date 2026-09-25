@@ -311,7 +311,8 @@ def match_receipt_items_to_matches(
             target_match.receipt_line_ids.append(r_line_id)
             target_match.receipt_items.append(r_item)
 
-            rq = Decimal(str(r_item.get('quantity', 0) or 0))
+            raw_rq = r_item.get('quantity') if r_item.get('quantity') is not None else (r_item.get('quantity_delivered') if r_item.get('quantity_delivered') is not None else r_item.get('qty', 0))
+            rq = Decimal(str(raw_rq or 0))
             if target_match.received_quantity is None:
                 target_match.received_quantity = Decimal('0')
             target_match.received_quantity += rq

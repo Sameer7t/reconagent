@@ -15,7 +15,41 @@ const client = axios.create({
   },
 });
 
+client.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const api = {
+  // Auth
+  async login(username: string, password: string):Promise<{access_token: string}> {
+    const formData = new URLSearchParams();
+    formData.append('username', username);
+    formData.append('password', password);
+    const res = await client.post('/auth/token', formData, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    return res.data;
+  },
+  async getMe(): Promise<{id:string, email:string, role:string, created_at:string, is_active:boolean}> {
+    const res = await client.get('/auth/me');
+    return res.data;
+  },
+  async getUsers(): Promise<Array<{id: string, email: string, role: string, created_at: string, is_active: boolean}>> {
+    const res = await client.get('/auth/users');
+    return res.data;
+  },
+  async createUser(data: {email: string, password: string, role: string}): Promise<{id: string, email: string, role: string, created_at: string, is_active: boolean}> {
+    const res = await client.post('/auth/users', data);
+    return res.data;
+  },
+  async deleteUser(userId: string): Promise<{message: string}> {
+    const res = await client.delete(`/auth/users/${userId}`);
+    return res.data;
+  },
   // 1. Health & Status
   async getHealth() {
     const res = await client.get('/health');

@@ -28,8 +28,8 @@ def get_receipt(receipt_id: str, store: Optional[Any] = None) -> Dict[str, Any]:
         line_data = {
             "line_id": f"REC-L{idx}",
             "description": item.get("description", ""),
-            "quantity_ordered": str(item.get("quantity_ordered") if item.get("quantity_ordered") is not None else (item.get("ordered_quantity") if item.get("ordered_quantity") is not None else item.get("quantity", "0"))),
-            "quantity_delivered": str(item.get("quantity_delivered") if item.get("quantity_delivered") is not None else (item.get("delivered_quantity") if item.get("delivered_quantity") is not None else item.get("quantity", "0"))),
+            "quantity_ordered": str(item.get("quantity_ordered", item.get("quantity", "0"))),
+            "quantity_delivered": str(item.get("quantity", "0")),
         }
         if item.get("unit_price") is not None:
             line_data["unit_price"] = str(item.get("unit_price"))
