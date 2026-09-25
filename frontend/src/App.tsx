@@ -324,8 +324,15 @@ export const App: React.FC = () => {
         // Short-form, non-technical plain English reasoning
         let flaggedReason = '';
         if (hasCalculationError) {
-          const calcFinding = findingsList.find((f: any) => f.discrepancy_type === 'CALCULATION_ERROR' || f.discrepancy_type === 'INTERNAL_MATH_ERROR');
-          flaggedReason = calcFinding?.explanation || 'Document calculation error: Itemized charges, tax, and shipping do not match the printed total.';
+          const calcFinding = findingsList.find((f: any) => {
+            const dt = String(f.discrepancy_type || '').toUpperCase();
+            return dt.includes('CALCULATION') || dt.includes('MATH');
+          });
+          const rawMathDisc = (caseDetail?.discrepancies || []).find((d: any) => {
+            const dt = String(d.type || d.discrepancy_type || '').toUpperCase();
+            return dt.includes('CALCULATION') || dt.includes('MATH');
+          });
+          flaggedReason = calcFinding?.explanation || rawMathDisc?.explanation || (findingsList.length > 0 && findingsList[0]?.explanation) || 'Document arithmetic error: Printed totals do not equal itemized line calculations.';
         } else if (findingsList.length > 0 && findingsList[0]?.explanation) {
           flaggedReason = findingsList[0].explanation;
         } else if (isCleanMatch) {
@@ -344,6 +351,8 @@ export const App: React.FC = () => {
         let agentConclusion = '';
         if (invDetail?.final_summary && !invDetail.final_summary.startsWith('=== INVESTIGATION REPORT:')) {
           agentConclusion = invDetail.final_summary;
+        } else if (findingsList.length > 0 && findingsList[0]?.explanation) {
+          agentConclusion = findingsList[0].explanation;
         } else if (hasCalculationError) {
           const docName = normalizedThreeWay.po_id || normalizedThreeWay.invoice_id || 'source document';
           agentConclusion = `Document arithmetic error on ${docName}. The printed total does not equal itemized calculations, so the invoice cannot be authorized. Recommended action: Reject invoice and request a corrected document from ${normalizedThreeWay.vendor_name || 'the vendor'}.`;
@@ -390,18 +399,109 @@ export const App: React.FC = () => {
         if (invDetail?.events && invDetail.events.length > 0) {
           dynamicSteps = invDetail.events.map((ev: any, idx: number) => {
             const rawTool = ev.tool_name || ev.action || 'Audit Tool';
-            let findingsStr = '';
-            if (typeof ev.result === 'object' && ev.result !== null) {
-              findingsStr = ev.result.summary || ev.result.error_detail || ev.result.details || JSON.stringify(ev.result);
-            } else if (typeof ev.result === 'string') {
-              findingsStr = ev.result;
-            } else {
-              findingsStr = `Executed ${rawTool}`;
+            let resObj = ev.result;
+            if (typeof resObj === 'string') {
+              try {
+                resObj = JSON.parse(resObj);
+              } catch {
+                // leave as string
+              }
             }
 
             const cleanTool = rawTool
               .replace(/_/g, ' ')
               .replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+            let findingsStr = '';
+            if (rawTool === 'verify_document_arithmetic') {
+              if (resObj && typeof resObj === 'object') {
+                if (resObj.summary) {
+                  findingsStr = resObj.summary;
+                } else if (resObj.error_detail) {
+                  findingsStr = resObj.error_detail;
+                } else if (resObj.failed_lines && resObj.failed_lines.length > 0) {
+                  const fls = resObj.failed_lines.map((fl: any) => `${fl.description || fl.product_code || 'Line'}: printed $${fl.reported_line_total} vs calculated $${fl.calculated_line_total}`).join('; ');
+                  findingsStr = `Document math verification failed: ${fls}`;
+                } else if (resObj.is_valid) {
+                  findingsStr = `Document arithmetic verified: all line items, tax, and totals reconcile perfectly.`;
+                } else {
+                  findingsStr = `Audited document arithmetic across item lines and summary totals.`;
+                }
+              } else if (typeof resObj === 'string' && !resObj.startsWith('{')) {
+                findingsStr = resObj;
+              } else {
+                findingsStr = `Audited document arithmetic across item lines and summary totals.`;
+              }
+            } else if (rawTool === 'get_purchase_order') {
+              if (resObj && typeof resObj === 'object') {
+                if (resObj.lines && Array.isArray(resObj.lines)) {
+                  const poId = resObj.po_id || 'PO';
+                  const vName = resObj.vendor_id || resObj.vendor || '';
+                  const lineSummaries = resObj.lines.map((l: any) => `${l.description || l.item_id} (Qty: ${l.quantity} @ $${Number(l.unit_price).toFixed(2)})`).join(', ');
+                  findingsStr = `Retrieved Purchase Order ${poId}${vName ? ` (${vName})` : ''}. Inspected ${resObj.lines.length} authorized line items: ${lineSummaries}.`;
+                } else if (resObj.status === 'NOT_FOUND') {
+                  findingsStr = `Purchase order record was not found in enterprise files.`;
+                } else {
+                  findingsStr = resObj.summary || resObj.description || `Inspected purchase order records and approved line items.`;
+                }
+              } else if (typeof resObj === 'string' && !resObj.startsWith('{')) {
+                findingsStr = resObj;
+              } else {
+                findingsStr = `Inspected purchase order records and approved line items.`;
+              }
+            } else if (rawTool === 'get_invoice') {
+              if (resObj && typeof resObj === 'object') {
+                if (resObj.lines && Array.isArray(resObj.lines)) {
+                  const invId = resObj.invoice_id || 'Invoice';
+                  const totStr = resObj.total ? ` (Total: $${Number(resObj.total).toFixed(2)})` : '';
+                  const lineSummaries = resObj.lines.map((l: any) => `${l.description || l.line_id} (Qty: ${l.quantity} @ $${Number(l.unit_price).toFixed(2)}${l.line_total ? ` = $${Number(l.line_total).toFixed(2)}` : ''})`).join(', ');
+                  findingsStr = `Retrieved Invoice ${invId}${totStr}. Inspected ${resObj.lines.length} billed line items: ${lineSummaries}.`;
+                } else if (resObj.status === 'NOT_FOUND') {
+                  findingsStr = `Invoice document was not found in enterprise records.`;
+                } else {
+                  findingsStr = resObj.summary || resObj.description || `Inspected billed invoice items, rates, and line totals.`;
+                }
+              } else if (typeof resObj === 'string' && !resObj.startsWith('{')) {
+                findingsStr = resObj;
+              } else {
+                findingsStr = `Inspected billed invoice items, rates, and line totals.`;
+              }
+            } else if (rawTool === 'get_receipt') {
+              if (resObj && typeof resObj === 'object') {
+                if (resObj.received_lines && Array.isArray(resObj.received_lines)) {
+                  const rId = resObj.receipt_id || 'Receipt';
+                  const dDate = resObj.delivery_date ? ` delivered on ${resObj.delivery_date}` : '';
+                  const lineSummaries = resObj.received_lines.map((l: any) => `${l.description || l.line_id} (Received: ${l.quantity_delivered ?? l.quantity})`).join(', ');
+                  findingsStr = `Retrieved Delivery Receipt ${rId}${dDate}. Confirmed receiving dock counts: ${lineSummaries}.`;
+                } else if (resObj.status === 'NOT_FOUND') {
+                  findingsStr = `Delivery receipt not found in warehouse records.`;
+                } else {
+                  findingsStr = resObj.summary || resObj.description || `Inspected physical delivery and dock receiving receipts.`;
+                }
+              } else if (typeof resObj === 'string' && !resObj.startsWith('{')) {
+                findingsStr = resObj;
+              } else {
+                findingsStr = `Inspected physical delivery and dock receiving receipts.`;
+              }
+            } else if (rawTool === 'check_authorization') {
+              if (resObj && typeof resObj === 'object') {
+                findingsStr = resObj.authorized
+                  ? `Checked price authorizations: Found formal approval on file.`
+                  : `Checked price authorizations: No formal price change authorization was found on file.`;
+              } else {
+                findingsStr = `Checked price authorizations on file.`;
+              }
+            } else if (rawTool === 'get_vendor_history') {
+              findingsStr = `Retrieved vendor history: Checked historical rates and past transaction records.`;
+            } else if (rawTool === 'find_similar_invoices') {
+              findingsStr = `Searched historical invoices: Checked for similar past billing patterns.`;
+            } else if (typeof resObj === 'object' && resObj !== null) {
+              findingsStr = resObj.summary || resObj.description || resObj.error_detail || resObj.message || `Audit step completed: verified ${cleanTool.toLowerCase()} data.`;
+            } else if (typeof resObj === 'string' && !resObj.startsWith('{')) {
+              findingsStr = resObj;
+            } else {
+              findingsStr = `Audit step completed: executed ${cleanTool.toLowerCase()}.`;
+            }
 
             return {
               step: idx + 1,

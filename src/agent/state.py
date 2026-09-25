@@ -41,6 +41,7 @@ class InvestigationState(TypedDict, total=False):
     recommendation: Optional[str]
     confidence: Optional[str]
     requires_human_review: bool
+    final_summary: Optional[str]
 
     status: str
     tool_call_count: int
@@ -87,11 +88,19 @@ def create_initial_state(
     discrepancies_list = []
     for d in raw_discrepancies:
         if hasattr(d, "model_dump"):
-            discrepancies_list.append(d.model_dump())
+            d_dict = d.model_dump()
         elif isinstance(d, dict):
-            discrepancies_list.append(d)
+            d_dict = dict(d)
         else:
-            discrepancies_list.append(dict(d))
+            d_dict = dict(d)
+
+        # Normalize type so it's a pure string like "CALCULATION_ERROR"
+        raw_type = d_dict.get("type")
+        if hasattr(raw_type, "value"):
+            d_dict["type"] = str(raw_type.value)
+        elif isinstance(raw_type, str):
+            d_dict["type"] = raw_type.replace("DiscrepancyType.", "").strip()
+        discrepancies_list.append(d_dict)
 
     state: InvestigationState = {
         "case_id": resolved_case_id,
@@ -104,6 +113,7 @@ def create_initial_state(
         "recommendation": None,
         "confidence": None,
         "requires_human_review": True,  # Default to review until investigation confirms otherwise
+        "final_summary": None,
         "status": InvestigationStatus.PENDING,
         "tool_call_count": 0,
         "last_action": None,
