@@ -60,6 +60,33 @@ def _transaction_result_to_response(tx_res) -> CaseDetailResponse:
     )
 
 
+def _to_str_list(val) -> List[str]:
+    """Ensures input value is converted to a flat list of non-empty strings."""
+    if not val:
+        return []
+    if isinstance(val, str):
+        val = val.strip()
+        if val.startswith("["):
+            try:
+                parsed = json.loads(val)
+                if isinstance(parsed, list):
+                    return _to_str_list(parsed)
+            except Exception:
+                pass
+        return [val] if val else []
+    if isinstance(val, (list, tuple, set)):
+        result = []
+        for x in val:
+            if isinstance(x, (list, tuple, set)):
+                result.extend(_to_str_list(x))
+            elif x is not None:
+                s = str(x).strip()
+                if s:
+                    result.append(s)
+        return result
+    return [str(val)]
+
+
 def _find_document_on_disk(fname: Optional[str], case_id: str) -> Optional[Path]:
     """Finds a source document on disk across known uploads and mock dataset locations."""
     if not fname:
@@ -111,26 +138,15 @@ def _enrich_case_metadata(conn, inv_id: str, case_id: str) -> dict:
             inv_id_num = rdict.get("invoice_number") or inv_id_num
 
             if rdict.get("receipt_files"):
-                rf_raw = rdict["receipt_files"]
-                try:
-                    rcpt_files = json.loads(rf_raw) if isinstance(rf_raw, str) and rf_raw.startswith("[") else [rf_raw]
-                except Exception:
-                    rcpt_files = [rf_raw]
+                rcpt_files = _to_str_list(rdict["receipt_files"])
 
             if rdict.get("source_files"):
-                sf_raw = rdict["source_files"]
-                try:
-                    source_files = json.loads(sf_raw) if isinstance(sf_raw, str) and sf_raw.startswith("[") else [sf_raw]
-                except Exception:
-                    source_files = [sf_raw]
+                source_files = _to_str_list(rdict["source_files"])
 
             if rdict.get("receipt_numbers"):
-                rn_raw = rdict["receipt_numbers"]
-                try:
-                    r_nums = json.loads(rn_raw) if isinstance(rn_raw, str) and rn_raw.startswith("[") else [rn_raw]
-                    rcpt_id = r_nums[0] if r_nums else rcpt_id
-                except Exception:
-                    rcpt_id = rn_raw
+                r_nums = _to_str_list(rdict["receipt_numbers"])
+                if r_nums:
+                    rcpt_id = r_nums[0]
     except Exception:
         pass
 
@@ -205,7 +221,13 @@ def _enrich_case_metadata(conn, inv_id: str, case_id: str) -> dict:
         for ev in cur.fetchall():
             tname = ev[0]
             try:
-                res_data = json.loads(ev[2]) if ev[2] else {}
+                raw_res = ev[2]
+                if isinstance(raw_res, dict):
+                    res_data = raw_res
+                elif isinstance(raw_res, str):
+                    res_data = json.loads(raw_res) if raw_res else {}
+                else:
+                    res_data = {}
             except Exception:
                 res_data = {}
             if tname == "get_purchase_order":
@@ -345,7 +367,7 @@ def list_cases(
             params.extend([et_val, et_val])
 
         # Total count
-        count_cur = conn.execute(f"SELECT COUNT(*) FROM ({query})", params)
+        count_cur = conn.execute(f"SELECT COUNT(*) FROM ({query}) AS sub", params)
         total = count_cur.fetchone()[0]
 
         # Paginated results
@@ -442,10 +464,14 @@ def get_case(
 
     recon_res_dict = None
     if inv.get("reconciliation_result"):
-        try:
-            recon_res_dict = json.loads(inv["reconciliation_result"])
-        except Exception:
-            pass
+        recon_raw = inv["reconciliation_result"]
+        if isinstance(recon_raw, dict):
+            recon_res_dict = recon_raw
+        elif isinstance(recon_raw, str):
+            try:
+                recon_res_dict = json.loads(recon_raw)
+            except Exception:
+                pass
 
     needs_recon = False
     if not recon_res_dict or not recon_res_dict.get("line_item_matches"):

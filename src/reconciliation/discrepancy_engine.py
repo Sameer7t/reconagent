@@ -155,8 +155,12 @@ def assign_severity(
         discrepancy.severity = Severity.MEDIUM
         return discrepancy
 
-    # --- Unmatched item ---
-    if dtype == DiscrepancyType.UNMATCHED_ITEM:
+    # --- Unmatched item & Description / Specification Mismatches ---
+    if dtype in (
+        DiscrepancyType.UNMATCHED_ITEM,
+        DiscrepancyType.SPECIFICATION_MISMATCH,
+        DiscrepancyType.DESCRIPTION_MISMATCH,
+    ):
         discrepancy.severity = Severity.HIGH
         return discrepancy
 

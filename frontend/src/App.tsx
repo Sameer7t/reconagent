@@ -256,10 +256,17 @@ export const App: React.FC = () => {
           matchStatus = Math.abs(diffAmount) > 0.01 ? 'PRICE_MISMATCH' : 'MATCHED';
         }
 
+        const hasSpecMismatch = rawDiscrepancies.some((d: any) =>
+          String(d.type || d.discrepancy_type || '').includes('SPECIFICATION') ||
+          String(d.type || d.discrepancy_type || '').includes('DESCRIPTION')
+        );
+
         let mismatchBadge = '✓ THREE-WAY MATCH PERFECT';
         if (!isCleanMatch) {
           if (hasCalculationError) {
             mismatchBadge = '⚠ DOCUMENT ARITHMETIC / CALCULATION ERROR';
+          } else if (hasSpecMismatch) {
+            mismatchBadge = '⚠ ITEM SPECIFICATION / MEASUREMENT MISMATCH';
           } else if (hasReceiptAmountMismatch) {
             mismatchBadge = '⚠ RECEIPT AMOUNT DISCREPANCY DETECTED';
           } else if (isQuantityMismatch) {

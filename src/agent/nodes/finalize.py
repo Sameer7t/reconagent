@@ -257,6 +257,12 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
                     f"No delivery receipt was found on file for this shipment."
                 )
                 finding_confidence = "MEDIUM"
+            elif shortage_receipts:
+                delivered_vals = [str(e.get("value")) for e in shortage_receipts]
+                explanation = (
+                    f"Physical delivery shortage confirmed by receiving records (delivered: {', '.join(delivered_vals)}). "
+                    f"Vendor invoiced for ordered quantity prior to full delivery fulfillment."
+                )
             elif lines_summary:
                 explanation = (
                     f"Quantity variance and cross-document discrepancy confirmed: {lines_summary[0]} "
@@ -267,12 +273,6 @@ def finalize_node(state: InvestigationState) -> InvestigationState:
                 explanation = (
                     f"Quantity variance detected between Purchase Order and receiving/billing records. "
                     f"PO contains a clerical arithmetic error ({math_val}). The vendor billed and delivered according to receipt records, but the PO line items do not match final delivered counts."
-                )
-            elif shortage_receipts:
-                delivered_vals = [e.get("value") for e in shortage_receipts]
-                explanation = (
-                    f"Physical delivery shortage confirmed by receiving records (delivered: {', '.join(delivered_vals)}). "
-                    f"Vendor invoiced for ordered quantity prior to full delivery fulfillment."
                 )
             else:
                 explanation = f"Quantity discrepancy detected: {disc_explanation or 'Billed quantity does not match receiving records.'}"

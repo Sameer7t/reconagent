@@ -28,6 +28,7 @@ from reconciliation.pipeline import reconcile_transaction, reconcile_batch
 from reconciliation.document_linker import evaluate_link, batch_link_documents
 from reconciliation.header_reconciler import reconcile_headers
 from reconciliation.line_item_matcher import match_line_items
+from reconciliation.description_reconciler import reconcile_descriptions
 from reconciliation.quantity_reconciler import reconcile_quantities
 from reconciliation.price_reconciler import reconcile_prices
 from reconciliation.financial_reconciler import reconcile_financials
@@ -45,6 +46,7 @@ __all__ = [
     "batch_link_documents",
     "reconcile_headers",
     "match_line_items",
+    "reconcile_descriptions",
     "reconcile_quantities",
     "reconcile_prices",
     "reconcile_financials",

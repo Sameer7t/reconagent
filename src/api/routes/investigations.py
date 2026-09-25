@@ -53,7 +53,7 @@ def list_investigations(
             query += " AND case_id LIKE ?"
             params.append(f"%{search}%")
 
-        count_cur = conn.execute(f"SELECT COUNT(*) FROM ({query})", params)
+        count_cur = conn.execute(f"SELECT COUNT(*) FROM ({query}) AS sub", params)
         total = count_cur.fetchone()[0]
 
         query += " ORDER BY completed_at DESC LIMIT ? OFFSET ?"

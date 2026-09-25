@@ -70,6 +70,8 @@ class DiscrepancyType(str, Enum):
 
     # Line-item matching (Stage 2)
     UNMATCHED_ITEM = "UNMATCHED_ITEM"
+    SPECIFICATION_MISMATCH = "SPECIFICATION_MISMATCH"
+    DESCRIPTION_MISMATCH = "DESCRIPTION_MISMATCH"
 
     # Quantity (Stage 3)
     INVOICE_QUANTITY_EXCEEDS_PO = "INVOICE_QUANTITY_EXCEEDS_PO"
@@ -356,6 +358,16 @@ class LineItemMatch(BaseModel):
     price_difference: Optional[Decimal] = Field(default=None)
     price_difference_percent: Optional[Decimal] = Field(default=None)
 
+    # Description and specification audit
+    description_similarity: Optional[float] = Field(
+        default=None,
+        description="Fuzzy word similarity between descriptions across matched documents."
+    )
+    specification_match: Optional[bool] = Field(
+        default=None,
+        description="Whether measurements/specifications (dimensions, units, ratings) matched across documents."
+    )
+
     # Raw item data for reference
     po_item: Optional[Dict[str, Any]] = Field(default=None)
     invoice_item: Optional[Dict[str, Any]] = Field(default=None)
@@ -487,6 +499,10 @@ class ReconciliationResult(BaseModel):
     document_linking: Optional[DocumentLinkResult] = Field(default=None)
     header_checks: List[ReconciliationCheck] = Field(default_factory=list)
     line_item_matches: List[LineItemMatch] = Field(default_factory=list)
+    description_checks: List[ReconciliationCheck] = Field(
+        default_factory=list,
+        description="Checks evaluating descriptions and product specifications."
+    )
     quantity_checks: List[ReconciliationCheck] = Field(default_factory=list)
     price_checks: List[ReconciliationCheck] = Field(default_factory=list)
     financial_checks: List[ReconciliationCheck] = Field(default_factory=list)

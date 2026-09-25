@@ -52,6 +52,7 @@ from reconciliation.line_item_matcher import (
     match_line_items,
     match_receipt_items_to_matches,
 )
+from reconciliation.description_reconciler import reconcile_descriptions
 from reconciliation.quantity_reconciler import reconcile_quantities
 from reconciliation.price_reconciler import reconcile_prices
 from reconciliation.financial_reconciler import reconcile_financials
@@ -340,6 +341,15 @@ def reconcile_transaction(
                         matches, receipt_items, receipt_id
                     )
 
+            result.line_item_matches = matches
+
+            # ── Stage 3.5: Description & Specification Reconciliation ──
+            logger.info(f"[{case_id}] Stage 3.5: Description & Specification Reconciliation")
+            desc_checks, desc_discrepancies, matches = reconcile_descriptions(
+                matches, policy
+            )
+            result.description_checks = desc_checks
+            all_discrepancies.extend(desc_discrepancies)
             result.line_item_matches = matches
 
             # ── Stage 4: Quantity Reconciliation ───────────────────

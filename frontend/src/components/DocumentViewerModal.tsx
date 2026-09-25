@@ -47,10 +47,13 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
     }
   }, [effectiveName]);
 
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const tokenQuery = token ? `&token=${encodeURIComponent(token)}` : '';
+
   const rawUrl = fileName
-    ? `/api/documents/raw?file_name=${encodeURIComponent(fileName)}`
+    ? `/api/documents/raw?file_name=${encodeURIComponent(fileName)}${tokenQuery}`
     : filePath
-    ? `/api/documents/raw?file_path=${encodeURIComponent(filePath)}`
+    ? `/api/documents/raw?file_path=${encodeURIComponent(filePath)}${tokenQuery}`
     : '';
 
   useEffect(() => {

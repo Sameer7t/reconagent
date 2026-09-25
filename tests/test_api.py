@@ -37,8 +37,16 @@ from api.dependencies import get_db, get_review_queue_dep
 @pytest.fixture(scope="module")
 def client():
     """Provides FastAPI TestClient and cleans up test records on completion."""
+    from api.routes.auth import get_current_user
+    app.dependency_overrides[get_current_user] = lambda: {
+        "id": "08a1909c-678a-4e25-86b0-26a7fa4db87e",
+        "email": "admin@reconagent.local",
+        "role": "Admin",
+        "is_active": True
+    }
     with TestClient(app) as c:
         yield c
+    app.dependency_overrides.clear()
 
     # Cleanup test cases from DB so they never leak into the application
     db = get_db()

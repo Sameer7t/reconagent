@@ -58,55 +58,271 @@ def normalize_code(code: Optional[str]) -> Optional[str]:
     return code_str if code_str else None
 
 
-def _extract_numbers(s: str) -> Set[str]:
-    """Extract all standalone or embedded digit sequences from a string."""
-    return set(re.findall(r'\d+', s))
+def normalize_unit(u: str) -> str:
+    """Normalize unit abbreviations to standard canonical names."""
+    u = u.lower().strip()
+    if u in ('"', 'in', 'inch', 'inches'):
+        return 'in'
+    if u in ("'", 'ft', 'feet'):
+        return 'ft'
+    if u in ('m', 'meter', 'meters'):
+        return 'm'
+    if u in ('cm', 'centimeter', 'centimeters'):
+        return 'cm'
+    if u in ('mm', 'millimeter', 'millimeters'):
+        return 'mm'
+    if u in ('g', 'gram', 'grams'):
+        return 'g'
+    if u in ('kg', 'kilo', 'kilos', 'kilogram', 'kilograms'):
+        return 'kg'
+    if u in ('lb', 'lbs', 'pound', 'pounds'):
+        return 'lb'
+    if u in ('oz', 'ounce', 'ounces'):
+        return 'oz'
+    if u in ('l', 'liter', 'liters', 'litre', 'litres'):
+        return 'l'
+    if u in ('ml', 'milliliter', 'milliliters'):
+        return 'ml'
+    if u in ('gal', 'gallon', 'gallons'):
+        return 'gal'
+    if u in ('v', 'volt', 'volts'):
+        return 'v'
+    if u in ('w', 'watt', 'watts'):
+        return 'w'
+    if u in ('kw', 'kilowatt', 'kilowatts'):
+        return 'kw'
+    if u in ('a', 'amp', 'amps'):
+        return 'a'
+    if u in ('hz', 'hertz'):
+        return 'hz'
+    if u in ('mhz', 'megahertz'):
+        return 'mhz'
+    if u in ('ghz', 'gigahertz'):
+        return 'ghz'
+    if u in ('ream', 'reams'):
+        return 'ream'
+    if u in ('pack', 'pk', 'packs'):
+        return 'pack'
+    return u
+
+
+def extract_specs_and_words(text: str) -> Dict[str, Any]:
+    """
+    Extract specifications (dimensions, measurements, model numbers) and
+    isolate real-world descriptive words from an item description.
+    """
+    if not text:
+        return {'dimensions': [], 'measurements': {}, 'codes': set(), 'words': []}
+
+    t = text.lower()
+    dimensions = []
+    measurements = {}
+
+    # 1. Dimensions (e.g. 4x4, 4 x 8, 2x4x8, 4"x4")
+    dim_pat = re.compile(
+        r'\b(\d+(?:\.\d+)?)\s*[xX*]\s*(\d+(?:\.\d+)?)(?:\s*[xX*]\s*(\d+(?:\.\d+)?))?\s*(mm|cm|m|in|inch|inches|ft|feet|"|\')?\b'
+    )
+    for m in dim_pat.finditer(t):
+        d1 = float(m.group(1))
+        d2 = float(m.group(2))
+        d3 = float(m.group(3)) if m.group(3) else None
+        u = normalize_unit(m.group(4)) if m.group(4) else ''
+        dims = (d1, d2) if d3 is None else (d1, d2, d3)
+        dimensions.append((dims, u))
+    t = dim_pat.sub(' ', t)
+
+    # 2. Fractions (e.g. 1/2 in, 3/4")
+    frac_pat = re.compile(
+        r'\b(\d+)\s*/\s*(\d+)\s*(mm|cm|m|meter|meters|in|inch|inches|"|ft|feet|\'|lb|lbs|oz|kg|g)?\b'
+    )
+    for m in frac_pat.finditer(t):
+        val = round(float(m.group(1)) / float(m.group(2)), 4)
+        u = normalize_unit(m.group(3)) if m.group(3) else 'fraction'
+        measurements[u] = val
+    t = frac_pat.sub(' ', t)
+
+    # 3. Measurements with units (e.g. 0.5 mm, 0.10 mm, 20 lb, 10-ream, 10k)
+    meas_pat = re.compile(
+        r'\b(\d+(?:\.\d+)?)\s*-?\s*(mm|cm|m|meter|meters|in|inch|inches|"|ft|feet|\'|yd|yard|yards|mg|g|gram|grams|kg|kilo|kilos|oz|ounce|ounces|lb|lbs|pound|pounds|ml|l|liter|liters|litre|litres|gal|gallon|gallons|qt|quart|fl\s*oz|pt|pint|v|volt|volts|kv|w|watt|watts|kw|a|amp|amps|ma|hz|khz|mhz|ghz|kb|mb|gb|tb|k|ream|reams|pack|pk|ct|count|box|bx|roll|rl|bundle|case|cs|gsm|mil|gauge|ga)\b'
+    )
+    for m in meas_pat.finditer(t):
+        val = float(m.group(1))
+        u = normalize_unit(m.group(2))
+        measurements[u] = val
+    t = meas_pat.sub(' ', t)
+
+    # 4. Alphanumeric codes / model numbers (e.g. i9-13900k, 001, cat6)
+    codes = set()
+    num_code_pat = re.compile(r'\b[a-z0-9_-]*\d+[a-z0-9_-]*\b')
+    for m in num_code_pat.finditer(t):
+        clean_code = re.sub(r'[-_]', '', m.group(0))
+        if clean_code:
+            codes.add(clean_code)
+    t = num_code_pat.sub(' ', t)
+
+    # 5. Descriptive words
+    words = re.findall(r'[a-z]{2,}', t)
+
+    return {
+        'dimensions': dimensions,
+        'measurements': measurements,
+        'codes': codes,
+        'words': words,
+    }
+
+
+def word_match_score(w1: str, w2: str) -> float:
+    """Fuzzy similarity between two single words with typo tolerance."""
+    if w1 == w2:
+        return 1.0
+    if not w1 or not w2:
+        return 0.0
+    ratio = difflib.SequenceMatcher(None, w1, w2).ratio()
+    if ratio >= 0.80:
+        return ratio
+    # 1 edit distance for words with 3+ letters (e.g., wud vs wood)
+    if len(w1) >= 3 and len(w2) >= 3 and abs(len(w1) - len(w2)) <= 1 and ratio >= 0.70:
+        return ratio
+    return 0.0
+
+
+def words_similarity(words1: List[str], words2: List[str]) -> float:
+    """
+    Calculate semantic/fuzzy similarity between two word token lists,
+    accounting for typos, out-of-order words, and vendor abbreviations/subsets.
+    """
+    if not words1 and not words2:
+        return 1.0
+    if not words1 or not words2:
+        return 0.0
+
+    if words1 == words2:
+        return 1.0
+
+    # Greedy bipartite word matching with typo tolerance
+    used_j = set()
+    matched_scores = []
+
+    for w1 in words1:
+        best_score = 0.0
+        best_j = -1
+        for j, w2 in enumerate(words2):
+            if j in used_j:
+                continue
+            score = word_match_score(w1, w2)
+            if score > best_score:
+                best_score = score
+                best_j = j
+        if best_j != -1 and best_score >= 0.70:
+            used_j.add(best_j)
+            matched_scores.append(best_score)
+        else:
+            matched_scores.append(0.0)
+
+    matched_sum = sum(matched_scores)
+    precision = matched_sum / len(words1)
+    recall = matched_sum / len(words2)
+    f1 = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+
+    min_len = min(len(words1), len(words2))
+    containment = matched_sum / min_len if min_len > 0 else 0.0
+
+    str1 = " ".join(words1)
+    str2 = " ".join(words2)
+    seq_ratio = difflib.SequenceMatcher(None, str1, str2).ratio()
+
+    sorted1 = " ".join(sorted(words1))
+    sorted2 = " ".join(sorted(words2))
+    sorted_ratio = difflib.SequenceMatcher(None, sorted1, sorted2).ratio()
+
+    if containment >= 0.75 and f1 >= 0.60:
+        return max(f1, (containment * 0.7 + f1 * 0.3), seq_ratio, sorted_ratio)
+
+    return max(f1, seq_ratio, sorted_ratio)
+
+
+def compare_item_descriptions(desc1: str, desc2: str) -> Tuple[bool, float, str, str]:
+    """
+    Compare two item descriptions with strict specification and measurement guards:
+    - Real-world words are matched fuzzily (accommodating typos like 'marker' vs 'merker').
+    - Measurements (e.g. 0.5 mm vs 0.10 mm) and dimensions (e.g. 4x4 vs 4x8) MUST NOT
+      match fuzzily if they conflict.
+
+    Returns:
+        (is_match, similarity_score, discrepancy_type_code, explanation)
+    """
+    if not desc1 and not desc2:
+        return True, 1.0, "MATCHED", "Both descriptions empty."
+    if not desc1 or not desc2:
+        return False, 0.0, "MISSING_DESCRIPTION", "One description is missing."
+
+    p1 = extract_specs_and_words(desc1)
+    p2 = extract_specs_and_words(desc2)
+
+    # 1. Dimensions Check: if both specify dimensions and they differ, strict reject
+    if p1['dimensions'] and p2['dimensions']:
+        d1_set = set(p1['dimensions'])
+        d2_set = set(p2['dimensions'])
+        if d1_set != d2_set:
+            return (
+                False,
+                0.0,
+                "DIMENSION_MISMATCH",
+                f"Conflicting dimensions: {p1['dimensions']} vs {p2['dimensions']}",
+            )
+
+    # 2. Measurements Check: if both have measurements on the same unit, they must match numerically
+    shared_units = set(p1['measurements'].keys()).intersection(set(p2['measurements'].keys()))
+    for u in shared_units:
+        val1 = p1['measurements'][u]
+        val2 = p2['measurements'][u]
+        if abs(val1 - val2) > 0.001:
+            return (
+                False,
+                0.0,
+                "MEASUREMENT_MISMATCH",
+                f"Conflicting measurement for unit '{u}': {val1} vs {val2}",
+            )
+
+    # 3. Model Code / Standalone Numbers Check
+    if p1['codes'] and p2['codes']:
+        if p1['codes'] != p2['codes']:
+            return (
+                False,
+                0.0,
+                "CODE_MISMATCH",
+                f"Conflicting model codes/numbers: {p1['codes']} vs {p2['codes']}",
+            )
+
+    # 4. Descriptive Words Check
+    # If there are no words (e.g., pure dimension like "4x4") and specs matched:
+    if not p1['words'] and not p2['words']:
+        return True, 1.0, "MATCHED", "Specifications matched exactly."
+
+    sim = words_similarity(p1['words'], p2['words'])
+    if sim >= 0.70:
+        return True, sim, "MATCHED", f"Fuzzy description match (similarity: {sim:.2%})"
+    else:
+        return False, sim, "DESCRIPTION_MISMATCH", f"Word similarity too low: {sim:.2%}"
 
 
 def calculate_similarity(text1: str, text2: str) -> float:
     """
-    Calculate similarity ratio between two strings using character sequence,
-    token sort, and token set metrics, with strict protection against
-    conflicting numbers (e.g. Model 001 vs Model 002).
+    Calculate similarity ratio between two strings using domain-aware description
+    comparison. Real-world words match fuzzily; conflicting measurements, dimensions,
+    or model variants strictly return 0.0.
     """
     if not text1 or not text2:
         return 0.0
-
-    if text1 == text2:
+    if text1.strip().lower() == text2.strip().lower():
         return 1.0
 
-    # Number conflict check: if both have numbers and their number sets differ,
-    # they represent different models/variants and must NOT fuzzy match.
-    nums1 = _extract_numbers(text1)
-    nums2 = _extract_numbers(text2)
-    if nums1 and nums2 and nums1 != nums2:
-        return 0.0
-
-    tokens1 = text1.split()
-    tokens2 = text2.split()
-    set1 = set(tokens1)
-    set2 = set(tokens2)
-
-    # Exact token set match (identical words in different order)
-    if set1 and set2 and set1 == set2:
-        return 1.0
-
-    # Token-set Jaccard similarity
-    token_sim = 0.0
-    if set1 and set2:
-        intersection = set1.intersection(set2)
-        union = set1.union(set2)
-        token_sim = len(intersection) / len(union)
-
-    # Standard SequenceMatcher
-    seq_sim = difflib.SequenceMatcher(None, text1, text2).ratio()
-
-    # Token sort ratio (words sorted alphabetically)
-    sorted1 = " ".join(sorted(tokens1))
-    sorted2 = " ".join(sorted(tokens2))
-    sorted_sim = difflib.SequenceMatcher(None, sorted1, sorted2).ratio()
-
-    return max(seq_sim, sorted_sim, token_sim)
+    is_match, sim, code, _ = compare_item_descriptions(text1, text2)
+    if not is_match:
+        if code in ("DIMENSION_MISMATCH", "MEASUREMENT_MISMATCH", "CODE_MISMATCH"):
+            return 0.0
+        return sim if sim < 0.70 else 0.0
+    return sim
 
 
 def match_single_pair(
@@ -118,7 +334,11 @@ def match_single_pair(
     invoice_id: str = '',
 ) -> Optional[LineItemMatch]:
     """
-    Attempt to match a single PO item to an invoice item using the hierarchy.
+    Attempt to match a single PO item to an invoice item using the hierarchy:
+      1. Exact normalized description
+      2. SKU / Product code
+      3. Vendor item code
+      4. Fuzzy description with strict measurement/dimension guard
     Returns a LineItemMatch if successful, otherwise None.
     """
     po_desc = normalize_description(str(po_item.get('description', '')))
@@ -151,8 +371,8 @@ def match_single_pair(
         if po_code and inv_code and norm_po_code != norm_inv_code:
             return None
 
-        sim = calculate_similarity(po_desc, inv_desc)
-        if sim >= 0.85:
+        is_match, sim, code, reason = compare_item_descriptions(po_desc, inv_desc)
+        if is_match and sim >= 0.70:
             method = MatchMethod.FUZZY_DESCRIPTION
             confidence = round(sim, 4)
             rationale = f"Fuzzy description match (similarity: {confidence:.2%})."
@@ -163,12 +383,18 @@ def match_single_pair(
         ordered_price = Decimal(str(po_item.get('unit_price', 0) or 0))
         invoiced_price = Decimal(str(invoice_item.get('unit_price', 0) or 0))
 
+        # Check specification compatibility for provenance metadata
+        is_m, s_score, d_code, _ = compare_item_descriptions(po_desc, inv_desc)
+        spec_matched = (d_code not in ("DIMENSION_MISMATCH", "MEASUREMENT_MISMATCH", "CODE_MISMATCH"))
+
         return LineItemMatch(
             po_line_id=f"{po_id}-L{po_index+1}",
             invoice_line_id=f"{invoice_id}-L{invoice_index+1}",
             match_method=method,
             match_confidence=confidence,
             match_rationale=rationale,
+            description_similarity=confidence if method == MatchMethod.FUZZY_DESCRIPTION else 1.0,
+            specification_match=spec_matched,
             po_item=po_item,
             invoice_item=invoice_item,
             ordered_quantity=ordered_qty,
@@ -180,6 +406,7 @@ def match_single_pair(
             receipt_items=[],
         )
     return None
+
 
 
 def match_line_items(
@@ -283,7 +510,7 @@ def match_receipt_items_to_matches(
                     conf = 0.0
                 else:
                     sim = calculate_similarity(po_desc, r_desc)
-                    if sim >= 0.85:
+                    if sim >= 0.70:
                         conf = sim
 
             if conf > 0.0:
