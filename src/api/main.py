@@ -8,11 +8,12 @@ Main entrypoint coordinating:
 - Human Review Queue & Governance
 - SQLite Relational Persistence
 """
+import os
 import sys
 import logging
 from pathlib import Path
 from contextlib import asynccontextmanager
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 # Ensure project root and src/ are in sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -22,6 +23,7 @@ if str(SRC_ROOT) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from datetime import datetime, timezone
 from fastapi import FastAPI, Request, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -30,6 +32,9 @@ from fastapi.exceptions import RequestValidationError
 from api.schemas import HealthResponse, SystemInfoResponse
 from api.dependencies import get_db, get_review_queue_dep, get_orchestrator
 from api.routes import documents, cases, investigations, review, transactions, auth
+from observability.middleware import RequestIdMiddleware
+from observability.metrics import get_metrics_collector
+from observability.logging import get_structured_logger
 
 logger = logging.getLogger("ReconAgentAPI")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -112,13 +117,20 @@ app = FastAPI(
 # -----------------------------------------------------------------------------
 # CORS Middleware
 # -----------------------------------------------------------------------------
+cors_origins_env = os.getenv("CORS_ORIGINS", "*")
+if cors_origins_env.strip() == "*":
+    allow_origins = ["*"]
+else:
+    allow_origins = [o.strip() for o in cors_origins_env.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(RequestIdMiddleware)
 
 # -----------------------------------------------------------------------------
 # Global Exception Handlers
@@ -216,35 +228,99 @@ def serve_dashboard():
 
 
 
-@app.get("/health", response_model=HealthResponse, tags=["System"])
-@app.get("/api/health", response_model=HealthResponse, tags=["System"])
-def health_check():
-    """System health check and database connectivity probe."""
-    db = get_db()
-    rq = get_review_queue_dep()
+@app.get("/health", tags=["System"])
+@app.get("/api/health", tags=["System"])
+def health_liveness():
+    """Liveness probe: simply confirms the application is running."""
+    return {
+        "status": "healthy",
+        "service": "ReconAgent API",
+        "version": "1.0.0",
+        "database_connected": True,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
 
-    total_inv = 0
+
+@app.get("/health/ready", tags=["System"])
+@app.get("/api/health/ready", tags=["System"])
+def health_readiness():
+    """Readiness probe: checks required dependencies such as PostgreSQL."""
+    db = get_db()
     try:
         with db._get_connection() as conn:
-            cur = conn.execute("SELECT COUNT(*) FROM investigations")
-            total_inv = cur.fetchone()[0]
-        db_connected = True
-    except Exception:
-        db_connected = False
+            conn.execute("SELECT 1")
+        is_pg = getattr(db, "is_postgres", False)
+        return {
+            "status": "ready",
+            "dependencies": {
+                "database": {
+                    "status": "up",
+                    "type": "postgresql" if is_pg else "sqlite",
+                    "connected": True,
+                }
+            },
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+    except Exception as exc:
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "status": "not_ready",
+                "dependencies": {
+                    "database": {
+                        "status": "down",
+                        "connected": False,
+                        "error": str(exc),
+                    }
+                },
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
-    metrics = rq.get_metrics()
 
-    return HealthResponse(
-        status="healthy" if db_connected else "degraded",
-        version="1.0.0",
-        database_connected=db_connected,
-        total_investigations=total_inv,
-        review_queue_pending=metrics.get("pending_count", 0),
-    )
+@app.get("/metrics", tags=["System"])
+@app.get("/api/metrics", tags=["System"])
+def system_metrics():
+    """Exposes application performance and operational metrics."""
+    return get_metrics_collector().get_metrics()
+
+
+@app.get("/logs", tags=["System"], dependencies=[Depends(auth.require_role(["Admin"]))])
+@app.get("/api/logs", tags=["System"], dependencies=[Depends(auth.require_role(["Admin"]))])
+def system_logs(
+    limit: int = 100,
+    stage: Optional[str] = None,
+    level: Optional[str] = None,
+    case_id: Optional[str] = None,
+    request_id: Optional[str] = None,
+    current_user: dict = Depends(auth.require_role(["Admin"])),
+):
+    """
+    Exposes recent structured log entries with optional filtering by stage, level, case_id, or request_id.
+    RESTRICTED: Requires Admin role authentication.
+    """
+    s_logger = get_structured_logger()
+    records = s_logger.get_records()
+    if stage:
+        records = [r for r in records if r.get("stage") == stage]
+    if level:
+        records = [r for r in records if r.get("level", "").upper() == level.upper()]
+    if case_id:
+        records = [r for r in records if r.get("case_id") == case_id]
+    if request_id:
+        records = [r for r in records if r.get("request_id") == request_id]
+
+    return {
+        "status": "success",
+        "total_records": len(records),
+        "log_file": str(getattr(s_logger, "log_file", "logs/reconagent.jsonl")),
+        "logs": records[-limit:],
+    }
 
 
 @app.get("/api/info", response_model=SystemInfoResponse, tags=["System"])
 def system_info():
     """Returns supported AI models, document categories, and file types."""
     return SystemInfoResponse()
+
 

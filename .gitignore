@@ -17,6 +17,11 @@ frontend/.vite/
 htmlcov/
 reports/
 
+# Logging & Observability
+logs/
+*.log
+*.jsonl
+
 # Database & Storage
 *.db
 data/*.db

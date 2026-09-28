@@ -56,6 +56,18 @@ export const api = {
     return res.data;
   },
 
+  // Observability & Logs (Admin Only)
+  async getLogs(params?: {
+    limit?: number;
+    stage?: string;
+    level?: string;
+    case_id?: string;
+    request_id?: string;
+  }): Promise<{ status: string; total_records: number; log_file: string; logs: any[] }> {
+    const res = await client.get('/api/logs', { params });
+    return res.data;
+  },
+
   // 2. Cases Directory
   async getCases(params?: {
     status?: string;

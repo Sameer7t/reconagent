@@ -16,6 +16,7 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Optional, Union, Dict, Any, List
 
+import time
 from schemas.document_classification import DocumentType
 from ingestion.document_ingestion import IngestedDocument, ingest_document
 from extraction.mock_text_extractor import (
@@ -23,6 +24,7 @@ from extraction.mock_text_extractor import (
     extract_mock_invoice,
     extract_mock_receipt,
 )
+from observability.logging import get_structured_logger
 
 logger = logging.getLogger("UnifiedExtractor")
 
@@ -230,10 +232,44 @@ def extract_document(
                 "text_preview": (doc.text_content or "")[:200],
             }
 
-    result = _do_extract()
-    if isinstance(result, dict):
-        result["_source_file"] = str(doc.file_path)
-        if "file_name" not in result:
-            result["file_name"] = doc.file_name
-    return result
+    obs_logger = get_structured_logger()
+    start_time = time.perf_counter()
+    obs_logger.info(
+        event="extraction_started",
+        stage="extraction",
+        status="STARTED",
+        document_type=doc_type_str,
+        file_name=doc.file_name,
+    )
+
+    try:
+        result = _do_extract()
+        if isinstance(result, dict):
+            result["_source_file"] = str(doc.file_path)
+            if "file_name" not in result:
+                result["file_name"] = doc.file_name
+
+        duration_ms = (time.perf_counter() - start_time) * 1000.0
+        obs_logger.info(
+            event="extraction_completed",
+            stage="extraction",
+            duration_ms=duration_ms,
+            status="SUCCESS",
+            document_type=doc_type_str,
+            file_name=doc.file_name,
+            items_count=len(result.get("items", [])) if isinstance(result, dict) else 0,
+        )
+        return result
+    except Exception as exc:
+        duration_ms = (time.perf_counter() - start_time) * 1000.0
+        obs_logger.error(
+            event="extraction_failed",
+            stage="extraction",
+            duration_ms=duration_ms,
+            status="ERROR",
+            document_type=doc_type_str,
+            file_name=doc.file_name,
+            error=str(exc),
+        )
+        raise
 

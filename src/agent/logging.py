@@ -78,6 +78,10 @@ class InvestigationTrace(BaseModel):
         return "\n".join(lines)
 
 
+from observability.logging import get_structured_logger, sanitize_sensitive_data
+from observability.context import get_request_id, get_case_id
+
+
 class AgentLogger:
     """
     Step 31: Structured JSON and Console Event Logger.
@@ -85,6 +89,7 @@ class AgentLogger:
     def __init__(self, json_mode: bool = False):
         self.json_mode = json_mode
         self.traces: Dict[str, InvestigationTrace] = {}
+        self.structured = get_structured_logger()
 
     def get_or_create_trace(self, case_id: str, investigation_id: Optional[str] = None) -> InvestigationTrace:
         if case_id not in self.traces:
@@ -94,21 +99,33 @@ class AgentLogger:
 
     def log_event(self, event_name: str, data: Dict[str, Any]):
         """Emits structured log entry without leaking sensitive credentials."""
-        entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "event": event_name,
-            **data,
-        }
+        c_id = data.get("case_id") or get_case_id()
+        r_id = data.get("request_id") or get_request_id()
+        duration_ms = data.get("duration_ms")
+        status = data.get("status")
+
+        # Emit to centralized structured logger
+        extra = {k: v for k, v in data.items() if k not in ("case_id", "request_id", "duration_ms", "status")}
+        record = self.structured.log(
+            level="INFO",
+            event=event_name,
+            stage="agent investigation",
+            case_id=c_id,
+            request_id=r_id,
+            duration_ms=duration_ms,
+            status=status,
+            **extra,
+        )
+
         if self.json_mode:
-            print(json.dumps(entry, default=str))
-        else:
-            logger.info(f"[{event_name.upper()}] " + " | ".join(f"{k}={v}" for k, v in data.items()))
+            print(json.dumps(record, default=str))
 
     def investigation_started(self, case_id: str, discrepancy_count: int, discrepancy_types: List[str]):
         trace = self.get_or_create_trace(case_id)
         self.log_event("investigation_started", {
             "case_id": case_id,
             "investigation_id": trace.investigation_id,
+            "status": "STARTED",
             "discrepancy_count": discrepancy_count,
             "types": discrepancy_types,
         })
@@ -118,15 +135,16 @@ class AgentLogger:
             "case_id": case_id,
             "action": action,
             "tool": tool,
+            "status": "IN_PROGRESS",
             "reason": reason[:120],
         })
 
     def tool_called(self, case_id: str, tool_name: str, arguments: Dict[str, Any]):
-        # Sanitize arguments (remove any sensitive headers/tokens if present)
-        sanitized = {k: v for k, v in arguments.items() if "token" not in k.lower() and "secret" not in k.lower()}
+        sanitized = sanitize_sensitive_data(arguments)
         self.log_event("tool_called", {
             "case_id": case_id,
             "tool": tool_name,
+            "status": "STARTED",
             "arguments": sanitized,
         })
 
@@ -151,6 +169,7 @@ class AgentLogger:
             "evidence_id": evidence_id,
             "source_type": source_type,
             "source_id": source_id,
+            "status": "SUCCESS",
         })
 
     def investigation_completed(
@@ -168,6 +187,7 @@ class AgentLogger:
             "recommendation": recommendation,
             "confidence": confidence,
             "requires_human_review": requires_human_review,
+            "status": "COMPLETED",
         })
 
 

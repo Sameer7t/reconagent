@@ -19,7 +19,10 @@ import psycopg2
 from psycopg2 import pool
 from psycopg2.extras import Json
 
+import time
 from agent.models import InvestigationResult
+from observability.logging import get_structured_logger
+from observability.metrics import get_metrics_collector
 
 logger = logging.getLogger("InvestigationDatabase")
 
@@ -133,8 +136,9 @@ class InvestigationDatabase:
         self.db_url = db_url or os.getenv("DATABASE_URL", DEFAULT_PG_URL)
 
         # Decide whether to use SQLite or PostgreSQL
-        # If db_path is explicitly ':memory:' or ends with '.db' (and no explicit postgres URL), use SQLite
-        if self.db_path == ":memory:" or (self.db_path and self.db_path.endswith(".db") and not db_url):
+        # If db_path is explicitly ':memory:' or ends with '.db' (and neither db_url nor DATABASE_URL was explicitly provided), use SQLite
+        has_explicit_pg = bool(db_url or os.getenv("DATABASE_URL"))
+        if self.db_path == ":memory:" or (self.db_path and self.db_path.endswith(".db") and not has_explicit_pg):
             self._init_sqlite(self.db_path)
         else:
             try:
@@ -394,21 +398,24 @@ class InvestigationDatabase:
         resolved_rcpt_nums = receipt_numbers or state.get("receipt_numbers") or getattr(result, "receipt_numbers", None)
         resolved_recon_res = reconciliation_result or state.get("reconciliation_result") or getattr(result, "reconciliation_result", None)
 
+        def _safe_json_dumps(o):
+            return json.dumps(o, default=str)
+
         def _json_val(v):
             if v is None:
                 return None
             if self.is_postgres:
                 if isinstance(v, (dict, list)):
-                    return Json(v)
+                    return Json(v, dumps=_safe_json_dumps)
                 if isinstance(v, str):
                     s = v.strip()
                     if (s.startswith("{") and s.endswith("}")) or (s.startswith("[") and s.endswith("]")):
                         try:
-                            return Json(json.loads(s))
+                            return Json(json.loads(s), dumps=_safe_json_dumps)
                         except Exception:
                             pass
-                    return Json(s)
-                return Json(v)
+                    return Json(s, dumps=_safe_json_dumps)
+                return Json(v, dumps=_safe_json_dumps)
             else:
                 if isinstance(v, (dict, list)):
                     return json.dumps(v, default=str)
@@ -418,10 +425,22 @@ class InvestigationDatabase:
             result.to_executive_summary() if hasattr(result, "to_executive_summary") else ""
         )
 
-        with self._get_connection() as conn:
-            if self.is_postgres:
-                conn.execute(
-                    """
+        obs_logger = get_structured_logger()
+        metrics = get_metrics_collector()
+        db_start = time.perf_counter()
+        obs_logger.info(
+            event="database_persistence_started",
+            stage="database persistence",
+            case_id=result.case_id,
+            status="STARTED",
+            investigation_id=inv_id,
+        )
+
+        try:
+            with self._get_connection() as conn:
+                if self.is_postgres:
+                    conn.execute(
+                        """
                     INSERT INTO investigations (
                         id, case_id, status, started_at, completed_at,
                         recommendation, confidence, requires_human_review, final_summary,
@@ -448,30 +467,30 @@ class InvestigationDatabase:
                         receipt_numbers = EXCLUDED.receipt_numbers,
                         reconciliation_result = EXCLUDED.reconciliation_result
                     """,
-                    (
-                        inv_id,
-                        result.case_id,
-                        state.get("status", "COMPLETED"),
-                        started_at,
-                        completed_at,
-                        result.recommendation,
-                        result.confidence,
-                        bool(result.requires_human_review),
-                        summary_text,
-                        resolved_po_file,
-                        resolved_inv_file,
-                        _json_val(resolved_rcpt_files),
-                        _json_val(resolved_src_files),
-                        resolved_vendor,
-                        resolved_po_num,
-                        resolved_inv_num,
-                        _json_val(resolved_rcpt_nums),
-                        _json_val(resolved_recon_res),
-                    ),
-                )
-            else:
-                conn.execute(
-                    """
+                        (
+                            inv_id,
+                            result.case_id,
+                            state.get("status", "COMPLETED"),
+                            started_at,
+                            completed_at,
+                            result.recommendation,
+                            result.confidence,
+                            bool(result.requires_human_review),
+                            summary_text,
+                            resolved_po_file,
+                            resolved_inv_file,
+                            _json_val(resolved_rcpt_files),
+                            _json_val(resolved_src_files),
+                            resolved_vendor,
+                            resolved_po_num,
+                            resolved_inv_num,
+                            _json_val(resolved_rcpt_nums),
+                            _json_val(resolved_recon_res),
+                        ),
+                    )
+                else:
+                    conn.execute(
+                        """
                     INSERT OR REPLACE INTO investigations (
                         id, case_id, status, started_at, completed_at,
                         recommendation, confidence, requires_human_review, final_summary,
@@ -480,95 +499,118 @@ class InvestigationDatabase:
                         reconciliation_result
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
-                    (
-                        inv_id,
-                        result.case_id,
-                        state.get("status", "COMPLETED"),
-                        started_at,
-                        completed_at,
-                        result.recommendation,
-                        result.confidence,
-                        1 if result.requires_human_review else 0,
-                        summary_text,
-                        resolved_po_file,
-                        resolved_inv_file,
-                        json.dumps(resolved_rcpt_files) if isinstance(resolved_rcpt_files, list) else resolved_rcpt_files,
-                        json.dumps(resolved_src_files) if isinstance(resolved_src_files, list) else resolved_src_files,
-                        resolved_vendor,
-                        resolved_po_num,
-                        resolved_inv_num,
-                        json.dumps(resolved_rcpt_nums) if isinstance(resolved_rcpt_nums, list) else resolved_rcpt_nums,
-                        json.dumps(resolved_recon_res, default=str) if resolved_recon_res else None,
-                    ),
-                )
+                        (
+                            inv_id,
+                            result.case_id,
+                            state.get("status", "COMPLETED"),
+                            started_at,
+                            completed_at,
+                            result.recommendation,
+                            result.confidence,
+                            1 if result.requires_human_review else 0,
+                            summary_text,
+                            resolved_po_file,
+                            resolved_inv_file,
+                            json.dumps(resolved_rcpt_files) if isinstance(resolved_rcpt_files, list) else resolved_rcpt_files,
+                            json.dumps(resolved_src_files) if isinstance(resolved_src_files, list) else resolved_src_files,
+                            resolved_vendor,
+                            resolved_po_num,
+                            resolved_inv_num,
+                            json.dumps(resolved_rcpt_nums) if isinstance(resolved_rcpt_nums, list) else resolved_rcpt_nums,
+                            json.dumps(resolved_recon_res, default=str) if resolved_recon_res else None,
+                        ),
+                    )
 
-            # 2. Insert Tool Events
-            for tc in state.get("tool_calls", []):
-                ev_id = f"EVT-{uuid.uuid4().hex[:8].upper()}"
-                sql = (
-                    "INSERT INTO investigation_events (id, investigation_id, event_type, tool_name, arguments, result, created_at) "
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING"
-                    if self.is_postgres
-                    else "INSERT INTO investigation_events (id, investigation_id, event_type, tool_name, arguments, result, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
-                )
-                conn.execute(
-                    sql,
-                    (
-                        ev_id,
-                        inv_id,
-                        "TOOL_CALL",
-                        tc.get("tool", ""),
-                        _json_val(tc.get("arguments", {})),
-                        _json_val(tc.get("result", {})),
-                        tc.get("timestamp", now),
-                    ),
-                )
+                # 2. Insert Tool Events
+                for tc in state.get("tool_calls", []):
+                    ev_id = f"EVT-{uuid.uuid4().hex[:8].upper()}"
+                    sql = (
+                        "INSERT INTO investigation_events (id, investigation_id, event_type, tool_name, arguments, result, created_at) "
+                        "VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING"
+                        if self.is_postgres
+                        else "INSERT INTO investigation_events (id, investigation_id, event_type, tool_name, arguments, result, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    )
+                    conn.execute(
+                        sql,
+                        (
+                            ev_id,
+                            inv_id,
+                            "TOOL_CALL",
+                            tc.get("tool", ""),
+                            _json_val(tc.get("arguments", {})),
+                            _json_val(tc.get("result", {})),
+                            tc.get("timestamp", now),
+                        ),
+                    )
 
-            # 3. Insert Evidence records
-            for ev in result.evidence:
-                ev_pk = f"{inv_id}_{ev.evidence_id}"
-                sql = (
-                    "INSERT INTO investigation_evidence (id, investigation_id, source_type, source_id, field, value, description, created_at) "
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING"
-                    if self.is_postgres
-                    else "INSERT INTO investigation_evidence (id, investigation_id, source_type, source_id, field, value, description, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-                )
-                conn.execute(
-                    sql,
-                    (
-                        ev_pk,
-                        inv_id,
-                        ev.source_type,
-                        ev.source_id,
-                        ev.field or "",
-                        ev.value or "",
-                        ev.description,
-                        now,
-                    ),
-                )
+                # 3. Insert Evidence records
+                for ev in result.evidence:
+                    ev_pk = f"{inv_id}_{ev.evidence_id}"
+                    sql = (
+                        "INSERT INTO investigation_evidence (id, investigation_id, source_type, source_id, field, value, description, created_at) "
+                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING"
+                        if self.is_postgres
+                        else "INSERT INTO investigation_evidence (id, investigation_id, source_type, source_id, field, value, description, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                    )
+                    conn.execute(
+                        sql,
+                        (
+                            ev_pk,
+                            inv_id,
+                            ev.source_type,
+                            ev.source_id,
+                            ev.field or "",
+                            ev.value or "",
+                            ev.description,
+                            now,
+                        ),
+                    )
 
-            # 4. Insert Findings
-            for f in result.findings:
-                finding_pk = f"{inv_id}_{f.finding_id}"
-                sql = (
-                    "INSERT INTO investigation_findings (id, investigation_id, discrepancy_type, explanation, confidence, created_at) "
-                    "VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING"
-                    if self.is_postgres
-                    else "INSERT INTO investigation_findings (id, investigation_id, discrepancy_type, explanation, confidence, created_at) VALUES (?, ?, ?, ?, ?, ?)"
-                )
-                conn.execute(
-                    sql,
-                    (
-                        finding_pk,
-                        inv_id,
-                        f.discrepancy_type,
-                        f.explanation,
-                        f.confidence,
-                        now,
-                    ),
-                )
+                # 4. Insert Findings
+                for f in result.findings:
+                    finding_pk = f"{inv_id}_{f.finding_id}"
+                    sql = (
+                        "INSERT INTO investigation_findings (id, investigation_id, discrepancy_type, explanation, confidence, created_at) "
+                        "VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING"
+                        if self.is_postgres
+                        else "INSERT INTO investigation_findings (id, investigation_id, discrepancy_type, explanation, confidence, created_at) VALUES (?, ?, ?, ?, ?, ?)"
+                    )
+                    conn.execute(
+                        sql,
+                        (
+                            finding_pk,
+                            inv_id,
+                            f.discrepancy_type,
+                            f.explanation,
+                            f.confidence,
+                            now,
+                        ),
+                    )
 
-        return inv_id
+            duration_ms = (time.perf_counter() - db_start) * 1000.0
+            metrics.record_database_duration(duration_ms)
+            obs_logger.info(
+                event="database_persistence_completed",
+                stage="database persistence",
+                case_id=result.case_id,
+                duration_ms=duration_ms,
+                status="SUCCESS",
+                investigation_id=inv_id,
+            )
+            return inv_id
+        except Exception as exc:
+            duration_ms = (time.perf_counter() - db_start) * 1000.0
+            metrics.record_database_duration(duration_ms)
+            obs_logger.error(
+                event="database_persistence_failed",
+                stage="database persistence",
+                case_id=result.case_id,
+                duration_ms=duration_ms,
+                status="ERROR",
+                investigation_id=inv_id,
+                error=str(exc),
+            )
+            raise
 
     def get_investigation(self, case_id: str) -> Optional[Dict[str, Any]]:
         """Retrieves an investigation record by case ID."""

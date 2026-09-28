@@ -15,6 +15,8 @@ from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 
 from agent.models import Finding, Evidence, InvestigationResult
+from observability.logging import get_structured_logger
+from observability.metrics import get_metrics_collector
 
 
 class ReviewItem(BaseModel):
@@ -203,6 +205,16 @@ class ReviewQueueManager:
             human_status=status,
         )
         self.queue[case_id] = item
+        get_structured_logger().info(
+            event="review_queue_enqueued",
+            stage="review queue",
+            case_id=case_id,
+            status=status,
+            recommendation=recommendation,
+            confidence=confidence,
+        )
+        if requires_human_review:
+            get_metrics_collector().record_human_review()
         return item
 
     def get_metrics(self) -> Dict[str, int]:
@@ -239,6 +251,15 @@ class ReviewQueueManager:
             human_status="PENDING_REVIEW",
         )
         self.queue[result.case_id] = item
+        get_structured_logger().info(
+            event="review_queue_enqueued",
+            stage="review queue",
+            case_id=result.case_id,
+            status="PENDING_REVIEW",
+            recommendation=result.recommendation,
+            confidence=result.confidence,
+        )
+        get_metrics_collector().record_human_review()
         return item
 
     def list_pending(self) -> List[ReviewItem]:
@@ -299,6 +320,15 @@ class ReviewQueueManager:
                 )
             except Exception:
                 pass
+
+        get_structured_logger().info(
+            event="review_queue_decision_submitted",
+            stage="review queue",
+            case_id=case_id,
+            status=status,
+            decision=clean_dec,
+            reviewer_id=reviewer_id,
+        )
 
         return item
 

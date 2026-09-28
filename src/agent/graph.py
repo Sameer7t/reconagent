@@ -23,6 +23,9 @@ from agent.nodes.finalize import finalize_node, create_investigation_result
 from agent.logging import get_agent_logger, AgentLogger
 from agent.db import InvestigationDatabase
 from agent.review_queue import get_review_queue, ReviewQueueManager
+from observability.logging import get_structured_logger
+from observability.metrics import get_metrics_collector
+from observability.context import set_case_id, reset_case_id
 
 # Maximum investigation steps before forcing conclusion
 MAX_TOOL_CALLS = 8
@@ -154,37 +157,56 @@ def run_investigation(
     case_id = initial_state["case_id"]
     disc_types = [str(d.get("type", "")) for d in initial_state.get("discrepancies", [])]
 
-    log = agent_logger or get_agent_logger()
-    log.investigation_started(
-        case_id=case_id,
-        discrepancy_count=len(initial_state.get("discrepancies", [])),
-        discrepancy_types=disc_types,
-    )
+    case_token = set_case_id(case_id)
+    metrics = get_metrics_collector()
+    agent_start_time = time.perf_counter()
 
-    graph = build_investigation_graph(
-        datastore=datastore,
-        max_tool_calls=max_tool_calls,
-        client=client,
-        agent_logger=log,
-    )
+    try:
+        log = agent_logger or get_agent_logger()
+        log.investigation_started(
+            case_id=case_id,
+            discrepancy_count=len(initial_state.get("discrepancies", [])),
+            discrepancy_types=disc_types,
+        )
 
-    final_state = graph.invoke(initial_state)
-    result = create_investigation_result(final_state)
+        graph = build_investigation_graph(
+            datastore=datastore,
+            max_tool_calls=max_tool_calls,
+            client=client,
+            agent_logger=log,
+        )
 
-    log.investigation_completed(
-        case_id=case_id,
-        recommendation=result.recommendation,
-        confidence=result.confidence,
-        requires_human_review=result.requires_human_review,
-    )
+        final_state = graph.invoke(initial_state)
+        result = create_investigation_result(final_state)
 
-    # Relational Database Persistence
-    database = db or InvestigationDatabase()
-    database.save_investigation(final_state, result, **metadata)
+        # Record agent metrics
+        duration_ms = (time.perf_counter() - agent_start_time) * 1000.0
+        metrics.record_agent_duration(duration_ms)
+        metrics.record_investigation()
+        if result.recommendation:
+            metrics.record_recommendation(result.recommendation)
+        for tc in final_state.get("tool_calls", []):
+            metrics.record_tool_call(tc.get("tool", "unknown"))
 
-    # Human Review Queue Gate
-    queue = review_queue or get_review_queue()
-    queue.enqueue_if_needed(final_state, result)
+        log.investigation_completed(
+            case_id=case_id,
+            recommendation=result.recommendation,
+            confidence=result.confidence,
+            requires_human_review=result.requires_human_review,
+        )
 
-    return result
+        # Relational Database Persistence
+        database = db or InvestigationDatabase()
+        database.save_investigation(final_state, result, **metadata)
+
+        # Human Review Queue Gate
+        queue = review_queue or get_review_queue()
+        queue.enqueue_if_needed(final_state, result)
+
+        return result
+    except Exception as exc:
+        metrics.record_agent_failure()
+        raise
+    finally:
+        reset_case_id(case_token)
 

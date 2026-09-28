@@ -1,6 +1,4 @@
-"""
-FastAPI Dependency Injection Providers for ReconAgent.
-"""
+import os
 from pathlib import Path
 from typing import Optional
 from agent.db import InvestigationDatabase, DEFAULT_DB_PATH
@@ -14,10 +12,14 @@ _db_instance: Optional[InvestigationDatabase] = None
 _user_db_instance: Optional[UserDatabase] = None
 
 def get_db() -> InvestigationDatabase:
-    """Provides singleton SQLite database repository."""
+    """Provides singleton database repository (PostgreSQL when DATABASE_URL is set, or fallback to SQLite)."""
     global _db_instance
     if _db_instance is None:
-        _db_instance = InvestigationDatabase(DEFAULT_DB_PATH)
+        db_url = os.getenv("DATABASE_URL")
+        if db_url:
+            _db_instance = InvestigationDatabase(db_url=db_url)
+        else:
+            _db_instance = InvestigationDatabase(DEFAULT_DB_PATH)
     return _db_instance
 
 def get_user_db() -> UserDatabase:

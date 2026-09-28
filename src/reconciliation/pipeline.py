@@ -16,6 +16,7 @@ Stage execution order:
   9. Discrepancy Engine (severity enforcement)
   10. Decision Engine (final status)
 """
+import time
 import logging
 import sys
 from datetime import datetime, timezone
@@ -42,6 +43,9 @@ from validation import (
     verify_purchase_order_math,
     verify_receipt_math,
 )
+from observability.logging import get_structured_logger
+from observability.metrics import get_metrics_collector
+from observability.context import set_case_id, reset_case_id
 
 from reconciliation.document_linker import (
     evaluate_link,
@@ -110,6 +114,17 @@ def reconcile_transaction(
     if case_id is None:
         case_id = _generate_case_id()
 
+    obs_logger = get_structured_logger()
+    metrics = get_metrics_collector()
+    case_token = set_case_id(case_id)
+    recon_start_time = time.perf_counter()
+
+    obs_logger.info(
+        event="reconciliation_started",
+        stage="reconciliation",
+        case_id=case_id,
+        status="STARTED",
+    )
     logger.info(f"=== Starting Reconciliation: {case_id} ===")
 
     # Initialize result
@@ -129,6 +144,13 @@ def reconcile_transaction(
     try:
         # ── Stage 0: Internal Document Validation ──────────────────
         logger.info(f"[{case_id}] Stage 0: Internal Document Validation")
+        val_start_time = time.perf_counter()
+        obs_logger.info(
+            event="validation_started",
+            stage="validation",
+            case_id=case_id,
+            status="STARTED",
+        )
         val_checks: List[ReconciliationCheck] = []
 
         def _generate_granular_discrepancies(val_report: Dict[str, Any], doc_id: str, doc_name: str, id_field: str) -> List[Discrepancy]:
@@ -282,6 +304,15 @@ def reconcile_transaction(
                     all_discrepancies.extend(final_granular)
 
         result.document_validation_checks = val_checks
+        val_duration_ms = (time.perf_counter() - val_start_time) * 1000.0
+        obs_logger.info(
+            event="validation_completed",
+            stage="validation",
+            case_id=case_id,
+            duration_ms=val_duration_ms,
+            status="SUCCESS",
+            total_checks=len(val_checks),
+        )
 
         # ── Stage 1: Document Linking ──────────────────────────────
         logger.info(f"[{case_id}] Stage 1: Document Linking")
@@ -413,6 +444,18 @@ def reconcile_transaction(
         result.status = ReconciliationStatus.ERROR
         result.summary = f"Reconciliation failed: {str(e)}"
         result.reconciled_at = datetime.now(timezone.utc).isoformat()
+    finally:
+        recon_duration_ms = (time.perf_counter() - recon_start_time) * 1000.0
+        metrics.record_reconciliation_duration(recon_duration_ms)
+        obs_logger.info(
+            event="reconciliation_completed",
+            stage="reconciliation",
+            case_id=case_id,
+            duration_ms=recon_duration_ms,
+            status=result.status.value,
+            discrepancy_count=len(result.discrepancies),
+        )
+        reset_case_id(case_token)
 
     logger.info(
         f"=== Reconciliation Complete: {case_id} -> {result.status.value} "

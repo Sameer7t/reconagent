@@ -46,6 +46,7 @@ from schemas.document_classification import (
     ClassificationResult,
     BatchClassificationReport,
 )
+from observability.logging import get_structured_logger
 
 try:
     from .document_ingestion import IngestedDocument, ingest_document
@@ -390,70 +391,106 @@ def classify_document(
             raise FileNotFoundError(f"Target document file not found: {path}")
         doc = ingest_document(path, extract_text=True)
 
-    path = doc.file_path
-    if doc.extension.lower() not in SUPPORTED_EXTENSIONS and doc.extension.lower() not in (".csv", ".tsv", ".json", ".log", ".bmp", ".tiff"):
-        return ClassificationResult(
-            file_name=doc.file_name,
-            file_path=str(path),
-            document_type=DocumentType.UNKNOWN,
-            confidence=0.0,
-            tier_used="unsupported_format",
-            reasoning=f"Unsupported file format '{doc.extension}'.",
-            key_indicators=[],
-            suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
-        )
+    obs_logger = get_structured_logger()
+    start_time = time.perf_counter()
+    file_label = getattr(doc, "file_name", Path(document).name if isinstance(document, (str, Path)) else "doc")
+    obs_logger.info(
+        event="classification_started",
+        stage="classification",
+        status="STARTED",
+        file_name=file_label,
+    )
 
-    if doc.file_size_bytes > MAX_FILE_SIZE_BYTES:
-        return ClassificationResult(
-            file_name=doc.file_name,
-            file_path=str(path),
-            document_type=DocumentType.UNKNOWN,
-            confidence=0.0,
-            tier_used="size_limit_exceeded",
-            reasoning=f"File exceeds maximum allowed size of {MAX_FILE_SIZE_BYTES // (1024 * 1024)} MB.",
-            key_indicators=[],
-            suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
-        )
-
-    # ------------------------------------------------------------
-    # Tier 1: Check Local Text Heuristics (Instant, 0 API cost)
-    # ------------------------------------------------------------
-    if doc.has_text and doc.text_content:
-        text_result = classify_text_heuristics(doc.text_content, path)
-        if text_result and text_result.confidence >= 0.85:
-            return text_result
-        if doc.extension.lower() in (".txt", ".csv", ".tsv", ".json", ".log") and len(doc.text_content.strip()) >= 20:
+    def _do_classify() -> ClassificationResult:
+        path = doc.file_path
+        if doc.extension.lower() not in SUPPORTED_EXTENSIONS and doc.extension.lower() not in (".csv", ".tsv", ".json", ".log", ".bmp", ".tiff"):
             return ClassificationResult(
                 file_name=doc.file_name,
                 file_path=str(path),
                 document_type=DocumentType.UNKNOWN,
-                confidence=0.90,
-                tier_used="local_text",
-                reasoning="Text analysis confirmed no invoice, purchase order, or receipt markers present.",
+                confidence=0.0,
+                tier_used="unsupported_format",
+                reasoning=f"Unsupported file format '{doc.extension}'.",
                 key_indicators=[],
                 suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
             )
 
-    # ------------------------------------------------------------
-    # Tier 2: Multimodal Vision Fallback (Images & Scanned PDFs)
-    # ------------------------------------------------------------
-    if client is None:
-        client = get_gemini_client()
+        if doc.file_size_bytes > MAX_FILE_SIZE_BYTES:
+            return ClassificationResult(
+                file_name=doc.file_name,
+                file_path=str(path),
+                document_type=DocumentType.UNKNOWN,
+                confidence=0.0,
+                tier_used="size_limit_exceeded",
+                reasoning=f"File exceeds maximum allowed size of {MAX_FILE_SIZE_BYTES // (1024 * 1024)} MB.",
+                key_indicators=[],
+                suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
+            )
 
-    if client:
-        return classify_multimodal_vision(client, path)
+        # ------------------------------------------------------------
+        # Tier 1: Check Local Text Heuristics (Instant, 0 API cost)
+        # ------------------------------------------------------------
+        if doc.has_text and doc.text_content:
+            text_result = classify_text_heuristics(doc.text_content, path)
+            if text_result and text_result.confidence >= 0.85:
+                return text_result
+            if doc.extension.lower() in (".txt", ".csv", ".tsv", ".json", ".log") and len(doc.text_content.strip()) >= 20:
+                return ClassificationResult(
+                    file_name=doc.file_name,
+                    file_path=str(path),
+                    document_type=DocumentType.UNKNOWN,
+                    confidence=0.90,
+                    tier_used="local_text",
+                    reasoning="Text analysis confirmed no invoice, purchase order, or receipt markers present.",
+                    key_indicators=[],
+                    suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
+                )
 
-    # If Gemini client unavailable and text heuristics failed
-    return ClassificationResult(
-        file_name=doc.file_name,
-        file_path=str(path),
-        document_type=DocumentType.UNKNOWN,
-        confidence=0.0,
-        tier_used="no_client_available",
-        reasoning="Document text insufficient for local classification and Gemini client unavailable for vision.",
-        key_indicators=[],
-        suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
-    )
+        # ------------------------------------------------------------
+        # Tier 2: Multimodal Vision Fallback (Images & Scanned PDFs)
+        # ------------------------------------------------------------
+        active_client = client
+        if active_client is None:
+            active_client = get_gemini_client()
+
+        if active_client:
+            return classify_multimodal_vision(active_client, path)
+
+        # If Gemini client unavailable and text heuristics failed
+        return ClassificationResult(
+            file_name=doc.file_name,
+            file_path=str(path),
+            document_type=DocumentType.UNKNOWN,
+            confidence=0.0,
+            tier_used="no_client_available",
+            reasoning="Document text insufficient for local classification and Gemini client unavailable for vision.",
+            key_indicators=[],
+            suggested_pipeline=PipelineTarget.MANUAL_REVIEW,
+        )
+
+    try:
+        res = _do_classify()
+        duration_ms = (time.perf_counter() - start_time) * 1000.0
+        obs_logger.info(
+            event="classification_completed",
+            stage="classification",
+            duration_ms=duration_ms,
+            status="SUCCESS",
+            document_type=res.document_type.value,
+            confidence=res.confidence,
+            tier_used=res.tier_used,
+        )
+        return res
+    except Exception as exc:
+        duration_ms = (time.perf_counter() - start_time) * 1000.0
+        obs_logger.error(
+            event="classification_failed",
+            stage="classification",
+            duration_ms=duration_ms,
+            status="ERROR",
+            error=str(exc),
+        )
+        raise
 
 
 

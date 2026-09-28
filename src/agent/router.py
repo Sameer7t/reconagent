@@ -36,6 +36,7 @@ from agent.state import InvestigationState
 from agent.models import AgentAction
 from agent.prompts import INVESTIGATION_SYSTEM_PROMPT, build_analysis_user_prompt
 from agent.policies import get_allowed_tools_for_discrepancies
+from observability.metrics import metrics_collector
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -126,6 +127,8 @@ class GeminiModelRouter:
                     logger.info(
                         f"[Router] Invoking model tier '{candidate_model}' (Attempt {spike_attempt+1}/{MAX_SPIKE_RETRIES+1})..."
                     )
+                    metrics_collector.record_router_attempt(candidate_model)
+
                     def _call_gemini():
                         return client.models.generate_content(
                             model=candidate_model,
@@ -149,7 +152,9 @@ class GeminiModelRouter:
                             logger.warning(
                                 f"[Router] Model '{candidate_model}' chose tool '{action_obj.tool}' outside policy {allowed}."
                             )
+                            metrics_collector.record_router_fallback()
                             break
+                    metrics_collector.record_router_success(candidate_model)
                     return action_obj
 
                 except Exception as exc:
@@ -159,10 +164,16 @@ class GeminiModelRouter:
                             f"[Router] Quota limit encountered on tier '{candidate_model}' ({exc}). "
                             f"Cascading to next tier in 9-tier priority order..."
                         )
+                        metrics_collector.record_router_quota_429()
+                        metrics_collector.record_router_fallback()
                         break  # Break out of this model's loop to cascade to next candidate
 
                     elif is_temporary_spike_error(exc):
                         # Temporary spike: DO NOT change model. Use exponential backoff on SAME model.
+                        metrics_collector.record_router_retry_503()
+                        if isinstance(exc, (TimeoutError, concurrent.futures.TimeoutError)) or "timeout" in str(exc).lower():
+                            metrics_collector.record_router_timeout()
+
                         spike_attempt += 1
                         if spike_attempt <= MAX_SPIKE_RETRIES:
                             delay = BASE_SPIKE_DELAY * (2 ** (spike_attempt - 1))
@@ -177,6 +188,7 @@ class GeminiModelRouter:
                                 f"[Router] Tier '{candidate_model}' remained unavailable after {MAX_SPIKE_RETRIES} backoff retries. "
                                 f"Cascading to next tier in priority order..."
                             )
+                            metrics_collector.record_router_fallback()
                             break
 
                     else:
@@ -193,6 +205,7 @@ class GeminiModelRouter:
                             logger.warning(
                                 f"[Router] Tier '{candidate_model}' error persisted. Cascading to next tier..."
                             )
+                            metrics_collector.record_router_fallback()
                             break
 
         logger.warning("[Router] All cascade tiers exhausted or unavailable. Triggering deterministic fallback.")
@@ -232,6 +245,8 @@ class GeminiModelRouter:
                     logger.info(
                         f"[Router] Invoking extraction on tier '{candidate_model}' (Attempt {spike_attempt+1}/{MAX_SPIKE_RETRIES+1})..."
                     )
+                    metrics_collector.record_router_attempt(candidate_model)
+
                     def _call_gemini():
                         return client.models.generate_content(
                             model=candidate_model,
@@ -250,6 +265,7 @@ class GeminiModelRouter:
                     # SDK parsed model check
                     if hasattr(response, "parsed") and response.parsed is not None:
                         logger.info(f"[Router] Extraction succeeded and validated against schema on tier '{candidate_model}'.")
+                        metrics_collector.record_router_success(candidate_model)
                         return response.parsed
 
                     # Fallback: parse raw response text if SDK failed to auto-populate response.parsed
@@ -258,11 +274,13 @@ class GeminiModelRouter:
                             raw_dict = json.loads(response.text)
                             parsed_obj = response_schema.model_validate(raw_dict)
                             logger.info(f"[Router] Extraction parsed via fallback deserializer on tier '{candidate_model}'.")
+                            metrics_collector.record_router_success(candidate_model)
                             return parsed_obj
                         except Exception as parse_err:
                             logger.warning(f"[Router] Fallback JSON parsing failed on tier '{candidate_model}': {parse_err}")
 
                     # If response was empty or unparseable, cascade to next candidate
+                    metrics_collector.record_router_fallback()
                     break
 
                 except Exception as exc:
@@ -272,10 +290,16 @@ class GeminiModelRouter:
                             f"[Router] Quota limit encountered on tier '{candidate_model}' ({exc}). "
                             f"Cascading to next tier in 9-tier priority order..."
                         )
+                        metrics_collector.record_router_quota_429()
+                        metrics_collector.record_router_fallback()
                         break
 
                     elif is_temporary_spike_error(exc):
                         # Temporary spike: DO NOT change model. Use exponential backoff on SAME model.
+                        metrics_collector.record_router_retry_503()
+                        if isinstance(exc, (TimeoutError, concurrent.futures.TimeoutError)) or "timeout" in str(exc).lower():
+                            metrics_collector.record_router_timeout()
+
                         spike_attempt += 1
                         if spike_attempt <= MAX_SPIKE_RETRIES:
                             delay = BASE_SPIKE_DELAY * (2 ** (spike_attempt - 1))
@@ -290,6 +314,7 @@ class GeminiModelRouter:
                                 f"[Router] Tier '{candidate_model}' remained unavailable after {MAX_SPIKE_RETRIES} backoff retries. "
                                 f"Cascading to next tier in priority order..."
                             )
+                            metrics_collector.record_router_fallback()
                             break
 
                     else:
@@ -306,6 +331,7 @@ class GeminiModelRouter:
                             logger.warning(
                                 f"[Router] Tier '{candidate_model}' error persisted. Cascading to next tier..."
                             )
+                            metrics_collector.record_router_fallback()
                             break
 
         logger.warning("[Router] All extraction cascade tiers exhausted or unavailable.")

@@ -6,6 +6,7 @@ import { CaseDetailView } from './components/CaseDetailView';
 import { DocumentViewerModal } from './components/DocumentViewerModal';
 import { UploadModal } from './components/UploadModal';
 import { UserManagementModal } from './components/UserManagementModal';
+import { SystemLogsModal } from './components/SystemLogsModal';
 import { api } from './services/api';
 import {
   CaseSummary,
@@ -24,6 +25,7 @@ export const App: React.FC = () => {
   const [cases, setCases] = useState<CaseSummary[]>([]);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [isUserMgmtOpen, setIsUserMgmtOpen] = useState<boolean>(false);
+  const [isLogsOpen, setIsLogsOpen] = useState<boolean>(false);
   const [metrics, setMetrics] = useState<MetricCounts>({
     total_cases: 0,
     matched: 0,
@@ -719,6 +721,7 @@ export const App: React.FC = () => {
       <Navbar
         onOpenUpload={() => setIsUploadOpen(true)}
         onOpenUserMgmt={() => setIsUserMgmtOpen(true)}
+        onOpenLogs={() => setIsLogsOpen(true)}
         onRefresh={loadData}
         isRefreshing={isRefreshing}
         onlineStatus={onlineStatus}
@@ -835,6 +838,12 @@ export const App: React.FC = () => {
       <UserManagementModal
         isOpen={isUserMgmtOpen}
         onClose={() => setIsUserMgmtOpen(false)}
+      />
+
+      {/* System Logs Modal (Admin only) */}
+      <SystemLogsModal
+        isOpen={isLogsOpen}
+        onClose={() => setIsLogsOpen(false)}
       />
     </div>
   );

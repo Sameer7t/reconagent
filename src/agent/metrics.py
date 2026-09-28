@@ -16,6 +16,11 @@ from pydantic import BaseModel, Field
 from agent.models import InvestigationResult
 from agent.policies import get_allowed_tools_for_discrepancies
 from agent.validation import validate_investigation_result
+from observability.metrics import (
+    metrics_collector,
+    get_metrics_collector,
+    SystemMetricsCollector,
+)
 
 
 class CaseMetrics(BaseModel):
@@ -112,6 +117,17 @@ def evaluate_single_investigation(
     # - Case is fully authorized clean match -> requires_human_review is False
     has_unresolved_issue = (result.recommendation != "APPROVE_PAYMENT")
     correct_escalation = (result.requires_human_review == has_unresolved_issue)
+
+    # Record operational metrics into the system collector
+    metrics_collector.record_investigation()
+    for tc in tool_calls:
+        metrics_collector.record_tool_call(tc.get("tool", "unknown"))
+    if result.requires_human_review:
+        metrics_collector.record_human_review()
+    if result.recommendation:
+        metrics_collector.record_recommendation(result.recommendation)
+    if not structured_valid:
+        metrics_collector.record_agent_failure()
 
     return CaseMetrics(
         case_id=result.case_id,

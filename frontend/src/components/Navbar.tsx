@@ -1,10 +1,11 @@
 import React from 'react';
-import { ShieldCheck, UploadCloud, RefreshCw, LogOut, User, Users } from 'lucide-react';
+import { ShieldCheck, UploadCloud, RefreshCw, LogOut, User, Users, Terminal } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 
 interface NavbarProps {
   onOpenUpload: () => void;
   onOpenUserMgmt?: () => void;
+  onOpenLogs?: () => void;
   onRefresh: () => void;
   isRefreshing: boolean;
   onlineStatus: boolean;
@@ -13,6 +14,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenUpload,
   onOpenUserMgmt,
+  onOpenLogs,
   onRefresh,
   isRefreshing,
   onlineStatus,
@@ -86,6 +88,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />
               <span className="hidden sm:inline">Manage Users</span>
+            </button>
+          )}
+
+          {/* System Logs (Admin only) */}
+          {user?.role === 'Admin' && onOpenLogs && (
+            <button
+              onClick={onOpenLogs}
+              className="flex items-center space-x-1.5 px-3 py-1.5 sm:py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-400 hover:text-white font-medium text-xs transition"
+              title="System Observability & Audit Logs (Admin Only)"
+            >
+              <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
+              <span className="hidden sm:inline">System Logs</span>
             </button>
           )}
 

@@ -1,3 +1,4 @@
+import os
 import jwt
 import bcrypt
 import uuid
@@ -11,9 +12,9 @@ from agent.user_db import UserDatabase
 
 router = APIRouter(tags=["Authentication"])
 
-SECRET_KEY = "reconagent-super-secret-key"
+SECRET_KEY = os.getenv("SECRET_KEY", "reconagent-super-secret-key")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1440 # 1 day
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440")) # Default 1 day
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token", auto_error=False)
 
