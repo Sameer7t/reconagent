@@ -1,5 +1,3 @@
-version: '3.8'
-
 # =============================================================================
 # ReconAgent Docker Compose Orchestration
 # Architecture: Frontend (React/Nginx) -> Backend (FastAPI/LangGraph) -> Database (PostgreSQL 16)
