@@ -34,27 +34,35 @@ ReconAgent is an enterprise-grade, autonomous invoice reconciliation and root-ca
                                   +-------------------+-------------------+
                                                       |
                                      [Clean Match]    |    [Variance / Discrepancy]
-                                     +----------------+---------------+
-                                     |                                |
-                                     v                                v
-                        +------------------------+      +---------------------------+
-                        |  Auto-Approve Payment  |      |   LangGraph Agent State   |
-                        +------------------------+      |  Autonomous Investigation |
-                                                        +-------------+-------------+
-                                                                      |
-                                                                      v
-                                                        +---------------------------+
-                                                        |  9-Tier Gemini Cascade    |
-                                                        |  - Tool Call Reasoning    |
-                                                        |  - Contract / PO Audit    |
-                                                        |  - Evidence Synthesis    |
-                                                        +-------------+-------------+
-                                                                      |
-                                                                      v
-                                                        +---------------------------+
-                                                        | Human-in-the-Loop Review  |
-                                                        | Role-Based Signoff & DB   |
-                                                        +---------------------------+
+                                    +-----------------+---------------+
+                                    |                                 |
+                                    v                                 v
+                        +-----------------------+       +---------------------------+
+                        | Clean Match Verified  |       |   LangGraph Agent State   |
+                        |   (Status: MATCHED)   |       |  Autonomous Investigation |
+                        +-----------+-----------+       +-------------+-------------+
+                                    |                                 |
+                                    |                                 v
+                                    |                   +---------------------------+
+                                    |                   |   9-Tier Gemini Cascade   |
+                                    |                   |   - Tool Call Reasoning   |
+                                    |                   |   - Contract / PO Audit   |
+                                    |                   |   - Evidence Synthesis    |
+                                    |                   +-------------+-------------+
+                                    |                                 |
+                                    |                                 v
+                                    |                   +---------------------------+
+                                    |                   | Human-in-the-Loop Review  |
+                                    |                   | Role-Based Signoff Queue  |
+                                    |                   +-------------+-------------+
+                                    |                                 |
+                                    +----------------+----------------+
+                                                     |
+                                                     v
+                                       +---------------------------+
+                                       |    PostgreSQL Database    |
+                                       |   & Audit Trail Storage   |
+                                       +---------------------------+
 ```
 
 ---
@@ -65,11 +73,12 @@ ReconAgent is an enterprise-grade, autonomous invoice reconciliation and root-ca
    - Full 3-way matching across Purchase Orders (PO), Invoices (INV), and Delivery Receipts (DR).
    - Tolerant price variance detection ($0.01 tolerance) and exact line-level shortage/overage tracking.
    - Semantic fuzzy description reconciliation using normalized token ratios.
+   - Zero-variance clean matches are verified and marked as `MATCHED` with no investigation required.
 
 2. **Autonomous LangGraph AI Investigator:**
    - Autonomous multi-step root-cause analysis agent.
    - Dynamic tool use: queries authorization registries, historical vendor profiles, arithmetic checkers, and proof-of-delivery receipts.
-   - Generates audit-ready evidence citations and deterministic recommendations (`APPROVE_PAYMENT`, `REQUEST_CREDIT_MEMO`, `FLAG_SUSPECTED_FRAUD`, etc.).
+   - Generates audit-ready evidence citations and proposed resolutions for human reviewers (`APPROVE_PAYMENT`, `REQUEST_CREDIT_MEMO`, `FLAG_SUSPECTED_FRAUD`, etc.).
 
 3. **9-Tier Gemini Model Router:**
    - Multi-tier cascading fallback for high reliability under rate limits:
