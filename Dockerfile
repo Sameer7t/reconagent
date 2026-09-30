@@ -39,7 +39,7 @@ EXPOSE 8000
 
 # Container healthcheck using liveness probe
 HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD curl -f http://localhost:${PORT:-8000}/health || exit 1
 
 # Launch container via entrypoint
 ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]

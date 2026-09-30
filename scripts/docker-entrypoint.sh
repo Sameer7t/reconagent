@@ -18,9 +18,14 @@ import sys
 import time
 import psycopg2
 
-db_url = os.getenv("DATABASE_URL")
+db_url = os.getenv("DATABASE_URL", "")
 if not db_url:
     sys.exit(0)
+
+# Normalize postgres:// to postgresql:// for compatibility with Render/Heroku URLs
+if db_url.startswith("postgres://"):
+    db_url = "postgresql://" + db_url[len("postgres://"):]
+    os.environ["DATABASE_URL"] = db_url
 
 max_retries = 30
 for attempt in range(1, max_retries + 1):
@@ -33,12 +38,33 @@ for attempt in range(1, max_retries + 1):
         print(f"[Entrypoint] PostgreSQL not ready yet (attempt {attempt}/{max_retries}): {exc}")
         time.sleep(1)
 
-print("[Entrypoint] ERROR: Timed out waiting for PostgreSQL.")
-sys.exit(1)
+print("[Entrypoint] WARNING: Could not connect to PostgreSQL within timeout. System will fall back to local SQLite.")
+sys.exit(0)
 EOF
+else
+    echo "No DATABASE_URL specified. ReconAgent will use local SQLite persistence."
 fi
 
-echo "PostgreSQL is ready. Launching ReconAgent FastAPI application..."
+# 3. Dynamic PORT handling for cloud environments (Render, Railway, Heroku)
+PORT_TO_USE="${PORT:-8000}"
+echo "Configuring application port: ${PORT_TO_USE}"
 
-# 3. Execute requested CMD
+if [ "$PORT_TO_USE" != "8000" ]; then
+    NEW_ARGS=()
+    SKIP_NEXT=0
+    for arg in "$@"; do
+        if [ "$SKIP_NEXT" -eq 1 ]; then
+            NEW_ARGS+=("$PORT_TO_USE")
+            SKIP_NEXT=0
+        elif [ "$arg" = "--port" ]; then
+            NEW_ARGS+=("$arg")
+            SKIP_NEXT=1
+        else
+            NEW_ARGS+=("$arg")
+        fi
+    done
+    set -- "${NEW_ARGS[@]}"
+fi
+
+# 4. Execute application
 exec "$@"
