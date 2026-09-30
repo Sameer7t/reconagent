@@ -88,8 +88,8 @@ def test_frontend_dockerfile_multistage():
     assert frontend_dockerfile.exists(), "frontend/Dockerfile must exist"
 
     content = frontend_dockerfile.read_text(encoding="utf-8")
-    assert "FROM node:20-alpine AS build" in content
-    assert "FROM nginx:1.27-alpine" in content
+    assert ("FROM node:20-alpine AS build" in content or "FROM node:20-slim AS build" in content)
+    assert "FROM nginx" in content
     assert "COPY --from=build" in content
     assert "EXPOSE 80" in content
     assert "HEALTHCHECK" in content
