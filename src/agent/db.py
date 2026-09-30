@@ -27,7 +27,7 @@ from observability.metrics import get_metrics_collector
 logger = logging.getLogger("InvestigationDatabase")
 
 DEFAULT_DB_PATH = Path("data") / "investigations.db"
-DEFAULT_PG_URL = os.getenv("DATABASE_URL", "postgresql://postgres:root@localhost:5432/reconagent")
+DEFAULT_PG_URL = os.getenv("DATABASE_URL")
 
 
 class DictRow(dict):
@@ -133,13 +133,12 @@ class InvestigationDatabase:
         self._pool = None
         self._shared_conn = None
         self.db_path = str(db_path) if db_path is not None else None
-        self.db_url = db_url or os.getenv("DATABASE_URL", DEFAULT_PG_URL)
+        self.db_url = db_url or os.getenv("DATABASE_URL") or DEFAULT_PG_URL
 
         # Decide whether to use SQLite or PostgreSQL
-        # If db_path is explicitly ':memory:' or ends with '.db' (and neither db_url nor DATABASE_URL was explicitly provided), use SQLite
-        has_explicit_pg = bool(db_url or os.getenv("DATABASE_URL"))
-        if self.db_path == ":memory:" or (self.db_path and self.db_path.endswith(".db") and not has_explicit_pg):
-            self._init_sqlite(self.db_path)
+        # If no PostgreSQL URL is configured or SQLite is explicitly requested, initialize SQLite immediately
+        if not self.db_url or self.db_path == ":memory:" or (self.db_path and self.db_path.endswith(".db")):
+            self._init_sqlite(self.db_path or str(DEFAULT_DB_PATH))
         else:
             try:
                 self._init_postgres(self.db_url)

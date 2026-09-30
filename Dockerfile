@@ -43,4 +43,4 @@ HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=3 \
 
 # Launch container via entrypoint
 ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]
-CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

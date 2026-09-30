@@ -11,7 +11,7 @@ from psycopg2.extras import RealDictCursor
 
 logger = logging.getLogger("UserDatabase")
 
-DEFAULT_PG_URL = os.getenv("DATABASE_URL", "postgresql://postgres:root@localhost:5432/reconagent")
+DEFAULT_PG_URL = os.getenv("DATABASE_URL")
 DEFAULT_SQLITE_USER_PATH = Path("data") / "users.db"
 
 
@@ -22,14 +22,13 @@ class UserDatabase:
     when external PostgreSQL is not provisioned or during development.
     """
     def __init__(self, db_url: Optional[str] = None, db_path: Optional[str] = None):
-        self.db_url = db_url or os.getenv("DATABASE_URL", DEFAULT_PG_URL)
+        self.db_url = db_url or os.getenv("DATABASE_URL") or DEFAULT_PG_URL
         self.db_path = Path(db_path) if db_path else DEFAULT_SQLITE_USER_PATH
         self.is_postgres = False
         self._conn = None
 
-        has_explicit_pg = bool(db_url or os.getenv("DATABASE_URL"))
-        if str(db_path) == ":memory:" or (str(db_path).endswith(".db") and not has_explicit_pg):
-            self._init_sqlite(str(db_path))
+        if not self.db_url or str(db_path) == ":memory:" or (str(db_path).endswith(".db")):
+            self._init_sqlite(str(self.db_path))
         else:
             try:
                 self._init_postgres(self.db_url)
