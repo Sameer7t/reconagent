@@ -1,8 +1,26 @@
 # =============================================================================
-# ReconAgent Backend Dockerfile (Python 3.12 Slim)
-# Production Container for FastAPI, LangGraph Agent, and Multi-Way Reconciliation
+# ReconAgent Multi-Stage Dockerfile
+# Stage 1: Build React Dashboard UI
+# Stage 2: Production Python 3.12 Backend + Static UI Assets
 # =============================================================================
 
+# -----------------------------------------------------------------------------
+# Stage 1: Frontend Build Stage
+# -----------------------------------------------------------------------------
+FROM node:20-slim AS frontend-builder
+WORKDIR /app/frontend
+
+# Install frontend dependencies
+COPY frontend/package*.json ./
+RUN npm install
+
+# Build production React assets
+COPY frontend/ ./
+RUN npm run build
+
+# -----------------------------------------------------------------------------
+# Stage 2: Production Python Backend Stage
+# -----------------------------------------------------------------------------
 FROM python:3.12-slim
 
 # Prevent Python from writing .pyc files and enable unbuffered logging
@@ -29,6 +47,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY src/ ./src/
 COPY data/ ./data/
 COPY scripts/ ./scripts/
+
+# Copy compiled frontend assets from Stage 1
+COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
 # Ensure runtime directories exist and make entrypoint executable
 RUN mkdir -p /app/data/uploads /app/logs && \
