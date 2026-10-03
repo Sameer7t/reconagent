@@ -51,3 +51,6 @@ Desktop.ini
 
 # Temporary scratch
 scratch/
+
+# Local prompt instructions
+instructions.md
